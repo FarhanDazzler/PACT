@@ -7,7 +7,7 @@ import bgImage from "../src/assests/images/bg_image.jpg";
 import FooterComponent from "./pages/Footer/footer";
 import HeaderComponent from "./pages/Header/header";
 import LoginComponent from "./pages/Login";
-import RequestAccessComponent from "./pages/RequestAccess";
+// import RequestAccessComponent from "./pages/RequestAccess";
 import DashboardComponent from "./pages/dashboard";
 import { msalConfig } from "./utils/authConfig";
 
@@ -23,7 +23,7 @@ const Pages = () => {
       <div className="flex-grow overflow-y-auto bg-cover">
         <Routes>
           <Route path="/login" element={<LoginComponent />} />
-          <Route path="/request" element={<RequestAccessComponent />} />
+          {/* <Route path="/request" element={<RequestAccessComponent />} /> */}
           <Route path="/dashboard" element={<DashboardComponent />} />
         </Routes>
       </div>
