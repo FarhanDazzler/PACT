@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+
+// This file is for adding custom css class for tailwind properties.
 export const content = ["./src/**/*.{js,jsx,ts,tsx}"];
 export const theme = {
   extend: {

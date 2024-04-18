@@ -10,6 +10,7 @@ export default function CardMolecule({
   bodyClass = "",
 }) {
   return (
+    //Using mantine cards as seperate component here and sending it across different pages or layout as dynamically.
     <Card className={cardClass}>
       <div>
         {header && <header className={`${headerClass}`}>{header}</header>}
