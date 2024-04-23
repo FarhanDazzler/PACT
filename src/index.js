@@ -1,13 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { PublicClientApplication } from "@azure/msal-browser";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import { msalConfig } from "./utils/authConfig";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+export const msalInstance = new PublicClientApplication(msalConfig);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <App msalInstance={msalInstance} />
   </React.StrictMode>
 );
 

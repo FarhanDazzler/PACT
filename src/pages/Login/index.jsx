@@ -10,7 +10,7 @@ import { loginRequest } from "../../utils/authConfig";
 export default function LoginComponent() {
   const navigate = useNavigate();
 
-  const { instance, inProgress } = useMsal();
+  const { instance, accounts, inProgress, logger } = useMsal();
 
   const isAuthenticated = useIsAuthenticated();
 
@@ -19,13 +19,10 @@ export default function LoginComponent() {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const redirect = params.get("redirect");
-    if (isAuthenticated && inProgress === InteractionStatus.None) {
-      console.log("You are authenticated!");
-      console.log(`Refer: ${document.referrer}`);
 
-      console.log("🚀 ~ useEffect ~ redirect:", redirect);
+    if (isAuthenticated && inProgress === InteractionStatus.None) {
       if (redirect) navigate(redirect);
-      else navigate("/");
+      else navigate("/dashboard");
     }
   }, [inProgress]);
 
