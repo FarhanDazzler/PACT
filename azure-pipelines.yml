@@ -1,0 +1,69 @@
+trigger: 
+- main
+- dev
+- qa
+
+resources:
+  repositories:
+  - repository: appsectemplates
+    type: git
+    name: DevSecOps/DevSecOps
+
+stages:
+- stage: Build
+  jobs:
+  - job: SecureScan
+    displayName: SecureScan
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+            ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+                scanTemplate: pipeline_templates/Security_tasks/prepareSonarcloudPR.yml@appsectemplates
+            ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+                scanTemplate: pipeline_templates/Security_tasks/prepareSonarCloud.yml@appsectemplates
+
+    steps:
+      - checkout: self
+      - checkout: appsectemplates
+
+      - template: ${{ variables['scanTemplate'] }}
+        parameters:
+          SCServiceConnection: 'SonarcloudServer'
+          SCProjectKey: 'Global_P2P_Transformation_frontend'
+          SCProjectName: 'Global_P2P_Transformation_frontend'
+          SCBaseDirPath: './$(Build.Repository.Name)'
+          ${{ if or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'Manual'))}}:
+            SCBranchName: '$(Build.SourceBranchName)'
+          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            SCPRKey: $(System.PullRequest.PullRequestId)
+            SCPrBranch: $(System.PullRequest.SourceBranch)
+            SCPrBaseBranch: $(System.PullRequest.TargetBranch)
+        
+#    - template: pipeline_templates/build_code.yml@appsectemplates
+#      parameters:
+#         
+
+      - template: pipeline_templates/secure_code_scan.yml@appsectemplates
+        parameters:
+          scanSonarCloud: true
+          sonarCloudGate: true
+          SCServiceConnection: 'SonarcloudServer'
+          SCOrganization: 'sonarcloud-ado' 
+          
+          scanSnyk: true
+          SKFailOnIssues: true
+          SkServiceConnection: 'SnykServer'
+          SkOrganization: 'f8e30283-d4c9-47be-821e-f7bcc1b2afca'
+          SkAdditionalArgs: '--all-projects --prune-repeated-subdependencies --detection-depth=4' 
+          App360ID: 'SE-03646'
+
+          scanApiiro: true
+          AprServiceConnection: 'apiiro'
+          AprSkipOnScanFailure: false
+      
+  #    - task: PublishPipelineArtifact@1
+  #      inputs:
+  #        targetPath: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/build'
+  #        artifact: 'build_artifact'
+  #        publishLocation: 'pipeline'
