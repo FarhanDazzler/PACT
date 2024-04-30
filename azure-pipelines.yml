@@ -26,7 +26,12 @@ stages:
     steps:
       - checkout: self
       - checkout: appsectemplates
-
+      - script: |
+          npm install vite @vitejs/plugin-react
+          npm run build 
+        displayName: 'Install and Build with Vite'
+        
+      
       - template: ${{ variables['scanTemplate'] }}
         parameters:
           SCServiceConnection: 'SonarcloudServer'
@@ -42,7 +47,8 @@ stages:
         
 #    - template: pipeline_templates/build_code.yml@appsectemplates
 #      parameters:
-#         
+#     
+
 
       - template: pipeline_templates/secure_code_scan.yml@appsectemplates
         parameters:
