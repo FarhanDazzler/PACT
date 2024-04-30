@@ -27,9 +27,26 @@ stages:
       - checkout: self
       - checkout: appsectemplates
       - script: |
-          npm install vite @vitejs/plugin-react
-          npm run build 
-        displayName: 'Install and Build with Vite'
+          npm install @vitejs/plugin-react vite
+        displayName: 'Install Vite and React plugin'
+
+      - script: |
+          echo 'import react from "@vitejs/plugin-react";' > vite.config.js
+          echo 'import { defineConfig } from "vite";' >> vite.config.js
+          echo '' >> vite.config.js
+          echo '// https://vitejs.dev/config/' >> vite.config.js
+          echo 'export default defineConfig({' >> vite.config.js
+          echo '  plugins: [react()],' >> vite.config.js
+          echo '  server: {' >> vite.config.js
+          echo '    port: 3000,' >> vite.config.js
+          echo '  },' >> vite.config.js
+          echo '});' >> vite.config.js
+        displayName: 'Create Vite configuration file'
+
+      - script: |
+          cat vite.config.js
+        displayName: 'Show Vite configuration'
+
         
       
       - template: ${{ variables['scanTemplate'] }}
