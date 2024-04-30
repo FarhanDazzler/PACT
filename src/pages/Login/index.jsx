@@ -4,8 +4,8 @@ import { Button } from "@mantine/core";
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ABILogo from "../../assests/images/abi_logo_black.png";
+import { loginRequest } from "../../config/authConfig";
 import CardMolecule from "../../molecules/Card";
-import { loginRequest } from "../../utils/authConfig";
 
 export default function LoginComponent() {
   const navigate = useNavigate();
@@ -51,8 +51,11 @@ export default function LoginComponent() {
                   {`Login`}
                 </Button>
               </div>
-              <a className="underline text-black font-avant flex justify-center items-center font-semibold text-xs pb-4">
-                {"Request Access?"}
+              <a
+                href="request"
+                className="underline text-black font-avant flex justify-center items-center font-semibold text-xs pb-4"
+              >
+                <span className="text-xs">Request Access?</span>
               </a>
               <div>
                 <hr className="h-px w-44 flex justify-center items-center bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function getApi({
+export async function postApi({
   url,
   routes = "",
   data = {},
@@ -10,8 +10,8 @@ export async function getApi({
     },
   },
 }) {
-  return axios
-    .get(`http://localhost:3001/${routes}`, data, {
+  return await axios
+    .post(`http://localhost:3001/${routes}`, data, {
       ...config,
       headers: {
         ...(config?.headers ?? {}),

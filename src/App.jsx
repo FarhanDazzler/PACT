@@ -1,3 +1,4 @@
+import { InteractionStatus } from "@azure/msal-browser";
 import { MsalProvider, useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MantineProvider } from "@mantine/core";
 import React, { useContext, useEffect } from "react";
@@ -9,15 +10,14 @@ import {
   useNavigate,
 } from "react-router-dom";
 import bgImage from "../src/assests/images/bg_image.jpg";
+import { loginRequest } from "./config/authConfig";
+import { UserContext, UserContextProvider } from "./context/userContext";
 import FooterComponent from "./pages/Footer/footer";
 import HeaderComponent from "./pages/Header/header";
 import LoginComponent from "./pages/Login";
-// import RequestAccessComponent from "./pages/RequestAccess";
-import { InteractionStatus } from "@azure/msal-browser";
-import { UserContext, UserContextProvider } from "./context/userContext";
+import RequestAccessComponent from "./pages/RequestAccess";
 import DashboardComponent from "./pages/dashboard";
-import { getApi } from "./particles/api";
-import { loginRequest } from "./utils/authConfig";
+import { postApi } from "./particles/api";
 
 const Pages = () => {
   const location = useLocation();
@@ -53,7 +53,7 @@ const Pages = () => {
       })
       .then(async (response) => {
         localStorage.setItem("id_token", response?.idToken);
-        const idToken = await getApi({
+        const idToken = await postApi({
           data: { id_token: response?.idToken },
           routes: "afr_routes/users",
         });
@@ -72,7 +72,7 @@ const Pages = () => {
       <div className="flex-grow overflow-y-auto bg-cover">
         <Routes>
           <Route path="/login" element={<LoginComponent />} />
-          {/* <Route path="/request" element={<RequestAccessComponent />} /> */}
+          <Route path="/request" element={<RequestAccessComponent />} />
           <Route path="/dashboard" element={<DashboardComponent />} />
         </Routes>
       </div>

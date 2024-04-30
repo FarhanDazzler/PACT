@@ -2,7 +2,6 @@ import { useMsal } from "@azure/msal-react";
 import { FaFileAlt } from "react-icons/fa";
 import { MdHome } from "react-icons/md";
 import { RiAuctionLine } from "react-icons/ri";
-import PopoverMolecule from "../../molecules/Popover";
 
 export default function HeaderComponent() {
   const { instance, accounts, inProgress, logger } = useMsal();
@@ -58,14 +57,13 @@ export default function HeaderComponent() {
           </div>
           <div className="hidden md:block">
             <div className="ml-8 flex items-center ">
-              <PopoverMolecule
-                label={"Hello"}
-                options={["Sign Out"]}
-                handleClick={handleLogout}
+              <Button
+                label={"Log out"}
+                onClick={handleLogout}
                 overrideClass={
                   "text-black bg-gold hover:bg-gold focus:ring-black focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-white dark:hover:bg-white dark:focus:ring-black"
                 }
-              ></PopoverMolecule>
+              ></Button>
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">

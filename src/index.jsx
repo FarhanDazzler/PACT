@@ -2,9 +2,9 @@ import { PublicClientApplication } from "@azure/msal-browser";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import { msalConfig } from "./config/authConfig";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { msalConfig } from "./utils/authConfig";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
