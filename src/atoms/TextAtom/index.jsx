@@ -1,6 +1,11 @@
 import { TextInput } from "@mantine/core";
 
-export default function TextAtom({ label, placeHolder, ovverrideClass }) {
+export default function TextAtom({
+  label,
+  placeHolder,
+  ovverrideClass,
+  ...props
+}) {
   return (
     <TextInput
       className={`${ovverrideClass}`}

@@ -1,38 +1,38 @@
-import { MultiSelect, Select } from "@mantine/core";
-import { useState } from "react";
+import AsyncSelect from "react-select/async";
 
-export default function SelectMolecule({
-  label = "",
-  placeholder = "",
+export default function ReactSelectMolecule({
   options = [],
-  multi = false,
-  readOnly = false,
+  label = "",
+  className = "",
+  value,
+  placeholder = "",
+  overrideClass = "",
+  overrideDropdownClass = "",
+  fontFamily = "inherit",
   ...props
 }) {
-  const [searchValue, setSearchValue] = useState("");
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      fontFamily: fontFamily, // Apply the specified font family
+    }),
+  };
 
-  return multi ? (
-    <MultiSelect
-      label={label}
-      placeholder={placeholder}
-      data={options}
-      clearable
-      nothingFoundMessage="No Results"
-      readOnly={readOnly}
-    />
-  ) : (
-    <Select
-      label={label}
-      placeholder={placeholder}
-      data={options}
-      clearable
-      styles={{
-        input: {
-          "&:focus": { borderColor: "#e3af32" },
-        },
-        selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
-        hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
-      }}
-    />
+  return (
+    <div className={`flex items-center rounded-3xl gap-1 ${overrideClass}`}>
+      <AsyncSelect
+        {...props}
+        styles={customStyles}
+        className={`w-52 rounded border-1 border-disabled font-semibold${overrideDropdownClass}`}
+        defaultOptions={options}
+        // loadOptions={loadOptions}
+        placeholder={placeholder ?? "Select"}
+        closeMenuOnSelect
+        hideSelectedOptions
+        components={{ IndicatorSeparator: () => null }}
+        options={options}
+        // key={props?.accessor}
+      />
+    </div>
   );
 }

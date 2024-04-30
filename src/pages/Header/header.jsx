@@ -1,8 +1,14 @@
+import { useMsal } from "@azure/msal-react";
 import { FaFileAlt } from "react-icons/fa";
 import { MdHome } from "react-icons/md";
 import { RiAuctionLine } from "react-icons/ri";
 
 export default function HeaderComponent() {
+  const { instance, accounts, inProgress, logger } = useMsal();
+
+  const handleLogout = () => {
+    instance.logout();
+  };
   return (
     <nav className="bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,8 +56,14 @@ export default function HeaderComponent() {
             </div>
           </div>
           <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6">
-              {/* Add your login/register buttons or other actions here */}
+            <div className="ml-8 flex items-center ">
+              <Button
+                label={"Log out"}
+                onClick={handleLogout}
+                overrideClass={
+                  "text-black bg-gold hover:bg-gold focus:ring-black focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-white dark:hover:bg-white dark:focus:ring-black"
+                }
+              ></Button>
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">
@@ -95,29 +107,6 @@ export default function HeaderComponent() {
               </svg>
             </button>
           </div>
-        </div>
-      </div>
-      {/* Mobile menu, show/hide based on menu state. */}
-      <div className="md:hidden" id="mobile-menu">
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <a
-            href="#"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Home
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            About
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Contact
-          </a>
         </div>
       </div>
     </nav>
