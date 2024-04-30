@@ -29,10 +29,12 @@ stages:
       
       - task: Npm@1
         inputs:
-          command: 'custom'
-          customCommand: 'install && run build'
+          command: 'install'
           workingDir: '$(Build.Repository.Name)'
-
+        
+      - script: |
+          npm run build
+        displayName: 'build with vite'
       
       - script: |
           cat vite.config.js
