@@ -30,7 +30,7 @@ stages:
       - task: Npm@1
         inputs:
           command: 'install'
-          workingDir: '$(Build.Repository.Name)/frontend'
+          workingDir: '$(Build.Repository.Name)'
         
       - script: |
           npm run build
