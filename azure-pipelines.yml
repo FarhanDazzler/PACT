@@ -40,6 +40,7 @@ stages:
         displayName: 'build with vite'
       
       - script: |
+          cd frontend
           cat vite.config.js
         displayName: 'Show Vite configuration'
 
