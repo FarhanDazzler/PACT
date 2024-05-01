@@ -33,6 +33,7 @@ stages:
           workingDir: '$(Build.Repository.Name)'
         
       - script: |
+          cd frontend
           ls
           cat package.json
           npm run build
