@@ -33,6 +33,8 @@ stages:
           workingDir: '$(Build.Repository.Name)'
         
       - script: |
+          ls
+          cat package.json
           npm run build
         displayName: 'build with vite'
       
