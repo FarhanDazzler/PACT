@@ -32,12 +32,18 @@ stages:
           command: 'install'
           workingDir: '$(Build.Repository.Name)'
         
-      - script: |
-          cd frontend
-          ls
-          cat package.json
-          npm run build
-        displayName: 'build with vite'
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '$(Build.Repository.Name)/frontend'
+          customCommand: 'build'
+      
+      # - script: |
+      #     cd frontend
+      #     ls
+      #     cat package.json
+      #     npm run build
+      #   displayName: 'build with vite'
       
       - script: |
           cd frontend
