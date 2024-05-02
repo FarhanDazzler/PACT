@@ -36,7 +36,7 @@ stages:
         inputs:
           command: 'custom'
           workingDir: '$(Build.Repository.Name)'
-          customCommand: 'build'
+          customCommand: 'run build'
       
       # - script: |
       #     cd frontend
