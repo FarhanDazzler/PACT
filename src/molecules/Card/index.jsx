@@ -5,29 +5,57 @@ export default function CardMolecule({ metricCardData = [], ...props }) {
   const data = _.isArray(metricCardData) ? metricCardData : [metricCardData];
   return (
     <>
-      {data?.map((card, index) => (
-        <Card className={card?.cardClass}>
+      {!_.isEmpty(data) ? (
+        data?.map((card, index) => (
+          <Card className={card?.cardClass}>
+            <div>
+              {card?.header && (
+                <header className={`${card?.headerClass}`}>
+                  {card?.header}
+                </header>
+              )}
+              {card?.body && (
+                <div
+                  className={`items-center justify-center ${card?.bodyClass} `}
+                >
+                  {card?.body}
+                </div>
+              )}
+              {card?.footer && (
+                <footer
+                  className={`p-2 justify-center flex items-center ${card?.footerClass}`}
+                >
+                  {card?.footer}
+                </footer>
+              )}
+            </div>
+          </Card>
+        ))
+      ) : (
+        <Card className={props?.cardClass}>
           <div>
-            {card?.header && (
-              <header className={`${card?.headerClass}`}>{card?.header}</header>
+            {props?.header && (
+              <header className={`${props?.headerClass}`}>
+                {props?.header}
+              </header>
             )}
-            {card?.body && (
+            {props?.body && (
               <div
-                className={`items-center justify-center ${card?.bodyClass} `}
+                className={`items-center justify-center ${props?.bodyClass} `}
               >
-                {card?.body}
+                {props?.body}
               </div>
             )}
-            {card?.footer && (
+            {props?.footer && (
               <footer
-                className={`p-2 justify-center flex items-center ${card?.footerClass}`}
+                className={`p-2 justify-center flex items-center ${props?.footerClass}`}
               >
-                {card?.footer}
+                {props?.footer}
               </footer>
             )}
           </div>
         </Card>
-      ))}
+      )}
     </>
   );
 }

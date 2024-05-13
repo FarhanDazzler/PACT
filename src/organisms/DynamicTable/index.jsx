@@ -81,6 +81,22 @@ export default function DynamicTableOrganism({
         XLSX.writeFile(workbook, "PR Creation.xlsx");
       };
 
+      const handleExportAllRows = (data) => {
+        const columnHeaders = columnData?.map((item) => item?.accessorKey);
+        const allData = data.map((row) => {
+          const rowData = {};
+          columnHeaders.forEach((column) => {
+            rowData[column] = row[column];
+          });
+          return rowData;
+        });
+
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(allData);
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "PR Creation.xlsx");
+      };
+
       return (
         <Flex p="md" justify="space-between">
           <Flex gap="xs">
@@ -92,7 +108,7 @@ export default function DynamicTableOrganism({
             <Button
               color="lightblue"
               //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-              onClick={handleExportRows}
+              onClick={() => handleExportAllRows(data)}
               leftIcon={<FaDownload />}
               variant="filled"
             >
