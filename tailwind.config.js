@@ -82,7 +82,10 @@ export const theme = {
         dark: "#8B0000", // Dark Maroon
       },
       fontFamily: {
-        avant: ["Avantt"],
+        avantt: ["Avantt"],
+        "avantt-bold": ["Avantt-Bold"],
+        "avantt-semiBold": ["Avantt-SemiBold"],
+        "avantt-regular": ["Avantt-Regular"],
       },
     },
   },

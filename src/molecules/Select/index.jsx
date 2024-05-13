@@ -19,11 +19,11 @@ export default function ReactSelectMolecule({
   };
 
   return (
-    <div className={`flex items-center rounded-3xl gap-1 ${overrideClass}`}>
+    <div className={`flex items-center rounded-full gap-1 ${overrideClass}`}>
       <AsyncSelect
         {...props}
         styles={customStyles}
-        className={`w-52 rounded border-1 border-disabled font-semibold${overrideDropdownClass}`}
+        className={`w-52 rounded border-1 border-disabled font-medium ${overrideDropdownClass}`}
         defaultOptions={options}
         // loadOptions={loadOptions}
         placeholder={placeholder ?? "Select"}

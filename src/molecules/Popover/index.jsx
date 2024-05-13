@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function PopoverMolecule({
   label,
   options,
-  handleClick,
+  onClick,
   overrideClass,
   ...props
 }) {
@@ -24,7 +24,7 @@ export default function PopoverMolecule({
             <li key={index}>
               <Text
                 onClick={() => {
-                  handleClick(option);
+                  onClick(option);
                   setOpened(false); // Close the dropdown after selecting an option
                 }}
                 className="block px-4 py-2 hover:bg-gold dark:hover:bg-gray-600 dark:hover:text-gold cursor-pointer"
