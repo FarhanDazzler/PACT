@@ -101,8 +101,6 @@ export default function DynamicTableOrganism({
         <Flex p="md" justify="space-between">
           <Flex gap="xs">
             <MRT_GlobalFilterTextInput table={table} />
-            {/* <MRT_ToggleFiltersButton table={table} /> */}
-            {/* <MRT_ToggleDensePaddingButton table={table} /> */}
           </Flex>
           <Flex sx={{ gap: "8px" }}>
             <Button

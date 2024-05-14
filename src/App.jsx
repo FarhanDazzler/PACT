@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import { loginRequest } from "./config/authConfig";
 import { UserContextProvider } from "./context/userContext";
+import FooterComponent from "./pages/Footer/footer";
 import HeaderComponent from "./pages/Header/header";
 import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
@@ -74,22 +75,23 @@ const Pages = () => {
   }, [accounts, inProgress]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col bg-cover">
+    <div
+      className="flex flex-col min-h-screen bg-gray-100"
+      style={{ backgroundImage: 'url("../src/assests/images/bg_image.jpg")' }}
+    >
       <div className="fixed top-0 w-full z-50">
         {!["/login", "/request"].includes(location?.pathname) && (
           <HeaderComponent />
         )}
       </div>
-      <div className="flex-grow overflow-y-auto bg-cover">
+      <div className="flex flex-col bg-cover p-10">
         <Routes>
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/request" element={<RequestAccessComponent />} />
           <Route path="/" element={<DashboardComponent />} />
         </Routes>
       </div>
-      {/* <div className="mt-auto">
-        <FooterComponent />
-      </div> */}
+      <FooterComponent />
     </div>
   );
 };
