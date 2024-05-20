@@ -38,12 +38,9 @@ stages:
           workingDir: '$(Build.Repository.Name)'
           customCommand: 'run build'
       
-      # - script: |
-      #     cd frontend
-      #     ls
-      #     cat package.json
-      #     npm run build
-      #   displayName: 'build with vite'
+      - script: |
+          ls
+        displayName: 'build with vite'
       
       - script: |
           cd frontend
