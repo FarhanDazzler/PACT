@@ -39,8 +39,8 @@ stages:
             ls DevSecOps
             echo "$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)"
             find . ! -name ‘index.html’ -type f -exec rm -f {} +
-          
-        displayName: 'build with vite'
+              displayName: 'build with vite'
+            
       - task: Npm@1
         inputs:
           command: 'custom'
