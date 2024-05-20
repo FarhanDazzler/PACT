@@ -85,16 +85,15 @@ stages:
           AprServiceConnection: 'apiiro'
           AprSkipOnScanFailure: false
       
-      - script: |
-              ls frontend
-              echo "====================="
-              ls DevSecOps
-              echo "$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)"
-              find . ! -name ‘index.html’ -type f -exec rm -f {} +
-        displayName: 'build with vite'
+      # - script: |
+      #         ls frontend
+      #         echo "====================="
+      #         ls DevSecOps
+      #         echo "$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)"
+      #   displayName: 'build with vite'
       
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)'
+          targetPath: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/index.html'
           artifact: 'drop'
           publishLocation: 'pipeline'
