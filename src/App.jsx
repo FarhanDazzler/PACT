@@ -1,7 +1,7 @@
 import { InteractionStatus } from "@azure/msal-browser";
 import { MsalProvider, useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MantineProvider } from "@mantine/core";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter,
   Route,
@@ -9,18 +9,18 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import bgImage from "../src/assests/images/bg_image.jpg";
 import { loginRequest } from "./config/authConfig";
-import { UserContext, UserContextProvider } from "./context/userContext";
+import { UserContextProvider } from "./context/userContext";
 import FooterComponent from "./pages/Footer/footer";
 import HeaderComponent from "./pages/Header/header";
+import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
 import RequestAccessComponent from "./pages/RequestAccess";
-import DashboardComponent from "./pages/dashboard";
-import { postApi } from "./particles/api";
 
 const Pages = () => {
   const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const redirect = params.get("redirect");
 
   const navigate = useNavigate();
 
@@ -28,52 +28,67 @@ const Pages = () => {
 
   const isAuthenticated = useIsAuthenticated();
 
-  const [userState, userDispatch] = useContext(UserContext);
-
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const redirect = params.get("redirect");
-    if (!isAuthenticated && inProgress === InteractionStatus.None) {
+    if (
+      (accounts &&
+        accounts?.length > 0 &&
+        inProgress === InteractionStatus.None) ||
+      ["/zone", "/request"].includes(location?.pathname)
+    ) {
+      if (accounts?.length > 0) {
+        instance
+          .acquireTokenSilent({
+            ...loginRequest,
+            account: accounts[0],
+          })
+          .then((response) => {
+            localStorage.setItem("id_token", response?.idToken);
+            // dataService
+            //   .getMSGraphPhoto(response.accessToken)
+            //   .then((image) => {
+            //     if (image.type === "image/jpeg")
+            //       userDispatch({ type: "SET_PROFILE_PHOTO", payload: image });
+            //   })
+            //   .catch((err) => console.log(err));
+          })
+          .catch((err) => {
+            instance.logout({
+              account: accounts.length > 0 ? accounts[0] : null,
+            });
+          });
+      }
+      if (redirect) navigate(redirect);
+      else if (location.pathname == "/login") navigate("/");
+      else {
+        navigate(
+          `${location.pathname}${location.search ? location.search : ""}`
+        );
+      }
+    } else if (
+      accounts &&
+      accounts.length === 0 &&
+      inProgress === InteractionStatus.None
+    ) {
       if (redirect) navigate(`/login?redirect=${redirect}`);
       else navigate("/login");
     }
-  }, [inProgress]);
-
-  useEffect(() => {
-    if (accounts?.length > 0) {
-      authentication();
-    }
   }, [accounts, inProgress]);
-
-  const authentication = async () => {
-    instance
-      .acquireTokenSilent({
-        ...loginRequest,
-        account: accounts[0],
-      })
-      .then(async (response) => {
-        localStorage.setItem("id_token", response?.idToken);
-        const idToken = await postApi({
-          data: { id_token: response?.idToken },
-          routes: "afr_routes/users",
-        });
-      })
-      .catch((err) => {
-        console.log(`Error occurred while acquiring token: ${err}`);
-      });
-  };
 
   return (
     <div
-      className="min-h-screen bg-gray-100 flex flex-col bg-cover"
-      style={{ backgroundImage: `url(${bgImage})` }}
+      className="flex flex-col min-h-screen bg-gray-100"
+      style={{ backgroundImage: 'url("../src/assests/images/bg_image.jpg")' }}
     >
-      {!["/login"].includes(location?.pathname) && <HeaderComponent />}
-      <div className="flex-grow overflow-y-auto bg-cover">
+      <div className="fixed top-0 w-full z-50">
+        {!["/login", "/request"].includes(location?.pathname) && (
+          <HeaderComponent />
+        )}
+      </div>
+      <div className="flex flex-col bg-cover p-10">
         <Routes>
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/request" element={<RequestAccessComponent />} />
-          <Route path="/dashboard" element={<DashboardComponent />} />
+          <Route path="/" element={<DashboardComponent />} />
         </Routes>
       </div>
       <FooterComponent />
@@ -86,7 +101,11 @@ export default function App({ msalInstance }) {
     <div className="App">
       <BrowserRouter>
         <MsalProvider instance={msalInstance}>
-          <MantineProvider>
+          <MantineProvider
+            theme={{
+              primaryColor: "yellow",
+            }}
+          >
             <UserContextProvider>
               <Pages />
             </UserContextProvider>

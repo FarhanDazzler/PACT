@@ -17,12 +17,12 @@ export default function LoginComponent() {
   const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const redirect = params.get("redirect");
-
-    if (isAuthenticated && inProgress === InteractionStatus.None) {
-      if (redirect) navigate(redirect);
-      else navigate("/dashboard");
+    if (
+      accounts &&
+      accounts.length > 0 &&
+      inProgress === InteractionStatus.None
+    ) {
+      navigate("/zone");
     }
   }, [inProgress]);
 
@@ -32,20 +32,20 @@ export default function LoginComponent() {
       <div className="flex justify-center items-center h-screen">
         <CardMolecule
           cardClass="px-2 w-48 md:w-72 h-84 border bg-white rounded-lg"
-          headerClass="py-6 flex justify-center items-center font-avant text-4xl text-yellow-600 font-bold"
+          headerClass="py-6 flex justify-center items-center font-avantt text-4xl text-yellow-600 font-bold"
           header="PR-PO"
           body={
             <>
               <hr className="h-px w-14 flex justify-center items-center bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />
-              <div className="pt-4 flex justify-center font-avant font-bold text-lg mb-2">
+              <div className="pt-4 flex justify-center font-avantt font-bold text-lg mb-2">
                 {"Welcome!"}
               </div>
-              <div className="text-center font-avant text-xs">
+              <div className="text-center font-avantt text-xs">
                 {`Please use your AB InBev ID to login`}
               </div>
               <div className="p-3">
                 <Button
-                  className="h-8 xs:16  md: w-24  flex justify-center ml-20 items-center bg-black text-white rounded-lg font-avant font-semibold"
+                  className="h-8 xs:16  md: w-24  flex justify-center ml-20 items-center bg-black text-white rounded-lg font-avantt font-semibold"
                   onClick={() => instance.loginRedirect(loginRequest)}
                 >
                   {`Login`}
@@ -53,7 +53,7 @@ export default function LoginComponent() {
               </div>
               <a
                 href="request"
-                className="underline text-black font-avant flex justify-center items-center font-semibold text-xs pb-4"
+                className="underline text-black font-avantt flex justify-center items-center font-semibold text-xs pb-4"
               >
                 <span className="text-xs">Request Access?</span>
               </a>

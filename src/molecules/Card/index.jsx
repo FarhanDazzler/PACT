@@ -1,32 +1,61 @@
 import { Card } from "@mantine/core";
+import _ from "lodash";
 
-export default function CardMolecule({
-  header,
-  footer,
-  body,
-  cardClass = "",
-  headerClass = "",
-  footerClass = "",
-  bodyClass = "",
-}) {
+export default function CardMolecule({ metricCardData = [], ...props }) {
+  const data = _.isArray(metricCardData) ? metricCardData : [metricCardData];
   return (
-    //Using mantine cards as seperate component here and sending it across different pages or layout as dynamically.
-    <Card className={cardClass}>
-      <div>
-        {header && <header className={`${headerClass}`}>{header}</header>}
-        {body && (
-          <div className={`items-center justify-center ${bodyClass} `}>
-            {body}
+    <>
+      {!_.isEmpty(data) ? (
+        data?.map((card, index) => (
+          <Card className={card?.cardClass}>
+            <div>
+              {card?.header && (
+                <header className={`${card?.headerClass}`}>
+                  {card?.header}
+                </header>
+              )}
+              {card?.body && (
+                <div
+                  className={`items-center justify-center ${card?.bodyClass} `}
+                >
+                  {card?.body}
+                </div>
+              )}
+              {card?.footer && (
+                <footer
+                  className={`p-2 justify-center flex items-center ${card?.footerClass}`}
+                >
+                  {card?.footer}
+                </footer>
+              )}
+            </div>
+          </Card>
+        ))
+      ) : (
+        <Card className={props?.cardClass}>
+          <div>
+            {props?.header && (
+              <header className={`${props?.headerClass}`}>
+                {props?.header}
+              </header>
+            )}
+            {props?.body && (
+              <div
+                className={`items-center justify-center ${props?.bodyClass} `}
+              >
+                {props?.body}
+              </div>
+            )}
+            {props?.footer && (
+              <footer
+                className={`p-2 justify-center flex items-center ${props?.footerClass}`}
+              >
+                {props?.footer}
+              </footer>
+            )}
           </div>
-        )}
-        {footer && (
-          <footer
-            className={`p-2 justify-center flex-items-center ${footerClass}`}
-          >
-            {footer}
-          </footer>
-        )}
-      </div>
-    </Card>
+        </Card>
+      )}
+    </>
   );
 }

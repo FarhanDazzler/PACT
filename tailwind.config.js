@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
 // This file is for adding custom css class for tailwind properties.
 export const content = ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"];
 export const theme = {
@@ -82,8 +81,14 @@ export const theme = {
         dark: "#8B0000", // Dark Maroon
       },
       fontFamily: {
-        avant: ["Avantt"],
+        avantt: ["Avantt"],
+        "avantt-bold": ["Avantt-Bold"],
+        "avantt-semiBold": ["Avantt-SemiBold"],
+        "avantt-regular": ["Avantt-Regular"],
       },
+    },
+    backgroundImage: {
+      "svg-footer": "url('./src/assests/images/footer_wave.svg')",
     },
   },
 };

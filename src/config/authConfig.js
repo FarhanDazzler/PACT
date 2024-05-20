@@ -15,7 +15,7 @@ export const msalConfig = {
     clientId: "1f9df7a6-bc59-489e-aa5a-c009a479cb9d",
     authority: `https://login.microsoftonline.com/cef04b19-7776-4a94-b89b-375c77a8f936`,
     postLogoutRedirectUri: `${window.location.origin}/login`,
-    redirectUri: `http://localhost:3000/login`,
+    redirectUri: `http://localhost:3000/`,
     validateAuthority: true,
     navigateToLoginRequestUrl: true,
   },
