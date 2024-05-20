@@ -39,7 +39,10 @@ stages:
           customCommand: 'run build'
       
       - script: |
-          ls
+          ls frontend
+          echo "====================="
+          ls DevSecOps
+          echo "$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)"
         displayName: 'build with vite'
       
       - script: |
