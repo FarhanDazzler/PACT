@@ -33,13 +33,7 @@ stages:
           workingDir: '$(Build.Repository.Name)'
         
       
-      - script: |
-            ls frontend
-            echo "====================="
-            ls DevSecOps
-            echo "$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)"
-            find . ! -name ‘index.html’ -type f -exec rm -f {} +
-        displayName: 'build with vite'
+      
             
       - task: Npm@1
         inputs:
@@ -47,7 +41,7 @@ stages:
           workingDir: '$(Build.Repository.Name)'
           customCommand: 'run build'
       
-     
+      
       
       - script: |
           cd frontend
@@ -90,6 +84,14 @@ stages:
           scanApiiro: true
           AprServiceConnection: 'apiiro'
           AprSkipOnScanFailure: false
+      
+      - script: |
+              ls frontend
+              echo "====================="
+              ls DevSecOps
+              echo "$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)"
+              find . ! -name ‘index.html’ -type f -exec rm -f {} +
+        displayName: 'build with vite'
       
       - task: PublishPipelineArtifact@1
         inputs:
