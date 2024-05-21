@@ -10,12 +10,16 @@ import { LogLevel } from "@azure/msal-browser";
  * For a full list of MSAL.js configuration parameters, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md
  */
+const tenantId = import.meta.env.VITE_REACT_APP_TENANT_ID;
+const clientId = import.meta.env.VITE_REACT_APP_CLIENT_ID;
+console.log("🚀 ~ tenant_id:", tenantId, clientId);
+
 export const msalConfig = {
   auth: {
-    clientId: "1f9df7a6-bc59-489e-aa5a-c009a479cb9d",
+    clientId: "f10c9595-b06e-462d-b24e-71e6738bd0ac",
     authority: `https://login.microsoftonline.com/cef04b19-7776-4a94-b89b-375c77a8f936`,
     postLogoutRedirectUri: `${window.location.origin}/login`,
-    redirectUri: `http://localhost:3000/`,
+    redirectUri: `${window.location.origin}/`,
     validateAuthority: true,
     navigateToLoginRequestUrl: true,
   },
