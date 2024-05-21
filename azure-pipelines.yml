@@ -31,18 +31,7 @@ stages:
         inputs:
           command: 'install'
           workingDir: '$(Build.Repository.Name)'
-        
-      
-      
-            
-      - task: Npm@1
-        inputs:
-          command: 'custom'
-          workingDir: '$(Build.Repository.Name)'
-          customCommand: 'run build'
-      
-      
-      
+     
       - script: |
           cd frontend
           cat vite.config.js
@@ -62,10 +51,6 @@ stages:
             SCPrBranch: $(System.PullRequest.SourceBranch)
             SCPrBaseBranch: $(System.PullRequest.TargetBranch)
         
-#    - template: pipeline_templates/build_code.yml@appsectemplates
-#      parameters:
-#     
-
 
       - template: pipeline_templates/secure_code_scan.yml@appsectemplates
         parameters:
@@ -84,13 +69,7 @@ stages:
           scanApiiro: true
           AprServiceConnection: 'apiiro'
           AprSkipOnScanFailure: false
-      
-      # - script: |
-      #         ls frontend
-      #         echo "====================="
-      #         ls DevSecOps
-      #         echo "$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)"
-      #   displayName: 'build with vite'
+    
       
       - task: PublishPipelineArtifact@1
         inputs:
