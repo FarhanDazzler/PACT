@@ -32,6 +32,12 @@ stages:
           command: 'install'
           workingDir: '$(Build.Repository.Name)'
      
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '$(Build.Repository.Name)'
+          customCommand: 'run build'
+        
       - script: |
           cd frontend
           cat vite.config.js
@@ -70,9 +76,21 @@ stages:
           AprServiceConnection: 'apiiro'
           AprSkipOnScanFailure: false
     
-      
+        
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist'
+          Contents: 'index.html'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/assets'
+        
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/index.html'
+          targetPath: '$(Build.ArtifactStagingDirectory)'
           artifact: 'drop'
           publishLocation: 'pipeline'
