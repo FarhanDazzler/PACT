@@ -16,6 +16,7 @@ import HeaderComponent from "./pages/Header/header";
 import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
 import RequestAccessComponent from "./pages/RequestAccess";
+import PRCreationPage from "./pages/PRCreation";
 
 const Pages = () => {
   const location = useLocation();
@@ -89,6 +90,7 @@ const Pages = () => {
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/request" element={<RequestAccessComponent />} />
           <Route path="/" element={<DashboardComponent />} />
+          <Route path="/pr_request" element={<PRCreationPage />} />
         </Routes>
       </div>
       <FooterComponent />
