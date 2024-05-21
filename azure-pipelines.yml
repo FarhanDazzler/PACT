@@ -32,18 +32,16 @@ stages:
           command: 'install'
           workingDir: '$(Build.Repository.Name)'
         
+      
+      
+            
       - task: Npm@1
         inputs:
           command: 'custom'
           workingDir: '$(Build.Repository.Name)'
           customCommand: 'run build'
       
-      # - script: |
-      #     cd frontend
-      #     ls
-      #     cat package.json
-      #     npm run build
-      #   displayName: 'build with vite'
+      
       
       - script: |
           cd frontend
@@ -87,8 +85,15 @@ stages:
           AprServiceConnection: 'apiiro'
           AprSkipOnScanFailure: false
       
+      # - script: |
+      #         ls frontend
+      #         echo "====================="
+      #         ls DevSecOps
+      #         echo "$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)"
+      #   displayName: 'build with vite'
+      
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)'
+          targetPath: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/index.html'
           artifact: 'drop'
           publishLocation: 'pipeline'
