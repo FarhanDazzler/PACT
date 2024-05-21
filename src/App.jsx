@@ -17,6 +17,7 @@ import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
 import PRComponent from "./pages/PR Request";
 import RequestAccessComponent from "./pages/RequestAccess";
+import PRCreationPage from "./pages/PRCreation";
 
 const Pages = () => {
   const location = useLocation();

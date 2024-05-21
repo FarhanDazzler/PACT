@@ -22,7 +22,7 @@ export default function LoginComponent() {
       accounts.length > 0 &&
       inProgress === InteractionStatus.None
     ) {
-      navigate("/zone");
+      navigate("/");
     }
   }, [inProgress]);
 
