@@ -37,8 +37,6 @@ export default function DashboardComponent({ zone = "", role = "", ...props }) {
         />
       </div>
       <DashboardTableConfig />
-      {/* <div className="h-10 ml-20 w-11/12">
-      </div> */}
     </div>
   );
 }

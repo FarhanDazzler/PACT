@@ -25,6 +25,7 @@ export default function CardMolecule({ metricCardData = [], ...props }) {
                 <footer
                   className={`p-2 justify-center flex items-center ${card?.footerClass}`}
                 >
+                  {!_.isEmpty(card?.icon) ? card?.icon : ""}
                   {card?.footer}
                 </footer>
               )}
@@ -50,6 +51,7 @@ export default function CardMolecule({ metricCardData = [], ...props }) {
               <footer
                 className={`p-2 justify-center flex items-center ${props?.footerClass}`}
               >
+                {!_.isEmpty(props?.icon) ? props?.icon : ""}
                 {props?.footer}
               </footer>
             )}
