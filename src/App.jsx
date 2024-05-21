@@ -15,6 +15,7 @@ import FooterComponent from "./pages/Footer/footer";
 import HeaderComponent from "./pages/Header/header";
 import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
+import PRComponent from "./pages/PR Request";
 import RequestAccessComponent from "./pages/RequestAccess";
 import PRCreationPage from "./pages/PRCreation";
 
@@ -90,7 +91,7 @@ const Pages = () => {
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/request" element={<RequestAccessComponent />} />
           <Route path="/" element={<DashboardComponent />} />
-          <Route path="/pr_request" element={<PRCreationPage />} />
+          <Route path="/pr_request" element={<PRComponent />} />
         </Routes>
       </div>
       <FooterComponent />
