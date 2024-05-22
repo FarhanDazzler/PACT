@@ -7,7 +7,7 @@ export default function ButtonAtom({
   ...props
 }) {
   return (
-    <Button className={overrideClass} onClick={onClick}>
+    <Button variant={props.variant} className={overrideClass} onClick={onClick}>
       {label}
     </Button>
   );
