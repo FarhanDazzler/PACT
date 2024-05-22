@@ -96,6 +96,14 @@ export const theme = {
       lg: "1024px",
       xl: "1280px",
     },
+    text: {
+      fontFamily: {
+        avantt: ["Avantt"],
+        "avantt-bold": ["Avantt-Bold"],
+        "avantt-semiBold": ["Avantt-SemiBold"],
+        "avantt-regular": ["Avantt-Regular"],
+      },
+    },
   },
 };
 export const plugins = [];

@@ -14,24 +14,35 @@ export default function ReactSelectMolecule({
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      fontFamily: fontFamily, // Apply the specified font family
+      fontFamily: fontFamily,
+      borderRadius: "0.5rem", // Rounded border
+      borderColor: "black", // Black border
+      "&:hover": {
+        borderColor: "black",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "0.5rem", // Rounded border for dropdown
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#d1d5db" : null, // Grey background on hover
     }),
   };
 
   return (
-    <div className={`flex items-center rounded-full gap-1 ${overrideClass}`}>
+    <div className={`flex items-center ${overrideClass}`}>
       <AsyncSelect
         {...props}
         styles={customStyles}
-        className={`w-52 rounded border-1 border-disabled font-medium ${overrideDropdownClass}`}
+        className={`w-full rounded border-1 border-black font-medium ${overrideDropdownClass}`}
         defaultOptions={options}
-        // loadOptions={loadOptions}
         placeholder={placeholder ?? "Select"}
         closeMenuOnSelect
         hideSelectedOptions
         components={{ IndicatorSeparator: () => null }}
         options={options}
-        // key={props?.accessor}
       />
     </div>
   );
