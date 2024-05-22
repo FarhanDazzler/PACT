@@ -2,7 +2,7 @@ import React from 'react'
 import Upload from '../../organisms/FileUpload/Upload'
 import ButtonAtom from '../../atoms/Button'
 
-function PRComponent() {
+function PRCreationComponent() {
   return (
     <div>
       {/* Basic Details  */}
@@ -19,4 +19,4 @@ function PRComponent() {
   )
 }
 
-export default PRComponent
+export default PRCreationComponent
