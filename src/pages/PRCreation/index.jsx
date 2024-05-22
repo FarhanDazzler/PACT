@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
+import ButtonAtom from "../../atoms/Button";
 import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
 import Upload from "../../organisms/FileUpload/Upload";
@@ -21,7 +22,7 @@ const validationSchema = Yup.object(
   )
 );
 
-const PRRequestForm = () => {
+export default function PRRequestForm() {
   const [showCapexFields, setshowCapexFields] = useState(false);
 
   const handleSpendTypeChange = (option, setFieldValue) => {
@@ -74,65 +75,82 @@ const PRRequestForm = () => {
   };
 
   return (
-    <Formik
-      initialValues={[
-        ...basicDetailsFields,
-        ...vendorPurchaseDetailsFields,
-      ].reduce((values, field) => {
-        values[field.name] = "";
-        return values;
-      }, {})}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        console.log(values);
-      }}
-    >
-      {({ setFieldValue }) => (
-        <Form className="space-y-6">
-          <CardMolecule
-            cardClass="min-h-full p-14 border rounded-lg"
-            header={
-              <div className="text-lg font-semibold pb-8 font-avantt">
-                <span className="text-black font-avantt">PR Request</span> &gt;
-                New PR Request Form
-              </div>
-            }
-            styles={{ fontFamily: "font-avantt" }}
-            body={
-              <div>
+    <div>
+      <Formik
+        initialValues={[
+          ...basicDetailsFields,
+          ...vendorPurchaseDetailsFields,
+        ].reduce((values, field) => {
+          values[field.name] = "";
+          return values;
+        }, {})}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          console.log(values);
+        }}
+      >
+        {({ setFieldValue }) => (
+          <Form className="space-y-6">
+            <CardMolecule
+              cardClass="min-h-full p-14 border rounded-lg"
+              header={
+                <div className="text-lg font-semibold pb-8 font-avantt">
+                  <span className="text-black font-avantt">PR Request</span>{" "}
+                  &gt; New PR Request Form
+                </div>
+              }
+              styles={{ fontFamily: "font-avantt" }}
+              body={
                 <div>
-                  <h2 className="mb-4 text-md font-semibold text-yellow-600">
-                    <span className="flex items-center">
-                      <i className="fas fa-clock mr-2"></i> Basic Details
-                    </span>
-                  </h2>
-                  <hr className="border-yellow-600" />
-                  <div className="grid gap-4 md:grid-cols-3 mt-4">
-                    {renderFields(basicDetailsFields, setFieldValue)}
+                  <div>
+                    <h2 className="mb-4 text-md font-semibold text-yellow-600">
+                      <span className="flex items-center">
+                        <i className="fas fa-clock mr-2"></i> Basic Details
+                      </span>
+                    </h2>
+                    <hr className="border-yellow-600" />
+                    <div className="grid gap-4 md:grid-cols-3 mt-4">
+                      {renderFields(basicDetailsFields, setFieldValue)}
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <h2 className="mb-4 text-md font-semibold text-gray-500">
+                      <span className="flex items-center">
+                        <i className="fas fa-clock mr-2"></i> Vendor & Purchase
+                        Details
+                      </span>
+                    </h2>
+                    <hr className="border-yellow-600" />
+                    <div className="grid gap-4 md:grid-cols-3 mt-4">
+                      {renderFields(vendorPurchaseDetailsFields, setFieldValue)}
+                    </div>
+                  </div>
+                  <div className="flex justify-between align-center bg-white">
+                    <Upload />
                   </div>
                 </div>
-                <div className="mt-8">
-                  <h2 className="mb-4 text-md font-semibold text-gray-500">
-                    <span className="flex items-center">
-                      <i className="fas fa-clock mr-2"></i> Vendor & Purchase
-                      Details
-                    </span>
-                  </h2>
-                  <hr className="border-yellow-600" />
-                  <div className="grid gap-4 md:grid-cols-3 mt-4">
-                    {renderFields(vendorPurchaseDetailsFields, setFieldValue)}
-                  </div>
-                </div>
-                <div className="flex justify-between align-center bg-white">
-                  <Upload />
-                </div>
-              </div>
-            }
-          />
-        </Form>
-      )}
-    </Formik>
+              }
+            />
+          </Form>
+        )}
+      </Formik>
+      <div className="flex justify-end">
+        <ButtonAtom
+          variant="default"
+          overrideClass="mt-10 mr-10"
+          label="Cancel"
+        ></ButtonAtom>
+        <ButtonAtom
+          variant="default"
+          overrideClass="mt-10 mr-10"
+          label="Save as Draft"
+        ></ButtonAtom>
+        <ButtonAtom
+          variant="default"
+          overrideClass="mt-10 mr-10 text-white bg-black hover:text-white hover:bg-black"
+          label="Submit"
+        ></ButtonAtom>
+      </div>
+    </div>
   );
-};
-
-export default PRRequestForm;
+}
