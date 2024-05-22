@@ -12,14 +12,13 @@ import { LogLevel } from "@azure/msal-browser";
  */
 const tenantId = import.meta.env.VITE_REACT_APP_TENANT_ID;
 const clientId = import.meta.env.VITE_REACT_APP_CLIENT_ID;
-console.log("🚀 ~ tenant_id:", tenantId, clientId);
 
 export const msalConfig = {
   auth: {
-    clientId: "f10c9595-b06e-462d-b24e-71e6738bd0ac",
-    authority: `https://login.microsoftonline.com/cef04b19-7776-4a94-b89b-375c77a8f936`,
+    clientId: clientId,
+    authority: `https://login.microsoftonline.com/${tenantId}`,
     postLogoutRedirectUri: `${window.location.origin}/login`,
-    redirectUri: `${window.location.origin}/`,
+    redirectUri: `${window.location.origin}/login`,
     validateAuthority: true,
     navigateToLoginRequestUrl: true,
   },
