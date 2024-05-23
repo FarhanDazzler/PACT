@@ -17,6 +17,7 @@ export default function LoginComponent() {
   const isAuthenticated = useIsAuthenticated();
   const { error } = useContext(UserContext);
   const [showError, setShowError] = useState(null);
+
   if (!_.isEmpty(error)) {
     setShowError(true);
   }
@@ -27,7 +28,8 @@ export default function LoginComponent() {
     if (
       accounts &&
       accounts.length > 0 &&
-      inProgress === InteractionStatus.None
+      inProgress === InteractionStatus.None &&
+      !_.isEmpty(error)
     ) {
       navigate("/");
     }

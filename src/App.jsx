@@ -51,9 +51,11 @@ const Pages = () => {
               routes: "login",
             })
               .then((res) => {
-                userDispatch({ type: "SET_LOGIN_ERROR", payload: res });
+                console.log(res);
               })
-              .catch((err) => console.log(err));
+              .catch((err) =>
+                userDispatch({ type: "SET_LOGIN_ERROR", payload: err })
+              );
             console.log("🚀 ~ .then ~ token:", token);
 
             // dataService
