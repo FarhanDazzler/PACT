@@ -1,10 +1,12 @@
 import { InteractionStatus } from "@azure/msal-browser";
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { Button } from "@mantine/core";
-import React, { useEffect } from "react";
+import _ from "lodash";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ABILogo from "../../assests/images/abi_logo_black.png";
 import { loginRequest } from "../../config/authConfig";
+import { UserContext } from "../../context/userContext";
 import CardMolecule from "../../molecules/Card";
 
 export default function LoginComponent() {
@@ -13,6 +15,11 @@ export default function LoginComponent() {
   const { instance, accounts, inProgress, logger } = useMsal();
 
   const isAuthenticated = useIsAuthenticated();
+  const { error } = useContext(UserContext);
+  const [showError, setShowError] = useState(null);
+  if (!_.isEmpty(error)) {
+    setShowError(true);
+  }
 
   const location = useLocation();
 
@@ -51,6 +58,7 @@ export default function LoginComponent() {
                   {`Login`}
                 </Button>
               </div>
+              {showError ? "" : null}
               <a
                 href="request"
                 className="underline text-black font-avantt flex justify-center items-center font-semibold text-xs pb-4"

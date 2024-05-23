@@ -76,13 +76,6 @@ export const vendorPurchaseDetailsFields = [
     options: "options",
   },
   {
-    name: "lineGl",
-    label: "PR line item have multiple GL?",
-    className: "w-1/2",
-    options: "options",
-    condition: "showCapexFields",
-  },
-  {
     name: "materialGroup",
     label: "Material Group",
     className: "w-1/2",
@@ -92,13 +85,6 @@ export const vendorPurchaseDetailsFields = [
   {
     name: "userCopy",
     label: "User Copy on behalf",
-    className: "w-1/2",
-    options: "options",
-    condition: "showCapexFields",
-  },
-  {
-    name: "lineCC",
-    label: "PR line item have multiple CC?",
     className: "w-1/2",
     options: "options",
     condition: "showCapexFields",

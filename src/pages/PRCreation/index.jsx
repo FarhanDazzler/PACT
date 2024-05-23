@@ -11,18 +11,18 @@ import {
   spendTypeOptions,
   vendorPurchaseDetailsFields,
 } from "./config";
-
-const validationSchema = Yup.object(
-  [...basicDetailsFields, ...vendorPurchaseDetailsFields].reduce(
-    (schema, field) => {
-      schema[field.name] = Yup.string().required("Required");
-      return schema;
-    },
-    {}
-  )
-);
+import PRCreationLineItemsConfig from "./list";
 
 export default function PRRequestForm() {
+  const validationSchema = Yup.object(
+    [...basicDetailsFields, ...vendorPurchaseDetailsFields].reduce(
+      (schema, field) => {
+        schema[field.name] = Yup.string().required("Required");
+        return schema;
+      },
+      {}
+    )
+  );
   const [showCapexFields, setshowCapexFields] = useState(false);
 
   const handleSpendTypeChange = (option, setFieldValue) => {
@@ -57,10 +57,12 @@ export default function PRRequestForm() {
 
       return (
         <div key={field.name} className="flex items-center">
-          <label className={`w-1/2 text-left pr-4 font-semibold`}>
+          <label
+            className={`w-1/2 text-left text-wrap text-xs pr-4 font-semibold`}
+          >
             {field.label}
           </label>
-          <div className={`w-60 font-avantt`}>
+          <div className={`w-60 font-avantt text-sm`}>
             <ReactSelectMolecule
               className={field.className}
               name={field.name}
@@ -124,6 +126,9 @@ export default function PRRequestForm() {
                     <div className="grid gap-4 md:grid-cols-3 mt-4">
                       {renderFields(vendorPurchaseDetailsFields, setFieldValue)}
                     </div>
+                  </div>
+                  <div className="p-3 mt-4">
+                    <PRCreationLineItemsConfig />
                   </div>
                   <div className="flex justify-between align-center bg-white">
                     <Upload />
