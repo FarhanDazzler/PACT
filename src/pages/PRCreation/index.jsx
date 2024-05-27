@@ -130,8 +130,16 @@ export default function PRRequestForm() {
                   <div className="p-3 mt-4">
                     <PRCreationLineItemsConfig />
                   </div>
-                  <div className="flex justify-between align-center bg-white">
-                    <Upload />
+                  <div className="mt-8">
+                    <h2 className="mb-4 text-md font-semibold text-gray-500">
+                      <span className="flex items-center">
+                        <i className="fas fa-clock mr-2"></i> Attachments
+                      </span>
+                    </h2>
+                    <hr className="border-yellow-600" />
+                    <div>
+                      <Upload prRequestNumber={"hardcode"} text={"Please attach supporting documents required for PR Request"}/>
+                    </div>
                   </div>
                 </div>
               }

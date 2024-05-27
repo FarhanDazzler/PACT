@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
-const FileUpload = ({text}) => {
+const FileUpload = ({text, prRequestNumber}) => {
   const [files, setFiles] = useState([]);
   const [message, setMessage] = useState('');
 
@@ -31,7 +31,7 @@ const FileUpload = ({text}) => {
     });
 
     try {
-      const response = await axios.post('http://your-flask-api-endpoint.com/upload', formData, {
+      const response = await axios.post(`http://localhost:3001/${prRequestNumber}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -50,8 +50,8 @@ const FileUpload = ({text}) => {
       </div>
       <div className="w-1/2 text-center">
         <form onSubmit={handleSubmit} onDrop={handleDrop} encType="multipart/form-data">
-          <div className="mb-4">
-            <label htmlFor="fileInput" className="flex items-center cursor-pointer">
+          <div className="mb-4 mt-4">
+            <label htmlFor="fileInput" className="flex justify-center items-center cursor-pointer">
               <FaCloudUploadAlt className="mr-2" />
               Select or Drop Files:
             </label>
