@@ -265,6 +265,7 @@ const getConfig = ({ zone, role, ...rest }) => {
           },
         ],
         data: data || [],
+        showExport: true,
       };
       break;
   }

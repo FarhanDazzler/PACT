@@ -1,4 +1,5 @@
 import { Button, Flex } from "@mantine/core";
+import { useFormikContext } from "formik";
 import {
   MRT_GlobalFilterTextInput,
   // MRT_ToggleFiltersButton,
@@ -14,8 +15,29 @@ export default function DynamicTableOrganism({
   columnFilterModes = false,
   enableGrouping = false,
   data,
+  showExport = false,
+  columnWidths = {},
+  showCartButton = false,
+  showPagination = true,
+  formikField = "",
   ...props
 }) {
+  let formikContext;
+
+  try {
+    formikContext = useFormikContext();
+  } catch (error) {
+    formikContext = null;
+  }
+  const columns = useMemo(
+    () =>
+      columnData.map((column) => ({
+        ...column,
+        size: columnWidths[column.accessorKey] || "auto",
+      })),
+    [columnData, columnWidths]
+  );
+
   const table = useMantineReactTable({
     columns: useMemo(() => columnData, [columnData]),
     data: useMemo(() => data, []),
@@ -32,6 +54,7 @@ export default function DynamicTableOrganism({
       showGlobalFilter: true,
       density: "xs",
     },
+    enablePagination: showPagination,
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
     mantinePaginationProps: {
@@ -97,41 +120,68 @@ export default function DynamicTableOrganism({
         XLSX.writeFile(workbook, "PR Creation.xlsx");
       };
 
+      const handleAddToCart = () => {
+        const selectedRows = table
+          .getSelectedRowModel()
+          .rows.map((row) => row.original);
+        setFieldValue("cart", [...values.cart, ...selectedRows]);
+      };
+
       return (
         <Flex p="md" justify="space-between">
           <Flex gap="xs">
             <MRT_GlobalFilterTextInput table={table} />
           </Flex>
+
           <Flex sx={{ gap: "8px" }}>
-            <Button
-              color="lightblue"
-              //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-              onClick={() => handleExportAllRows(data)}
-              leftIcon={<FaDownload />}
-              variant="filled"
-            >
-              Export All Data
-            </Button>
-            <Button
-              disabled={table.getRowModel().rows.length === 0}
-              //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-              onClick={() => handleExportRows(table.getRowModel().rows)}
-              leftIcon={<FaDownload />}
-              variant="filled"
-            >
-              Export Page Rows
-            </Button>
-            <Button
-              disabled={
-                !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-              }
-              //only export selected rows
-              onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-              leftIcon={<FaDownload />}
-              variant="filled"
-            >
-              Export Selected Rows
-            </Button>
+            {showExport && (
+              <>
+                <Button
+                  //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                  onClick={() => handleExportAllRows(data)}
+                  leftIcon={<FaDownload />}
+                  variant="filled"
+                >
+                  Export All Data
+                </Button>
+                <Button
+                  disabled={table.getRowModel().rows.length === 0}
+                  //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                  onClick={() => handleExportRows(table.getRowModel().rows)}
+                  leftIcon={<FaDownload />}
+                  variant="filled"
+                >
+                  Export Page Rows
+                </Button>
+                <Button
+                  disabled={
+                    !table.getIsSomeRowsSelected() &&
+                    !table.getIsAllRowsSelected()
+                  }
+                  //only export selected rows
+                  onClick={() =>
+                    handleExportRows(table.getSelectedRowModel().rows)
+                  }
+                  leftIcon={<FaDownload />}
+                  variant="filled"
+                >
+                  Export Selected Rows
+                </Button>
+              </>
+            )}
+            {showCartButton && (
+              <Button
+                disabled={
+                  !table.getIsSomeRowsSelected() &&
+                  !table.getIsAllRowsSelected()
+                }
+                onClick={handleAddToCart}
+                color="yellow"
+                variant="filled"
+              >
+                Add to Cart
+              </Button>
+            )}
           </Flex>
         </Flex>
       );
