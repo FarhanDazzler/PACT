@@ -1,34 +1,40 @@
 // formConfig.js
+
 export const basicDetailsFields = [
   {
-    name: "functionDepartment",
+    name: "function_department",
     label: "Function/Department",
     className: "w-1/2",
     options: "options",
   },
   {
-    name: "spendType",
+    name: "spend_type",
     label: "Spend Type",
     className: "w-1/2",
     options: "spendTypeOptions",
     handleChange: "handleSpendTypeChange",
   },
-  { name: "prType", label: "PR Type", className: "w-1/2", options: "options" },
   {
-    name: "requestType",
-    label: "Request Type",
+    name: "request_priority",
+    label: "Request Priority",
     className: "w-1/2",
-    options: "options",
+    options: "requestPriorityOptions",
   },
   {
-    name: "companyCode",
+    name: "request_type",
+    label: "Request Type",
+    className: "w-1/2",
+    options: "requestTypeOptions",
+  },
+  {
+    name: "company_code",
     label: "Company Code",
     className: "w-1/2",
     options: "options",
     condition: "showCapexFields",
   },
   {
-    name: "purchaseOrganization",
+    name: "purchase_organization",
     label: "Purchase Organization",
     className: "w-1/2",
     options: "options",
@@ -47,7 +53,7 @@ export const basicDetailsFields = [
     condition: "showCapexFields",
   },
   {
-    name: "prCreator",
+    name: "pr_creator",
     label: "PR Creator",
     className: "w-1/2",
     options: "options",
@@ -57,7 +63,7 @@ export const basicDetailsFields = [
 
 export const vendorPurchaseDetailsFields = [
   {
-    name: "itemCategory",
+    name: "item_category",
     label: "Item Category",
     className: "w-1/2",
     options: "options",
@@ -70,27 +76,27 @@ export const vendorPurchaseDetailsFields = [
     options: "options",
   },
   {
-    name: "paymentTerm",
+    name: "payment_term",
     label: "Payment Term",
     className: "w-1/2",
     options: "options",
   },
   {
-    name: "materialGroup",
+    name: "material_group",
     label: "Material Group",
     className: "w-1/2",
     options: "options",
     condition: "showCapexFields",
   },
   {
-    name: "userCopy",
+    name: "user_copy",
     label: "User Copy on behalf",
     className: "w-1/2",
     options: "options",
     condition: "showCapexFields",
   },
   {
-    name: "costCenter",
+    name: "cost_center",
     label: "Cost Center",
     className: "w-1/2",
     options: "options",
@@ -107,17 +113,17 @@ export const vendorPurchaseDetailsFields = [
 
 export const purchaseDescriptionFields = [
   {
-    name: "shortDescription",
+    name: "short_description",
     label: "Short Description",
     type: "textarea",
   },
   {
-    name: "detailedDescription",
+    name: "detailed_description",
     label: "Detailed Description/Motivation of Purchase",
     type: "textarea",
   },
   {
-    name: "deliveryAddress",
+    name: "delivery_address",
     label: "Delivery Address",
     className: "w-1/2",
     options: "options",
@@ -132,4 +138,14 @@ export const options = [
 export const spendTypeOptions = [
   { value: "capex", label: "Capex" },
   { value: "opex", label: "Opex" },
+];
+
+export const requestTypeOptions = [
+  { value: "material", label: "Material" },
+  { value: "invoice", label: "Invoice" },
+];
+
+export const requestPriorityOptions = [
+  { value: "normal", label: "Normal" },
+  { value: "urgent", label: "Urgent" },
 ];

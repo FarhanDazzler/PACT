@@ -10,6 +10,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { loginRequest } from "./config/authConfig";
+import { OptionsContextProvider } from "./context/optionContext";
 import { UserContext, UserContextProvider } from "./context/userContext";
 import FooterComponent from "./pages/Footer/footer";
 import HeaderComponent from "./pages/Header/header";
@@ -120,9 +121,11 @@ export default function App({ msalInstance }) {
               primaryColor: "yellow",
             }}
           >
-            <UserContextProvider>
-              <Pages />
-            </UserContextProvider>
+            <OptionsContextProvider>
+              <UserContextProvider>
+                <Pages />
+              </UserContextProvider>
+            </OptionsContextProvider>
           </MantineProvider>
         </MsalProvider>
       </BrowserRouter>

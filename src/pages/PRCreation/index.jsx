@@ -9,6 +9,8 @@ import {
   basicDetailsFields,
   options,
   purchaseDescriptionFields,
+  requestPriorityOptions,
+  requestTypeOptions,
   spendTypeOptions,
   vendorPurchaseDetailsFields,
 } from "./config";
@@ -32,7 +34,7 @@ export default function PRRequestForm() {
 
   const handleSpendTypeChange = (option, setFieldValue) => {
     setFieldValue("spendType", option.value);
-    if (option.value === "capex") {
+    if (option.value === "capex" || option.value === "opex") {
       setshowCapexFields(true);
     } else {
       setshowCapexFields(false);
@@ -45,6 +47,10 @@ export default function PRRequestForm() {
         return options;
       case "spendTypeOptions":
         return spendTypeOptions;
+      case "requestPriorityOptions":
+        return requestPriorityOptions;
+      case "requestTypeOptions":
+        return requestTypeOptions;
       default:
         return [];
     }
@@ -102,6 +108,7 @@ export default function PRRequestForm() {
             values[field.name] = "";
             return values;
           }, {}),
+          wbs: "",
           lineItems: [], // Add initial value for line items
           cart: [],
         }}
