@@ -8,22 +8,27 @@ import Upload from "../../organisms/FileUpload/Upload";
 import {
   basicDetailsFields,
   options,
+  purchaseDescriptionFields,
   spendTypeOptions,
   vendorPurchaseDetailsFields,
 } from "./config";
+import LineItemsTableConfig from "./lineItemTable";
 import PRCreationLineItemsConfig from "./list";
 
 export default function PRRequestForm() {
   const validationSchema = Yup.object(
-    [...basicDetailsFields, ...vendorPurchaseDetailsFields].reduce(
-      (schema, field) => {
-        schema[field.name] = Yup.string().required("Required");
-        return schema;
-      },
-      {}
-    )
+    [
+      ...basicDetailsFields,
+      ...vendorPurchaseDetailsFields,
+      ...purchaseDescriptionFields,
+    ].reduce((schema, field) => {
+      schema[field.name] = Yup.string().required("Required");
+      return schema;
+    }, {})
   );
+
   const [showCapexFields, setshowCapexFields] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const handleSpendTypeChange = (option, setFieldValue) => {
     setFieldValue("spendType", option.value);
@@ -57,19 +62,24 @@ export default function PRRequestForm() {
 
       return (
         <div key={field.name} className="flex items-center">
-          <label
-            className={`w-1/2 text-left text-wrap text-xs pr-4 font-semibold`}
-          >
+          <label className="w-1/2 text-left text-wrap text-xs pr-4 font-semibold">
             {field.label}
           </label>
-          <div className={`w-60 font-avantt text-sm`}>
-            <ReactSelectMolecule
-              className={field.className}
-              name={field.name}
-              options={getOptions(field.options)}
-              onChange={handleChange}
-              placeholder="Select"
-            />
+          <div className="w-60 font-avantt text-sm">
+            {field.type === "textarea" ? (
+              <textarea
+                name={field.name}
+                className="border border-gray-300 rounded-md w-full p-2"
+              />
+            ) : (
+              <ReactSelectMolecule
+                className={field.className}
+                name={field.name}
+                options={getOptions(field.options)}
+                onChange={handleChange}
+                placeholder="Select"
+              />
+            )}
           </div>
         </div>
       );
@@ -79,19 +89,28 @@ export default function PRRequestForm() {
   return (
     <div>
       <Formik
-        initialValues={[
-          ...basicDetailsFields,
-          ...vendorPurchaseDetailsFields,
-        ].reduce((values, field) => {
-          values[field.name] = "";
-          return values;
-        }, {})}
+        initialValues={{
+          ...basicDetailsFields.reduce((values, field) => {
+            values[field.name] = "";
+            return values;
+          }, {}),
+          ...vendorPurchaseDetailsFields.reduce((values, field) => {
+            values[field.name] = "";
+            return values;
+          }, {}),
+          ...purchaseDescriptionFields.reduce((values, field) => {
+            values[field.name] = "";
+            return values;
+          }, {}),
+          lineItems: [], // Add initial value for line items
+          cart: [],
+        }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
           console.log(values);
         }}
       >
-        {({ setFieldValue }) => (
+        {({ setFieldValue, values }) => (
           <Form className="space-y-6">
             <CardMolecule
               cardClass="min-h-full p-14 border rounded-lg"
@@ -105,7 +124,7 @@ export default function PRRequestForm() {
               body={
                 <div>
                   <div>
-                    <h2 className="mb-4 text-md font-semibold text-yellow-600">
+                    <h2 className="mb-4 text-md font-semibold text-yellow-600 font-avantt">
                       <span className="flex items-center">
                         <i className="fas fa-clock mr-2"></i> Basic Details
                       </span>
@@ -127,8 +146,48 @@ export default function PRRequestForm() {
                       {renderFields(vendorPurchaseDetailsFields, setFieldValue)}
                     </div>
                   </div>
-                  <div className="p-3 mt-4">
-                    <PRCreationLineItemsConfig />
+                  <div className="mt-8">
+                    <h2 className="mb-4 text-md font-semibold text-gray-500">
+                      <span className="flex items-center">
+                        <i className="fas fa-clipboard mr-2"></i> Purchase
+                        Description
+                      </span>
+                    </h2>
+                    <hr className="border-yellow-600" />
+                    <div className="grid gap-4 md:grid-cols-3 mt-4">
+                      {renderFields(purchaseDescriptionFields, setFieldValue)}
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <h2 className="mb-4 text-md font-semibold text-gray-500">
+                      <span className="flex items-center">
+                        <i className="fas fa-clipboard mr-2"></i> Catalogue item
+                        Details
+                      </span>
+                    </h2>
+                    <hr className="border-yellow-600" />
+                    <div className="grid gap-4 md:grid-cols-1 mt-4">
+                      <PRCreationLineItemsConfig
+                        setSelectedRows={setSelectedRows}
+                        setFieldValue={setFieldValue}
+                        values={values}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <h2 className="mb-4 text-md font-semibold text-gray-500">
+                      <span className="flex items-center">
+                        <i className="fas fa-clipboard mr-2"></i> Line item
+                        Details
+                      </span>
+                    </h2>
+                    <hr className="border-yellow-600" />
+                    <div className="grid gap-4 md:grid-cols-1 mt-4">
+                      <LineItemsTableConfig
+                        setFieldValue={setFieldValue}
+                        values={values}
+                      />
+                    </div>
                   </div>
                   <div className="mt-8">
                     <h2 className="mb-4 text-md font-semibold text-gray-500">
