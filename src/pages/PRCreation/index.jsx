@@ -6,8 +6,8 @@ function PRCreationComponent() {
   return (
     <div>
       {/* Basic Details  */}
-      <div className="flex justify-between align-center bg-white">
-        <Upload />
+      <div className="bg-white">
+        <Upload text='Place holder text'/>
       </div>
       {/* Buttons */}
       <div className='flex justify-end'>
