@@ -108,7 +108,6 @@ export default function PRRequestForm() {
             values[field.name] = "";
             return values;
           }, {}),
-          wbs: "",
           lineItems: [], // Add initial value for line items
           cart: [],
         }}
@@ -204,7 +203,12 @@ export default function PRRequestForm() {
                     </h2>
                     <hr className="border-yellow-600" />
                     <div>
-                      <Upload prRequestNumber={"hardcode"} text={"Please attach supporting documents required for PR Request"}/>
+                      <Upload
+                        prRequestNumber={"hardcode"}
+                        text={
+                          "Please attach supporting documents required for PR Request"
+                        }
+                      />
                     </div>
                   </div>
                 </div>
