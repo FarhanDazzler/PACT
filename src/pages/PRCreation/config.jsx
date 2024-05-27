@@ -105,6 +105,25 @@ export const vendorPurchaseDetailsFields = [
   },
 ];
 
+export const purchaseDescriptionFields = [
+  {
+    name: "shortDescription",
+    label: "Short Description",
+    type: "textarea",
+  },
+  {
+    name: "detailedDescription",
+    label: "Detailed Description/Motivation of Purchase",
+    type: "textarea",
+  },
+  {
+    name: "deliveryAddress",
+    label: "Delivery Address",
+    className: "w-1/2",
+    options: "options",
+  },
+];
+
 export const options = [
   { value: "option1", label: "Option 1" },
   { value: "option2", label: "Option 2" },

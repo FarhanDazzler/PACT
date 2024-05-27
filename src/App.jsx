@@ -46,7 +46,6 @@ const Pages = () => {
           })
           .then(async (response) => {
             localStorage.setItem("id_token", response?.idToken);
-            console.log("🚀 ~ .then ~ response:", response);
             const token = await getApi({
               routes: "login",
             })
@@ -56,7 +55,6 @@ const Pages = () => {
               .catch((err) =>
                 userDispatch({ type: "SET_LOGIN_ERROR", payload: err })
               );
-            console.log("🚀 ~ .then ~ token:", token);
 
             // dataService
             //   .getMSGraphPhoto(response.accessToken)
