@@ -1,10 +1,9 @@
-import { Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
 import ButtonAtom from "../../atoms/Button";
 import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
-import Upload from "../../organisms/FileUpload/Upload";
 import {
   basicDetailsFields,
   options,
@@ -15,29 +14,49 @@ import {
   vendorPurchaseDetailsFields,
 } from "./config";
 import LineItemsTableConfig from "./lineItemTable";
-import PRCreationLineItemsConfig from "./list";
 
 export default function PRRequestForm() {
-  const validationSchema = Yup.object(
-    [
-      ...basicDetailsFields,
-      ...vendorPurchaseDetailsFields,
-      ...purchaseDescriptionFields,
-    ].reduce((schema, field) => {
+  const validationSchema = Yup.object({
+    ...basicDetailsFields.reduce((schema, field) => {
       schema[field.name] = Yup.string().required("Required");
       return schema;
-    }, {})
-  );
+    }, {}),
+    ...vendorPurchaseDetailsFields.reduce((schema, field) => {
+      schema[field.name] = Yup.string().required("Required");
+      return schema;
+    }, {}),
+    ...purchaseDescriptionFields.reduce((schema, field) => {
+      schema[field.name] = Yup.string().required("Required");
+      return schema;
+    }, {}),
+    line_items: Yup.array().of(
+      Yup.object().shape({
+        itemNo: Yup.string().required("Required"),
+        description: Yup.string().required("Required"),
+        deliveryDate: Yup.string().required("Required"),
+        plant: Yup.string().required("Required"),
+        materialGroup: Yup.string().required("Required"),
+        materialCode: Yup.string().required("Required"),
+        currency: Yup.string().required("Required"),
+        ccwbs: Yup.string().required("Required"),
+        gl: Yup.string().required("Required"),
+        quantity: Yup.string().required("Required"),
+        uom: Yup.string().required("Required"),
+        pricePerItem: Yup.string().required("Required"),
+        totalValue: Yup.string().required("Required"),
+      })
+    ),
+  });
 
-  const [showCapexFields, setshowCapexFields] = useState(false);
+  const [showCapexFields, setShowCapexFields] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
 
   const handleSpendTypeChange = (option, setFieldValue) => {
-    setFieldValue("spendType", option.value);
+    setFieldValue("spend_type", option.value);
     if (option.value === "capex" || option.value === "opex") {
-      setshowCapexFields(true);
+      setShowCapexFields(true);
     } else {
-      setshowCapexFields(false);
+      setShowCapexFields(false);
     }
   };
 
@@ -56,7 +75,7 @@ export default function PRRequestForm() {
     }
   };
 
-  const renderFields = (fields, setFieldValue) => {
+  const renderFields = (fields, setFieldValue, errors, touched) => {
     return fields.map((field) => {
       if (field.condition && !eval(field.condition)) {
         return null;
@@ -67,24 +86,39 @@ export default function PRRequestForm() {
         : (option) => setFieldValue(field.name, option.value);
 
       return (
-        <div key={field.name} className="flex items-center">
+        <div key={field.name} className="flex items-center mb-4">
           <label className="w-1/2 text-left text-wrap text-xs pr-4 font-semibold">
             {field.label}
           </label>
           <div className="w-60 font-avantt text-sm">
             {field.type === "textarea" ? (
-              <textarea
-                name={field.name}
-                className="border border-gray-300 rounded-md w-full p-2"
-              />
+              <>
+                <Field
+                  as="textarea"
+                  name={field.name}
+                  className="border border-gray-300 rounded-md w-full p-2"
+                />
+                <ErrorMessage
+                  name={field.name}
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </>
             ) : (
-              <ReactSelectMolecule
-                className={field.className}
-                name={field.name}
-                options={getOptions(field.options)}
-                onChange={handleChange}
-                placeholder="Select"
-              />
+              <>
+                <ReactSelectMolecule
+                  className={field.className}
+                  name={field.name}
+                  options={getOptions(field.options)}
+                  onChange={handleChange}
+                  placeholder="Select"
+                />
+                {errors[field.name] && touched[field.name] && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {errors[field.name]}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -108,15 +142,30 @@ export default function PRRequestForm() {
             values[field.name] = "";
             return values;
           }, {}),
-          lineItems: [], // Add initial value for line items
-          cart: [],
+          line_items: [
+            {
+              itemNo: "",
+              description: "",
+              deliveryDate: "",
+              plant: "",
+              materialGroup: "",
+              materialCode: "",
+              currency: "",
+              ccwbs: "",
+              gl: "",
+              quantity: "",
+              uom: "",
+              pricePerItem: "",
+              totalValue: "",
+            },
+          ],
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values, { setSubmitting }) => {
+          setSubmitting(false); // Make sure to setSubmitting to false after form submission
         }}
       >
-        {({ setFieldValue, values }) => (
+        {({ setFieldValue, values, isSubmitting, errors, touched }) => (
           <Form className="space-y-6">
             <CardMolecule
               cardClass="min-h-full p-14 border rounded-lg"
@@ -137,7 +186,12 @@ export default function PRRequestForm() {
                     </h2>
                     <hr className="border-yellow-600" />
                     <div className="grid gap-4 md:grid-cols-3 mt-4">
-                      {renderFields(basicDetailsFields, setFieldValue)}
+                      {renderFields(
+                        basicDetailsFields,
+                        setFieldValue,
+                        errors,
+                        touched
+                      )}
                     </div>
                   </div>
                   <div className="mt-8">
@@ -149,7 +203,12 @@ export default function PRRequestForm() {
                     </h2>
                     <hr className="border-yellow-600" />
                     <div className="grid gap-4 md:grid-cols-3 mt-4">
-                      {renderFields(vendorPurchaseDetailsFields, setFieldValue)}
+                      {renderFields(
+                        vendorPurchaseDetailsFields,
+                        setFieldValue,
+                        errors,
+                        touched
+                      )}
                     </div>
                   </div>
                   <div className="mt-8">
@@ -161,10 +220,15 @@ export default function PRRequestForm() {
                     </h2>
                     <hr className="border-yellow-600" />
                     <div className="grid gap-4 md:grid-cols-3 mt-4">
-                      {renderFields(purchaseDescriptionFields, setFieldValue)}
+                      {renderFields(
+                        purchaseDescriptionFields,
+                        setFieldValue,
+                        errors,
+                        touched
+                      )}
                     </div>
                   </div>
-                  <div className="mt-8">
+                  {/* <div className="mt-8">
                     <h2 className="mb-4 text-md font-semibold text-gray-500">
                       <span className="flex items-center">
                         <i className="fas fa-clipboard mr-2"></i> Catalogue item
@@ -179,7 +243,7 @@ export default function PRRequestForm() {
                         values={values}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="mt-8">
                     <h2 className="mb-4 text-md font-semibold text-gray-500">
                       <span className="flex items-center">
@@ -195,7 +259,7 @@ export default function PRRequestForm() {
                       />
                     </div>
                   </div>
-                  <div className="mt-8">
+                  {/* <div className="mt-8">
                     <h2 className="mb-4 text-md font-semibold text-gray-500">
                       <span className="flex items-center">
                         <i className="fas fa-clock mr-2"></i> Attachments
@@ -210,30 +274,28 @@ export default function PRRequestForm() {
                         }
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               }
             />
+            <div className="flex justify-end">
+              <ButtonAtom
+                variant="default"
+                overrideClass="mt-10 mr-10"
+                label="Cancel"
+                type="button"
+              ></ButtonAtom>
+              <ButtonAtom
+                variant="default"
+                overrideClass="mt-10 mr-10"
+                label="Save as Draft"
+                type="submit"
+              ></ButtonAtom>
+              <button className="mt-10 mr-10">Submit</button>
+            </div>
           </Form>
         )}
       </Formik>
-      <div className="flex justify-end">
-        <ButtonAtom
-          variant="default"
-          overrideClass="mt-10 mr-10"
-          label="Cancel"
-        ></ButtonAtom>
-        <ButtonAtom
-          variant="default"
-          overrideClass="mt-10 mr-10"
-          label="Save as Draft"
-        ></ButtonAtom>
-        <ButtonAtom
-          variant="default"
-          overrideClass="mt-10 mr-10 text-white bg-black hover:text-white hover:bg-black"
-          label="Submit"
-        ></ButtonAtom>
-      </div>
     </div>
   );
 }

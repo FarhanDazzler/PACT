@@ -1,9 +1,10 @@
-import { useFormikContext } from "formik";
 import React, { useEffect, useState } from "react";
 import DynamicTableOrganism from "../../organisms/DynamicTable";
 
-export default function LineItemsTableConfig() {
-  const { setFieldValue, values } = useFormikContext();
+export default function LineItemsTableConfig({
+  setFieldValue = () => {},
+  values,
+}) {
   const initialData = [
     {
       itemNo: "",
@@ -22,21 +23,24 @@ export default function LineItemsTableConfig() {
     },
   ];
 
-  const [tableData, setTableData] = useState(values.lineItems ?? initialData);
+  const [tableData, setTableData] = useState(values.line_items || initialData);
 
-  // Update form values whenever tableData changes
   useEffect(() => {
-    setFieldValue("lineItems", tableData);
+    setTableData(values.line_items || initialData);
+  }, [values.line_items]);
+
+  useEffect(() => {
+    setFieldValue("line_items", tableData);
   }, [tableData, setFieldValue]);
 
   return (
-    <>
-      <DynamicTableOrganism {...getConfig(tableData, setTableData)} />
-    </>
+    <DynamicTableOrganism
+      {...getConfig({ tableData, setTableData, setFieldValue, values })}
+    />
   );
 }
 
-const getConfig = (data, setTableData) => {
+const getConfig = ({ tableData: data, setTableData, ...rest }) => {
   const columnData = [
     { accessorKey: "itemNo", header: "Item No" },
     { accessorKey: "description", header: "Description" },
@@ -60,6 +64,7 @@ const getConfig = (data, setTableData) => {
     showCartButton: false,
     showPagination: false,
     editable: true,
-    onTableDataChange: setTableData, // Pass the setTableData function to handle changes
+    onTableDataChange: setTableData,
+    ...rest,
   };
 };

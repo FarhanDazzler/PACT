@@ -51,7 +51,7 @@ const Pages = () => {
               routes: "login",
             })
               .then((res) => {
-                console.log(res);
+                console.log("🚀 ~ .then ~ res:", res);
               })
               .catch((err) =>
                 userDispatch({ type: "SET_LOGIN_ERROR", payload: err })

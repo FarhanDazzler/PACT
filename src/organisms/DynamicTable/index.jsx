@@ -1,5 +1,4 @@
 import { Button, Flex } from "@mantine/core";
-import { useFormikContext } from "formik";
 import {
   MRT_GlobalFilterTextInput,
   MantineReactTable,
@@ -21,46 +20,30 @@ export default function GenericTableComponent({
   editable = false,
   onSelectedRowsChange = () => {},
   onCellEdit = () => {},
-  onTableDataChange, // Add this prop to handle table data changes
+  onTableDataChange,
+  setFieldValue,
+  values, // Add this prop to handle table data changes
   ...props
 }) {
-  const [tableData, setTableData] = useState(initialData);
-  let formikContext;
-
-  try {
-    formikContext = useFormikContext();
-  } catch (error) {
-    formikContext = null;
-  }
-
-  const { width } = useWindowDimensions();
-  const getColumnWidth = () => {
-    if (width < 600) return "50px"; // Small screens
-    if (width < 960) return "100px"; // Medium screens
-    return "150px"; // Large screens
-  };
-
-  const columns = useMemo(
-    () =>
-      initialColumns.map((col) => ({
-        ...col,
-        size: getColumnWidth(),
-      })),
-    [initialColumns, getColumnWidth, onCellEdit]
+  const [tableData, setTableData] = useState(
+    values?.line_items.length > 0 ? values?.line_items : initialData
   );
+
+  useEffect(() => {
+    setTableData(
+      values?.line_items.length > 0 ? values?.line_items : initialData
+    );
+  }, [values?.line_items]);
+
+  useEffect(() => {
+    setFieldValue("line_items", tableData);
+  }, [JSON.stringify(tableData)]);
 
   const handleSaveCell = (cell, value) => {
     const newData = [...tableData];
     newData[cell.row.index][cell.column.id] = value;
     setTableData(newData);
   };
-
-  useEffect(() => {
-    // Update parent component whenever tableData changes
-    if (onTableDataChange) {
-      onTableDataChange(tableData);
-    }
-  }, [tableData, onTableDataChange]);
 
   const handleAddRow = () => {
     setTableData((prevData) => [
@@ -79,9 +62,29 @@ export default function GenericTableComponent({
   };
 
   const editTableCellProps = ({ cell }) => ({
-    onBlur: (event) => handleSaveCell(cell, event.target.value),
-    variant: "unstyled",
+    onBlur: (event) => {
+      handleSaveCell(cell, event.target.value);
+    },
   });
+
+  const { width } = useWindowDimensions();
+  const getColumnWidth = () => {
+    if (width < 600) return "50px"; // Small screens
+    if (width < 960) return "100px"; // Medium screens
+    return "150px"; // Large screens
+  };
+
+  const columns = useMemo(
+    () =>
+      initialColumns.map((col) => ({
+        ...col,
+        size: getColumnWidth(),
+        Cell: ({ cell }) => (
+          <input {...editTableCellProps({ cell })} style={{ width: "100%" }} />
+        ),
+      })),
+    [getColumnWidth]
+  );
 
   const table = useMantineReactTable({
     columns,
@@ -96,6 +99,7 @@ export default function GenericTableComponent({
     memoMode: "cells",
     enableEditing: editable,
     enableRowSelection: true,
+    mantineEditTextInputProps: editable ? editTableCellProps : undefined,
     initialState: {
       showColumnFilters: false,
       showGlobalFilter: true,
@@ -169,18 +173,18 @@ export default function GenericTableComponent({
         XLSX.writeFile(workbook, "ExportedData.xlsx");
       };
 
-      const handleAddToCart = () => {
-        const selectedRows = table
-          .getSelectedRowModel()
-          .rows.map((row) => row.original);
-        if (formikContext) {
-          formikContext.setFieldValue("cart", [
-            ...formikContext.values.cart,
-            ...selectedRows,
-          ]);
-        }
-        onSelectedRowsChange(selectedRows);
-      };
+      // const handleAddToCart = () => {
+      //   const selectedRows = table
+      //     .getSelectedRowModel()
+      //     .rows.map((row) => row.original);
+      //   if (formikContext) {
+      //     formikContext.setFieldValue("cart", [
+      //       ...formikContext.values.cart,
+      //       ...selectedRows,
+      //     ]);
+      //   }
+      //   onSelectedRowsChange(selectedRows);
+      // };
 
       return (
         <Flex p="md" justify="space-between">
@@ -247,10 +251,7 @@ export default function GenericTableComponent({
 
   return (
     <>
-      <MantineReactTable
-        table={table}
-        mantineEditTextInputProps={editable ? editTableCellProps : undefined}
-      />
+      <MantineReactTable table={table} />
     </>
   );
 }
