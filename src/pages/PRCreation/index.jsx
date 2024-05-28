@@ -1,10 +1,10 @@
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
+import { IoChevronDownSharp, IoChevronUpSharp } from "react-icons/io5";
 import * as Yup from "yup";
 import ButtonAtom from "../../atoms/Button";
 import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
-import Upload from "../../organisms/FileUpload/Upload";
 import {
   basicDetailsFields,
   options,
@@ -16,8 +16,15 @@ import {
 } from "./config";
 import LineItemsTableConfig from "./lineItemTable";
 import PRCreationLineItemsConfig from "./list";
+import ParentUpload from "../../organisms/FileUpload/ParentUpload";
 
 export default function PRRequestForm() {
+  const [showCapexFields, setshowCapexFields] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [capop, setCapop] = useState("");
+  const [folderName, setFolderName] = useState("");
+  const [isAttachmentsCollapsed, setIsAttachmentsCollapsed] = useState(false);
+  // console.log(folderName);
   const validationSchema = Yup.object(
     [
       ...basicDetailsFields,
@@ -29,11 +36,13 @@ export default function PRRequestForm() {
     }, {})
   );
 
-  const [showCapexFields, setshowCapexFields] = useState(false);
-  const [selectedRows, setSelectedRows] = useState([]);
-
   const handleSpendTypeChange = (option, setFieldValue) => {
     setFieldValue("spendType", option.value);
+    if (option.value === "capex") {
+      setCapop("capex");
+    } else {
+      setCapop("opex");
+    }
     if (option.value === "capex" || option.value === "opex") {
       setshowCapexFields(true);
     } else {
@@ -90,6 +99,10 @@ export default function PRRequestForm() {
         </div>
       );
     });
+  };
+
+  const toggleAttachmentsCollapse = () => {
+    setIsAttachmentsCollapsed(!isAttachmentsCollapsed);
   };
 
   return (
@@ -196,20 +209,33 @@ export default function PRRequestForm() {
                     </div>
                   </div>
                   <div className="mt-8">
-                    <h2 className="mb-4 text-md font-semibold text-gray-500">
+                    <h2
+                      className="mb-4 text-md font-semibold text-gray-500 cursor-pointer flex justify-between items-center"
+                      onClick={toggleAttachmentsCollapse}
+                    >
                       <span className="flex items-center">
                         <i className="fas fa-clock mr-2"></i> Attachments
                       </span>
+                      <span>
+                        {isAttachmentsCollapsed ? (
+                          <IoChevronDownSharp />
+                        ) : (
+                          <IoChevronUpSharp />
+                        )}
+                      </span>
                     </h2>
                     <hr className="border-yellow-600" />
-                    <div>
-                      <Upload
-                        prRequestNumber={"hardcode"}
-                        text={
-                          "Please attach supporting documents required for PR Request"
-                        }
-                      />
-                    </div>
+                    {!isAttachmentsCollapsed && (
+                      <div>
+                        <ParentUpload
+                          setFolderName={setFolderName}
+                          capop={capop}
+                          bigFour={true}
+                          afr={true}
+                          lessThanHundred={true}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               }
@@ -222,17 +248,17 @@ export default function PRRequestForm() {
           variant="default"
           overrideClass="mt-10 mr-10"
           label="Cancel"
-        ></ButtonAtom>
+        />
         <ButtonAtom
           variant="default"
           overrideClass="mt-10 mr-10"
           label="Save as Draft"
-        ></ButtonAtom>
+        />
         <ButtonAtom
           variant="default"
           overrideClass="mt-10 mr-10 text-white bg-black hover:text-white hover:bg-black"
           label="Submit"
-        ></ButtonAtom>
+        />
       </div>
     </div>
   );
