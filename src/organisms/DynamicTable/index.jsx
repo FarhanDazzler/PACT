@@ -21,7 +21,7 @@ export default function GenericTableComponent({
   onSelectedRowsChange = () => {},
   onCellEdit = () => {},
   onTableDataChange,
-  setFieldValue,
+  setFieldValue = () => {},
   values, // Add this prop to handle table data changes
   ...props
 }) {
