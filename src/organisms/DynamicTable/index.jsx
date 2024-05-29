@@ -9,7 +9,7 @@ import { FaDownload } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import useWindowDimensions from "../../utils/hooks";
 
-export default function GenericTableComponent({
+export default function DynamicTableOrganism({
   columnData: initialColumns,
   data: initialData,
   columnFilterModes = false,
@@ -79,11 +79,17 @@ export default function GenericTableComponent({
       initialColumns.map((col) => ({
         ...col,
         size: getColumnWidth(),
-        Cell: ({ cell }) => (
-          <input {...editTableCellProps({ cell })} style={{ width: "100%" }} />
-        ),
+        Cell: editable
+          ? ({ cell }) => (
+              <input
+                {...editTableCellProps({ cell })}
+                defaultValue={cell.value}
+                style={{ width: "100%" }}
+              />
+            )
+          : undefined,
       })),
-    [getColumnWidth]
+    [initialColumns, editable, getColumnWidth]
   );
 
   const table = useMantineReactTable({
@@ -120,12 +126,12 @@ export default function GenericTableComponent({
     mantineTableProps: {
       highlightOnHover: true,
       withColumnBorders: false,
-      withBorder: true,
-      striped: true,
-      classNames: "font-avantt rounded-5xl",
+      withBorder: false,
+      striped: false,
+      horizontalSpacing: "xs",
+      classNames: "font-avantt rounded-5xl text-black",
       sx: {
         "thead > tr": {
-          backgroundColor: "lightgray",
           fontWeight: "bolder",
         },
         "thead > tr > th": {
@@ -135,8 +141,9 @@ export default function GenericTableComponent({
           backgroundColor: "inherit",
           fontWeight: "normal",
           fontSize: "xs",
-          whiteSpace: "normal",
-          wordWrap: "break-word",
+          fontFamily: "font-avantt",
+          // whiteSpace: "normal",
+          // wordWrap: "break-word",
         },
       },
     },

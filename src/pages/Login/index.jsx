@@ -38,23 +38,23 @@ export default function LoginComponent() {
   return (
     !isAuthenticated &&
     inProgress === InteractionStatus.None && (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center pt-32">
         <CardMolecule
           cardClass="px-2 w-48 md:w-72 h-84 border bg-white rounded-lg"
           headerClass="py-6 flex justify-center items-center font-avantt text-4xl text-yellow-600 font-bold"
           header="PR-PO"
           body={
             <>
-              <hr className="h-px w-14 flex justify-center items-center bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />
+              <hr className="h-px w-14 bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />
               <div className="pt-4 flex justify-center font-avantt font-bold text-lg mb-2">
                 {"Welcome!"}
               </div>
               <div className="text-center font-avantt text-xs">
                 {`Please use your AB InBev ID to login`}
               </div>
-              <div className="p-3">
+              <div className="pt-3 pb-3 flex justify-center">
                 <Button
-                  className="h-8 xs:16  md: w-24  flex justify-center ml-20 items-center bg-black text-white rounded-lg font-avantt font-semibold"
+                  className="h-8 w-24 flex justify-center items-center bg-black text-white rounded-lg font-avantt font-semibold"
                   onClick={() => instance.loginRedirect(loginRequest)}
                 >
                   {`Login`}
@@ -68,7 +68,7 @@ export default function LoginComponent() {
                 <span className="text-xs">Request Access?</span>
               </a>
               <div>
-                <hr className="h-px w-44 flex justify-center items-center bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />
+                <hr className="h-px w-44 bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />
               </div>
             </>
           }

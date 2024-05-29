@@ -23,11 +23,11 @@ export default function LineItemsTableConfig({
     },
   ];
 
-  const [tableData, setTableData] = useState(values.line_items || initialData);
+  const [tableData, setTableData] = useState(values?.line_items || initialData);
 
   useEffect(() => {
-    setTableData(values.line_items || initialData);
-  }, [values.line_items]);
+    setTableData(values?.line_items || initialData);
+  }, [values?.line_items]);
 
   useEffect(() => {
     setFieldValue("line_items", tableData);

@@ -73,7 +73,7 @@ const Pages = () => {
           });
       }
       if (redirect) navigate(redirect);
-      else if (location.pathname == "/login") navigate("/");
+      else if (location.pathname === "/login") navigate("/");
       else {
         navigate(
           `${location.pathname}${location.search ? location.search : ""}`
@@ -89,17 +89,21 @@ const Pages = () => {
     }
   }, [accounts, inProgress]);
 
+  // Determine background image based on the current path
+  const backgroundClass = ["/login", "/request"].includes(location.pathname)
+    ? "bg-login-page"
+    : "bg-default-page";
+
   return (
     <div
-      className="flex flex-col min-h-screen bg-gray-100"
-      style={{ backgroundImage: 'url("../src/assests/images/bg_image.jpg")' }}
+      className={`flex flex-col min-h-screen bg-gray-100 bg-cover ${backgroundClass}`}
     >
-      <div className="fixed top-0 w-full z-50">
-        {!["/login", "/request"].includes(location?.pathname) && (
+      <div className="w-full z-50">
+        {!["/login", "/request"].includes(location.pathname) && (
           <HeaderComponent />
         )}
       </div>
-      <div className="flex flex-col bg-cover p-10">
+      <div className={`flex-grow bg-cover ${backgroundClass} p-1`}>
         <Routes>
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/request" element={<RequestAccessComponent />} />
@@ -120,6 +124,85 @@ export default function App({ msalInstance }) {
           <MantineProvider
             theme={{
               primaryColor: "yellow",
+              components: {
+                Select: {
+                  styles: {
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                    selected: {
+                      color: "#e3af32",
+                      backgroundColor: "#e3af3221",
+                    },
+                    hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                  },
+                },
+                TextInput: {
+                  styles: {
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                    selected: {
+                      color: "#e3af32",
+                      backgroundColor: "#e3af3221",
+                    },
+                    hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                  },
+                },
+              },
+            }}
+            styles={{
+              Calendar: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: {
+                  backgroundColor: "#e3af3221",
+                  color: "#e3af32",
+                },
+              }),
+              DatePicker: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+              }),
+              DateRangePicker: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: {
+                  backgroundColor: "transparent",
+                  color: "unset",
+                },
+              }),
+              Select: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+              }),
+              NativeSelect: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+              }),
+              TextInput: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+              }),
+              Textarea: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+              }),
             }}
           >
             <OptionsContextProvider>

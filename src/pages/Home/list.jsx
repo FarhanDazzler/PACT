@@ -265,7 +265,6 @@ const getConfig = ({ zone, role, ...rest }) => {
           },
         ],
         data: data || [],
-        showExport: true,
       };
       break;
   }
@@ -273,5 +272,6 @@ const getConfig = ({ zone, role, ...rest }) => {
   return {
     columnData: config?.columns,
     data: config?.data,
+    showExport: true,
   };
 };

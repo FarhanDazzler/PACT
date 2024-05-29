@@ -2,7 +2,6 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { IoChevronDownSharp, IoChevronUpSharp } from "react-icons/io5";
 import * as Yup from "yup";
-import ButtonAtom from "../../atoms/Button";
 import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
 import ParentUpload from "../../organisms/FileUpload/ParentUpload";
@@ -18,7 +17,7 @@ import {
 import LineItemsTableConfig from "./lineItemTable";
 
 export default function PRRequestForm() {
-  const [showCapexFields, setshowCapexFields] = useState(false);
+  const [showCapexFields, setShowCapexFields] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [capop, setCapop] = useState("");
   const [folderName, setFolderName] = useState("");
@@ -98,7 +97,7 @@ export default function PRRequestForm() {
       return (
         <div key={field.name} className="flex items-center mb-4">
           <label className="w-1/2 text-left text-wrap text-xs pr-4 font-semibold">
-            {field.label}
+            {field.label} <span className="text-red-600">*</span>
           </label>
           <div className="w-60 font-avantt text-sm">
             {field.type === "textarea" ? (
@@ -122,6 +121,8 @@ export default function PRRequestForm() {
                   options={getOptions(field.options)}
                   onChange={handleChange}
                   placeholder="Select"
+                  fontFamily="font-avantt"
+                  overrideDropdownClass="font-avantt"
                 />
                 {errors[field.name] && touched[field.name] && (
                   <div className="text-red-600 text-xs mt-1">
@@ -173,6 +174,12 @@ export default function PRRequestForm() {
               totalValue: "",
             },
           ],
+          attachments: [
+            {
+              attachment_id: "",
+              attachment_path: "",
+            },
+          ],
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
@@ -184,9 +191,9 @@ export default function PRRequestForm() {
             <CardMolecule
               cardClass="min-h-full p-14 border rounded-lg"
               header={
-                <div className="text-lg font-semibold pb-8 font-avantt">
-                  <span className="text-black font-avantt">PR Request</span>{" "}
-                  &gt; New PR Request Form
+                <div className="text-md pb-8 font-avantt">
+                  <span className="text-black font-avantt">PR Request</span>
+                  <span className="font-bold"> &gt; New PR Request Form</span>
                 </div>
               }
               styles={{ fontFamily: "font-avantt" }}
@@ -294,6 +301,7 @@ export default function PRRequestForm() {
                       <div>
                         <ParentUpload
                           setFolderName={setFolderName}
+                          setFieldValue={setFieldValue}
                           capop={capop}
                           bigFour={true}
                           afr={true}
@@ -306,19 +314,15 @@ export default function PRRequestForm() {
               }
             />
             <div className="flex justify-end">
-              <ButtonAtom
-                variant="default"
-                overrideClass="mt-10 mr-10"
-                label="Cancel"
-                type="button"
-              ></ButtonAtom>
-              <ButtonAtom
-                variant="default"
-                overrideClass="mt-10 mr-10"
-                label="Save as Draft"
-                type="submit"
-              ></ButtonAtom>
-              <button className="mt-10 mr-10">Submit</button>
+              <button class="mt-10 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+                Cancel
+              </button>
+              <button class="mt-10 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+                Save as Draft
+              </button>
+              <button class="mt-10 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+                Submit
+              </button>
             </div>
           </Form>
         )}

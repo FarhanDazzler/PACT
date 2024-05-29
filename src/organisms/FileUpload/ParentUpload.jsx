@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import FileUpload from "./Upload";
 import { postApi } from "../../particles/api";
+import FileUpload from "./Upload";
 
 const ParentUpload = ({
   capop,
@@ -9,6 +9,7 @@ const ParentUpload = ({
   lessThanHundred,
   afr,
   setFolderName,
+  setFieldValue = () => {},
 }) => {
   const [allFiles, setAllFiles] = useState({});
 
@@ -38,6 +39,7 @@ const ParentUpload = ({
         },
       });
       setFolderName(response.folderName);
+      setFieldValue(response);
       console.log("Files uploaded successfully:", response);
     } catch (error) {
       console.error("Error uploading files:", error);
