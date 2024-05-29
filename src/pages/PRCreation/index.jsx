@@ -314,13 +314,13 @@ export default function PRRequestForm() {
               }
             />
             <div className="flex justify-end">
-              <button class="mt-10 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
                 Cancel
               </button>
-              <button class="mt-10 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
                 Save as Draft
               </button>
-              <button class="mt-10 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
                 Submit
               </button>
             </div>
