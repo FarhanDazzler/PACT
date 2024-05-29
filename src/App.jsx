@@ -52,7 +52,7 @@ const Pages = () => {
             })
               .then((res) => {
                 console.log("🚀 ~ .then ~ res:", res);
-                localStorage.setItem("id_token", res);
+                localStorage.setItem("id_token", res?.token);
               })
               .catch((err) =>
                 userDispatch({ type: "SET_LOGIN_ERROR", payload: err })
