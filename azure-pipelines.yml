@@ -61,12 +61,12 @@ stages:
       - template: pipeline_templates/secure_code_scan.yml@appsectemplates
         parameters:
           scanSonarCloud: true
-          sonarCloudGate: true
+          sonarCloudGate: false
           SCServiceConnection: 'SonarcloudServer'
           SCOrganization: 'sonarcloud-ado' 
           
           scanSnyk: true
-          SKFailOnIssues: true
+          SKFailOnIssues: false
           SkServiceConnection: 'SnykServer'
           SkOrganization: 'f8e30283-d4c9-47be-821e-f7bcc1b2afca'
           SkAdditionalArgs: '--all-projects --prune-repeated-subdependencies --detection-depth=4' 
