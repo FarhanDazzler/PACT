@@ -4,18 +4,15 @@ export async function postApi({
   url,
   routes = "",
   data = {},
-  config = {
-    headers: {
-      Authorization: localStorage.getItem("id_token"),
-    },
-  },
+  headers = {},
 }) {
+  // console.log('axios', routes, data)
   return await axios
-    .post(`${process.env.VITE_REACT_API_URL}/${routes}`, data, {
-      ...config,
-      headers: {
-        ...(config?.headers ?? {}),
-      },
+    .post(`http://localhost:3001/${routes}`, data, {
+      headers : {
+        Authorization: localStorage.getItem("id_token"),
+        ...headers
+      }
     })
     .then((response) =>
       response?.data?.success ? response?.data?.data : response?.data
