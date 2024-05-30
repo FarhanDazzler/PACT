@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
 import ParentUpload from "../../organisms/FileUpload/ParentUpload";
+import { postApi } from "../../particles/api";
 import {
   basicDetailsFields,
   options,
@@ -22,6 +23,7 @@ export default function PRRequestForm() {
   const [capop, setCapop] = useState("");
   const [folderName, setFolderName] = useState("");
   const [isAttachmentsCollapsed, setIsAttachmentsCollapsed] = useState(false);
+  const user_id = localStorage.getItem("user_id");
   // console.log(folderName);
   const validationSchema = Yup.object({
     ...basicDetailsFields.reduce((schema, field) => {
@@ -183,6 +185,16 @@ export default function PRRequestForm() {
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
+          const response = await postApi({
+            routes: `/pr_details_submit`,
+            data: { user_id: user_id, pr_details: { ...values } },
+          })
+            .then((res) => {
+              console.log("reeees:", res);
+            })
+            .catch((err) => {
+              console.log("🚀 ~ onSubmit={ ~ err:", err);
+            });
           setSubmitting(false); // Make sure to setSubmitting to false after form submission
         }}
       >
@@ -301,7 +313,9 @@ export default function PRRequestForm() {
                       <div>
                         <ParentUpload
                           setFolderName={setFolderName}
-                          setFieldValue={setFieldValue}
+                          setFieldValue={(attachments) =>
+                            setFieldValue("attachments", attachments)
+                          }
                           capop={capop}
                           bigFour={true}
                           afr={true}

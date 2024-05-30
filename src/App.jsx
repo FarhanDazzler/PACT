@@ -1,6 +1,7 @@
 import { InteractionStatus } from "@azure/msal-browser";
 import { MsalProvider, useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MantineProvider } from "@mantine/core";
+import { jwtDecode } from "jwt-decode";
 import React, { useContext, useEffect } from "react";
 import {
   BrowserRouter,
@@ -24,7 +25,7 @@ const Pages = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const redirect = params.get("redirect");
-  const [userState, userDispatch] = useContext(UserContext);
+  const [state, dispatch] = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -51,11 +52,15 @@ const Pages = () => {
               routes: "login",
             })
               .then((res) => {
-                console.log("🚀 ~ .then ~ res:", res);
                 localStorage.setItem("id_token", res?.token);
+                const decodedToken = jwtDecode(res?.token);
+                const name = `${decodedToken?.first_name} ${decodedToken?.last_name}`;
+                localStorage.setItem("user_id", decodedToken?.user_id);
+                localStorage.setItem("role", decodedToken?.role_name);
+                localStorage.setItem("name", name);
               })
               .catch((err) =>
-                userDispatch({ type: "SET_LOGIN_ERROR", payload: err })
+                dispatch({ type: "SET_LOGIN_ERROR", payload: err })
               );
 
             // dataService

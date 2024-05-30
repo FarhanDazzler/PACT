@@ -4,6 +4,7 @@ import DashboardCardConfig from "./cardConfig";
 import DashboardTableConfig from "./list";
 
 export default function DashboardComponent({ zone = "", role = "", ...props }) {
+  const userName = localStorage.getItem("name");
   return (
     <div className="p-3">
       <div className=" md:gap-4 min-h-full border-opacity-60 flex flex-col md:flex-row justify-between items-start">
@@ -17,7 +18,7 @@ export default function DashboardComponent({ zone = "", role = "", ...props }) {
                 ),
                 body: (
                   <div className="font-avantt text-4xl text-yellow-600 font-bold">
-                    Samuel J.
+                    {userName}
                   </div>
                 ),
               }}

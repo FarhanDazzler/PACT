@@ -11,6 +11,8 @@ export default function HeaderComponent() {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
   const popoverRef = useRef(null);
+  const userName = localStorage.getItem("name");
+  const role = localStorage.getItem("role");
 
   const handleLogout = () => {
     instance.logout();
@@ -83,8 +85,8 @@ export default function HeaderComponent() {
             <div className="relative profile-section flex items-center h-full">
               <LuUserCircle2 className="text-2xl text-white hover:text-yellow-500 mr-6" />
               <div className="name-role mr-6">
-                <h1 className="font-bold text-yellow-500">J, Samuel</h1>
-                <h3 className="text-sm text-gray-400">Requestor</h3>
+                <h1 className="font-bold text-yellow-500">{userName}</h1>
+                <h3 className="text-sm text-gray-400">{role}</h3>
               </div>
               <button
                 onClick={() => setPopoverOpen(!popoverOpen)}

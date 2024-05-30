@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { postApi } from "../../particles/api";
+import convertArrayToObjectsForAttachments from "../../utils/config";
 import FileUpload from "./Upload";
 
 const ParentUpload = ({
@@ -38,9 +39,11 @@ const ParentUpload = ({
           "Content-Type": "multipart/form-data",
         },
       });
-      setFolderName(response.folderName);
-      setFieldValue(response);
-      console.log("Files uploaded successfully:", response);
+      setFolderName(response?.folderName);
+      const attachmentObject = convertArrayToObjectsForAttachments(
+        response?.files
+      );
+      setFieldValue(attachmentObject);
     } catch (error) {
       console.error("Error uploading files:", error);
     }
@@ -139,6 +142,7 @@ const ParentUpload = ({
       {Object.keys(allFiles).length > 0 && (
         <button
           onClick={handleUpload}
+          type="button"
           className="mt-5 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
         >
           Upload All Files
