@@ -8,6 +8,8 @@ import ParentUpload from "../../organisms/FileUpload/ParentUpload";
 import { postApi } from "../../particles/api";
 import {
   basicDetailsFields,
+  countryCodeOptions,
+  currencyOptions,
   options,
   purchaseDescriptionFields,
   requestPriorityOptions,
@@ -77,10 +79,14 @@ export default function PRRequestForm() {
         return options;
       case "spendTypeOptions":
         return spendTypeOptions;
+      case "currencyOptions":
+        return currencyOptions;
       case "requestPriorityOptions":
         return requestPriorityOptions;
       case "requestTypeOptions":
         return requestTypeOptions;
+      case "countryCodeOptions":
+        return countryCodeOptions;
       default:
         return [];
     }
@@ -327,14 +333,14 @@ export default function PRRequestForm() {
                 </div>
               }
             />
-            <div className="flex justify-end">
-              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+            <div className="flex justify-end pb-3">
+              <button class="mt-5 mr-10 border border-black bg-gray-200 hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded text-sm">
                 Cancel
               </button>
-              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+              <button class="font-avantt mt-5 mr-10 border border-black bg-gray-200 hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded text-sm">
                 Save as Draft
               </button>
-              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+              <button class="font-avantt mt-5 mr-10 border border-black bg-gray-200 hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded text-sm">
                 Submit
               </button>
             </div>

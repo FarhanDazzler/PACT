@@ -43,13 +43,13 @@ export const basicDetailsFields = [
     name: "currency",
     label: "Currency",
     className: "w-1/2",
-    options: "options",
+    options: "currencyOptions",
   },
   {
     name: "country",
     label: "Country",
     className: "w-1/2",
-    options: "options",
+    options: "countryCodeOptions",
     condition: "showCapexFields",
   },
   {
@@ -133,6 +133,15 @@ export const purchaseDescriptionFields = [
 export const options = [
   { value: "option1", label: "Option 1" },
   { value: "option2", label: "Option 2" },
+];
+export const currencyOptions = [
+  { value: "zar", label: "ZAR" },
+  { value: "usd", label: "USD" },
+];
+
+export const countryCodeOptions = [
+  { value: "afr", label: "AFR" },
+  { value: "ghq", label: "GHQ" },
 ];
 
 export const spendTypeOptions = [
