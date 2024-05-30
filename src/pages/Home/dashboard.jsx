@@ -5,9 +5,9 @@ import DashboardTableConfig from "./list";
 
 export default function DashboardComponent({ zone = "", role = "", ...props }) {
   return (
-    <div>
-      <div className="pt-10 lg:gap-4 min-h-full border-opacity-60 flex flex-col lg:flex-row justify-between items-start">
-        <div className="w-full lg:w-1/2  mb-4 lg:mb-0 mt-16">
+    <div className="p-3">
+      <div className=" md:gap-4 min-h-full border-opacity-60 flex flex-col md:flex-row justify-between items-start">
+        <div className="w-full md:w-1/3 mb-4 md:mb-0 mt-16">
           <div>
             <CardMolecule
               metricCardData={{
@@ -24,8 +24,8 @@ export default function DashboardComponent({ zone = "", role = "", ...props }) {
             />
           </div>
         </div>
-        <div className="w-full md:w-1/2 mt-20">
-          <div className="flex lg:flex-row lg:justify-end lg:items-end gap-4">
+        <div className="w-full md:w-2/3 mt-20 justify-between">
+          <div className="flex md:flex-row gap-4 justify-end">
             <DashboardCardConfig {...props} />
           </div>
         </div>

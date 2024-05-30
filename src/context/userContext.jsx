@@ -8,6 +8,7 @@ const initialState = {
   email: null,
   roles: null,
   profile_photo: null,
+  error: null,
 };
 
 const reducer = (state, action) => {
@@ -29,6 +30,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         profile_photo: action.payload,
+      };
+
+    case "SET_LOGIN_ERROR":
+      return {
+        ...state,
+        error: action.payload,
       };
 
     case "SET_ROLES":

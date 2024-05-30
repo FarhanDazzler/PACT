@@ -1,13 +1,21 @@
 import { Card } from "@mantine/core";
 import _ from "lodash";
 
-export default function CardMolecule({ metricCardData = [], ...props }) {
+export default function CardMolecule({
+  metricCardData = [],
+  styles,
+  ...props
+}) {
   const data = _.isArray(metricCardData) ? metricCardData : [metricCardData];
+  const fontStyles = {
+    fontFamily: "font-avantt",
+  };
+
   return (
     <>
       {!_.isEmpty(data) ? (
         data?.map((card, index) => (
-          <Card className={card?.cardClass}>
+          <Card className={card?.cardClass} style={{ root: fontStyles }}>
             <div>
               {card?.header && (
                 <header className={`${card?.headerClass}`}>

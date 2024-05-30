@@ -1,13 +1,8 @@
 import { Button } from "@mantine/core";
 
-export default function ButtonAtom({
-  label,
-  onClick,
-  overrideClass,
-  ...props
-}) {
+export default function ButtonAtom({ label, overrideClass, ...props }) {
   return (
-    <Button className={overrideClass} onClick={onClick}>
+    <Button variant={props.variant} className={overrideClass}>
       {label}
     </Button>
   );

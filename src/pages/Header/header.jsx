@@ -1,11 +1,10 @@
 import { useMsal } from "@azure/msal-react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaFileAlt } from "react-icons/fa";
-import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { LuUserCircle2 } from "react-icons/lu";
 import { MdHome } from "react-icons/md";
 import { RiAuctionLine } from "react-icons/ri";
-import React, { useState, useEffect, useRef } from "react";
-import { LuUserCircle2 } from "react-icons/lu";
-
 
 export default function HeaderComponent() {
   const { instance, accounts, inProgress, logger } = useMsal();
@@ -39,7 +38,7 @@ export default function HeaderComponent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <div className="flex-shrink-0 text-white">Logo</div>
+            <div className="flex-shrink-0 text-white justify-start">Logo</div>
             <div className="hidden md:block">
               <div className="ml-40 flex items-baseline space-x-6">
                 <a
@@ -80,7 +79,7 @@ export default function HeaderComponent() {
               </div>
             </div>
           </div>
-          <div className="hidden md:flex items-center space-x-4">            
+          <div className="hidden md:flex justify-end items-center space-x-4">
             <div className="relative profile-section flex items-center h-full">
               <LuUserCircle2 className="text-2xl text-white hover:text-yellow-500 mr-6" />
               <div className="name-role mr-6">
@@ -100,11 +99,11 @@ export default function HeaderComponent() {
                 id="popover-profile-menu"
                 role="menu"
                 className={`absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10 transition-opacity duration-300 ${
-                  popoverOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                  popoverOpen ? "opacity-100 visible" : "opacity-0 invisible"
                 }`}
                 data-popover-target="popover-bottom"
                 data-popover-placement="bottom"
-                style={{ top: '100%' }}
+                style={{ top: "100%" }}
               >
                 <a
                   href="/myprofile"
