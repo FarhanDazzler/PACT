@@ -1,6 +1,7 @@
 import { InteractionStatus } from "@azure/msal-browser";
 import { MsalProvider, useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MantineProvider } from "@mantine/core";
+import { jwtDecode } from "jwt-decode";
 import React, { useContext, useEffect } from "react";
 import {
   BrowserRouter,
@@ -18,17 +19,18 @@ import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
 import PRCreationComponent from "./pages/PRCreation";
 import RequestAccessComponent from "./pages/RequestAccess";
-import { getApi } from "./particles/api";
+import { postApi } from "./particles/api";
 
 const Pages = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const redirect = params.get("redirect");
-  const [userState, userDispatch] = useContext(UserContext);
+  const [state, dispatch] = useContext(UserContext);
 
   const navigate = useNavigate();
 
   const { instance, accounts, inProgress } = useMsal();
+  console.log("🚀 ~ Pages ~ accounts:", accounts);
 
   const isAuthenticated = useIsAuthenticated();
 
@@ -47,15 +49,20 @@ const Pages = () => {
           })
           .then(async (response) => {
             localStorage.setItem("id_token", response?.idToken);
-            const token = await getApi({
+            const token = await postApi({
               routes: "login",
+              data: accounts?.[0]?.idTokenClaims?.oid,
             })
               .then((res) => {
-                console.log("🚀 ~ .then ~ res:", res);
                 localStorage.setItem("id_token", res?.token);
+                const decodedToken = jwtDecode(res?.token);
+                const name = `${decodedToken?.first_name} ${decodedToken?.last_name}`;
+                localStorage.setItem("user_id", decodedToken?.user_id);
+                localStorage.setItem("role", decodedToken?.role_name);
+                localStorage.setItem("name", name);
               })
               .catch((err) =>
-                userDispatch({ type: "SET_LOGIN_ERROR", payload: err })
+                dispatch({ type: "SET_LOGIN_ERROR", payload: err })
               );
 
             // dataService

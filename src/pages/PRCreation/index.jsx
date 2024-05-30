@@ -1,12 +1,17 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { IoChevronDownSharp, IoChevronUpSharp } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
 import ParentUpload from "../../organisms/FileUpload/ParentUpload";
+import { postApi } from "../../particles/api";
 import {
   basicDetailsFields,
+  countryCodeOptions,
+  currencyOptions,
   options,
   purchaseDescriptionFields,
   requestPriorityOptions,
@@ -22,7 +27,10 @@ export default function PRRequestForm() {
   const [capop, setCapop] = useState("");
   const [folderName, setFolderName] = useState("");
   const [isAttachmentsCollapsed, setIsAttachmentsCollapsed] = useState(false);
-  // console.log(folderName);
+  const user_id = localStorage.getItem("user_id");
+  const navigate = useNavigate();
+  const userName = localStorage.getItem("name");
+
   const validationSchema = Yup.object({
     ...basicDetailsFields.reduce((schema, field) => {
       schema[field.name] = Yup.string().required("Required");
@@ -75,32 +83,62 @@ export default function PRRequestForm() {
         return options;
       case "spendTypeOptions":
         return spendTypeOptions;
+      case "currencyOptions":
+        return currencyOptions;
       case "requestPriorityOptions":
         return requestPriorityOptions;
       case "requestTypeOptions":
         return requestTypeOptions;
+      case "countryCodeOptions":
+        return countryCodeOptions;
       default:
         return [];
     }
   };
 
-  const renderFields = (fields, setFieldValue, errors, touched) => {
+  const prCreatorName = userName;
+
+  const renderFields = (fields, setFieldValue, values, errors, touched) => {
     return fields.map((field) => {
       if (field.condition && !eval(field.condition)) {
         return null;
       }
 
-      const handleChange = field.handleChange
+      if (field.name === "pr_creator") {
+        return (
+          <div key={field.name} className="flex items-center mb-4">
+            <label className="w-1/2 text-left text-wrap text-xs pr-4 font-semibold">
+              {field.label} <span className="text-red-600">*</span>
+            </label>
+            <div className="w-60 font-avantt text-sm">
+              <Field
+                name={field.name}
+                type="text"
+                className="w-full p-2 bg-gray-100 cursor-not-allowed"
+                value={values[field.name]}
+                readOnly
+              />
+              <ErrorMessage
+                name={field.name}
+                component="div"
+                className="text-red-600 text-xs mt-1"
+              />
+            </div>
+          </div>
+        );
+      }
+
+      const handleChange = field?.handleChange
         ? (option) => handleSpendTypeChange(option, setFieldValue)
-        : (option) => setFieldValue(field.name, option.value);
+        : (option) => setFieldValue(field?.name, option?.value);
 
       return (
-        <div key={field.name} className="flex items-center mb-4">
+        <div key={field?.name} className="flex items-center mb-4">
           <label className="w-1/2 text-left text-wrap text-xs pr-4 font-semibold">
-            {field.label} <span className="text-red-600">*</span>
+            {field?.label} <span className="text-red-600">*</span>
           </label>
           <div className="w-60 font-avantt text-sm">
-            {field.type === "textarea" ? (
+            {field?.type === "textarea" ? (
               <>
                 <Field
                   as="textarea"
@@ -124,11 +162,19 @@ export default function PRRequestForm() {
                   fontFamily="font-avantt"
                   overrideDropdownClass="font-avantt"
                 />
-                {errors[field.name] && touched[field.name] && (
-                  <div className="text-red-600 text-xs mt-1">
-                    {errors[field.name]}
-                  </div>
-                )}
+                {errors[field?.name] &&
+                  touched[field?.name] &&
+                  (console.log(
+                    "touched:",
+                    touched[field?.name],
+                    field,
+                    JSON.stringify(touched)
+                  ),
+                  (
+                    <div className="text-red-600 text-xs mt-1">
+                      {errors[field.name]}
+                    </div>
+                  ))}
               </>
             )}
           </div>
@@ -146,7 +192,8 @@ export default function PRRequestForm() {
       <Formik
         initialValues={{
           ...basicDetailsFields.reduce((values, field) => {
-            values[field.name] = "";
+            values[field.name] =
+              field.name === "pr_creator" ? prCreatorName : "";
             return values;
           }, {}),
           ...vendorPurchaseDetailsFields.reduce((values, field) => {
@@ -183,7 +230,26 @@ export default function PRRequestForm() {
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          setSubmitting(false); // Make sure to setSubmitting to false after form submission
+          const response = await postApi({
+            routes: `/pr_details_submit`,
+            data: {
+              user_id: user_id,
+              pr_details: {
+                ...values,
+              },
+              status: "pending",
+            },
+          })
+            .then((res) => {
+              toast.success("PR Form Submitted Successfully");
+              navigate("/");
+              console.log("res:", res);
+            })
+            .catch((err) => {
+              toast.error(err);
+              console.log("err:", err);
+            });
+          setSubmitting(false);
         }}
       >
         {({ setFieldValue, values, isSubmitting, errors, touched }) => (
@@ -210,6 +276,7 @@ export default function PRRequestForm() {
                       {renderFields(
                         basicDetailsFields,
                         setFieldValue,
+                        values,
                         errors,
                         touched
                       )}
@@ -227,6 +294,7 @@ export default function PRRequestForm() {
                       {renderFields(
                         vendorPurchaseDetailsFields,
                         setFieldValue,
+                        values,
                         errors,
                         touched
                       )}
@@ -244,27 +312,12 @@ export default function PRRequestForm() {
                       {renderFields(
                         purchaseDescriptionFields,
                         setFieldValue,
+                        values,
                         errors,
                         touched
                       )}
                     </div>
                   </div>
-                  {/* <div className="mt-8">
-                    <h2 className="mb-4 text-md font-semibold text-gray-500">
-                      <span className="flex items-center">
-                        <i className="fas fa-clipboard mr-2"></i> Catalogue item
-                        Details
-                      </span>
-                    </h2>
-                    <hr className="border-yellow-600" />
-                    <div className="grid gap-4 md:grid-cols-1 mt-4">
-                      <PRCreationLineItemsConfig
-                        setSelectedRows={setSelectedRows}
-                        setFieldValue={setFieldValue}
-                        values={values}
-                      />
-                    </div>
-                  </div> */}
                   <div className="mt-8">
                     <h2 className="mb-4 text-md font-semibold text-gray-500">
                       <span className="flex items-center">
@@ -301,7 +354,9 @@ export default function PRRequestForm() {
                       <div>
                         <ParentUpload
                           setFolderName={setFolderName}
-                          setFieldValue={setFieldValue}
+                          setFieldValue={(attachments) =>
+                            setFieldValue("attachments", attachments)
+                          }
                           capop={capop}
                           bigFour={true}
                           afr={true}
@@ -313,14 +368,24 @@ export default function PRRequestForm() {
                 </div>
               }
             />
-            <div className="flex justify-end">
-              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+            <div className="flex justify-end pb-3">
+              <button
+                type="button"
+                className="mt-5 mr-10 border border-black bg-gray-200 hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded text-sm"
+              >
                 Cancel
               </button>
-              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+              <button
+                type="button"
+                className="font-avantt mt-5 mr-10 border border-black bg-gray-200 hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded text-sm"
+              >
                 Save as Draft
               </button>
-              <button class="mt-5 mr-10 border border-black bg-white hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="font-avantt mt-5 border border-yellow-600 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold hover:text-white py-1 px-4 rounded text-sm"
+              >
                 Submit
               </button>
             </div>
