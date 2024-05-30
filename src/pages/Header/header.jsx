@@ -40,7 +40,7 @@ export default function HeaderComponent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <div className="flex-shrink-0 text-white justify-start">Logo</div>
+            <div className="flex text-white justify-start">Logo</div>
             <div className="hidden md:block">
               <div className="ml-40 flex items-baseline space-x-6">
                 <a
@@ -85,8 +85,10 @@ export default function HeaderComponent() {
             <div className="relative profile-section flex items-center h-full">
               <LuUserCircle2 className="text-2xl text-white hover:text-yellow-500 mr-6" />
               <div className="name-role mr-6">
-                <h1 className="font-bold text-yellow-500">{userName}</h1>
-                <h3 className="text-sm text-gray-400">{role}</h3>
+                <h1 className="font-bold text-sm text-yellow-500">
+                  {userName}
+                </h1>
+                <h3 className="text-xs text-gray-400">{role}</h3>
               </div>
               <button
                 onClick={() => setPopoverOpen(!popoverOpen)}

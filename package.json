@@ -36,6 +36,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.8.0",
     "react-tailwindcss-select": "^1.8.5",
+    "react-toastify": "^10.0.5",
     "start": "^5.1.0",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4",

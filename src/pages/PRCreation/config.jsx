@@ -2,7 +2,7 @@
 
 export const basicDetailsFields = [
   {
-    name: "function_department",
+    name: "function/department",
     label: "Function/Department",
     className: "w-1/2",
     options: "options",

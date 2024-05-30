@@ -5,6 +5,8 @@ import {
   useMantineReactTable,
 } from "mantine-react-table";
 import React, { useEffect, useMemo, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { FaDownload } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import useWindowDimensions from "../../utils/hooks";
@@ -22,7 +24,7 @@ export default function DynamicTableOrganism({
   onCellEdit = () => {},
   onTableDataChange,
   setFieldValue = () => {},
-  values, // Add this prop to handle table data changes
+  values,
   ...props
 }) {
   const [tableData, setTableData] = useState(
@@ -67,6 +69,12 @@ export default function DynamicTableOrganism({
     },
   });
 
+  const handleDateChange = (cell, date) => {
+    const newData = [...tableData];
+    newData[cell.row.index][cell.column.id] = date;
+    setTableData(newData);
+  };
+
   const { width } = useWindowDimensions();
   const getColumnWidth = () => {
     if (width < 600) return "50px"; // Small screens
@@ -80,13 +88,26 @@ export default function DynamicTableOrganism({
         ...col,
         size: getColumnWidth(),
         Cell: editable
-          ? ({ cell }) => (
-              <input
-                {...editTableCellProps({ cell })}
-                defaultValue={cell.value}
-                style={{ width: "100%" }}
-              />
-            )
+          ? ({ cell }) => {
+              console.log("Rendering cell:", cell); // Log the cell object
+              if (col.accessorKey === "deliveryDate") {
+                return (
+                  <DatePicker
+                    selected={cell.value ? new Date(cell.value) : null}
+                    onChange={(date) => handleDateChange(cell, date)}
+                    dateFormat="yyyy-MM-dd"
+                    style={{ width: "100%" }}
+                  />
+                );
+              }
+              return (
+                <input
+                  {...editTableCellProps({ cell })}
+                  defaultValue={cell.value}
+                  style={{ width: "100%" }}
+                />
+              );
+            }
           : undefined,
       })),
     [initialColumns, editable, getColumnWidth]

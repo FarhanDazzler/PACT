@@ -19,7 +19,7 @@ import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
 import PRCreationComponent from "./pages/PRCreation";
 import RequestAccessComponent from "./pages/RequestAccess";
-import { getApi } from "./particles/api";
+import { postApi } from "./particles/api";
 
 const Pages = () => {
   const location = useLocation();
@@ -30,6 +30,7 @@ const Pages = () => {
   const navigate = useNavigate();
 
   const { instance, accounts, inProgress } = useMsal();
+  console.log("🚀 ~ Pages ~ accounts:", accounts);
 
   const isAuthenticated = useIsAuthenticated();
 
@@ -48,8 +49,9 @@ const Pages = () => {
           })
           .then(async (response) => {
             localStorage.setItem("id_token", response?.idToken);
-            const token = await getApi({
+            const token = await postApi({
               routes: "login",
+              data: accounts?.[0]?.idTokenClaims?.oid,
             })
               .then((res) => {
                 localStorage.setItem("id_token", res?.token);
