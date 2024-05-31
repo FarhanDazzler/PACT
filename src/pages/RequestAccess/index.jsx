@@ -27,7 +27,7 @@ export default function RequestAccessComponent() {
   // }, [inProgress]);
 
   return (
-    <div className="fixed inset-0 overflow-y-auto flex justify-center items-center h-screen">
+    <div className="fixed inset-0 overflow-y-auto flex justify-center items-center h-full">
       <CardMolecule
         cardClass="mt-12 p-2 md:p-4 lg:p-8 w-48 md:w-96 border bg-white rounded-lg"
         headerClass="p-5 flex justify-center items-center font-avantt text-4xl text-yellow-600 font-bold"
@@ -45,8 +45,8 @@ export default function RequestAccessComponent() {
             </div>{" "}
             <div className="pt-4 flex justify-center items-center">
               <ReactSelectMolecule
-                overrideClass="pt-2 flex justify-center items-center w-full"
-                fontFamily=" font-avantt"
+                overrideClass="pt-2 flex justify-center items-center w-1/2"
+                fontFamily="font-avantt"
                 placeholder="Select Zone"
                 options={[
                   { value: "afr", label: "AFR" },
@@ -56,8 +56,8 @@ export default function RequestAccessComponent() {
             </div>
             <div className="flex justify-center items-center">
               <ReactSelectMolecule
-                overrideClass="pt-2 flex justify-center items-center w-full"
-                fontFamily=" font-avantt"
+                overrideClass="pt-2 flex justify-center items-center w-1/2"
+                fontFamily="font-avantt"
                 placeholder="Select Role"
                 options={[
                   { value: "requestor", label: "Requestor" },

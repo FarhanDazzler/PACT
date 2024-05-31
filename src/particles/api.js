@@ -1,18 +1,13 @@
 import axios from "axios";
 
-export async function postApi({
-  url,
-  routes = "",
-  data = {},
-  headers = {},
-}) {
+export async function postApi({ url, routes = "", data = {}, headers = {} }) {
   // console.log('axios', routes, data)
   return await axios
-    .post(`http://localhost:3001/${routes}`, data, {
-      headers : {
+    .post(`${import.meta.env.VITE_REACT_API_URL}/${routes}`, data, {
+      headers: {
         Authorization: localStorage.getItem("id_token"),
-        ...headers
-      }
+        ...headers,
+      },
     })
     .then((response) =>
       response?.data?.success ? response?.data?.data : response?.data
@@ -28,7 +23,7 @@ export async function getApi({
   },
 }) {
   return await axios
-    .get(`http://localhost:3001/${routes}`, {
+    .get(`${import.meta.env.VITE_REACT_API_URL}/${routes}`, {
       headers,
     })
     .then((response) =>

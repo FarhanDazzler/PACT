@@ -38,10 +38,10 @@ const reducer = (state, action) => {
         error: action.payload,
       };
 
-    case "SET_ROLES":
+    case "SET_ROLE":
       return {
         ...state,
-        roles: action.payload,
+        role: action.payload,
         // roles: ['stakeholder'],
       };
 

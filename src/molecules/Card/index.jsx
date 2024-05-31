@@ -8,7 +8,7 @@ export default function CardMolecule({
 }) {
   const data = _.isArray(metricCardData) ? metricCardData : [metricCardData];
   const fontStyles = {
-    fontFamily: "font-avantt, sans-serif", // replace 'YourFontFamily' with your actual font family
+    fontFamily: "font-avantt",
   };
 
   return (

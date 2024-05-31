@@ -1,6 +1,7 @@
 import { InteractionStatus } from "@azure/msal-browser";
 import { MsalProvider, useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MantineProvider } from "@mantine/core";
+import { jwtDecode } from "jwt-decode";
 import React, { useContext, useEffect } from "react";
 import {
   BrowserRouter,
@@ -20,16 +21,18 @@ import PRCreationComponent from "./pages/PRCreation";
 import RequestAccessComponent from "./pages/RequestAccess";
 import { getApi } from "./particles/api";
 import PRDetail from "./pages/PRDetail";
+import { postApi } from "./particles/api";
 
 const Pages = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const redirect = params.get("redirect");
-  const [userState, userDispatch] = useContext(UserContext);
+  const [state, dispatch] = useContext(UserContext);
 
   const navigate = useNavigate();
 
   const { instance, accounts, inProgress } = useMsal();
+  console.log("🚀 ~ Pages ~ accounts:", accounts);
 
   const isAuthenticated = useIsAuthenticated();
 
@@ -48,14 +51,20 @@ const Pages = () => {
           })
           .then(async (response) => {
             localStorage.setItem("id_token", response?.idToken);
-            const token = await getApi({
+            const token = await postApi({
               routes: "login",
+              data: accounts?.[0]?.idTokenClaims?.oid,
             })
               .then((res) => {
-                console.log(res);
+                localStorage.setItem("id_token", res?.token);
+                const decodedToken = jwtDecode(res?.token);
+                const name = `${decodedToken?.first_name} ${decodedToken?.last_name}`;
+                localStorage.setItem("user_id", decodedToken?.user_id);
+                localStorage.setItem("role", decodedToken?.role_name);
+                localStorage.setItem("name", name);
               })
               .catch((err) =>
-                userDispatch({ type: "SET_LOGIN_ERROR", payload: err })
+                dispatch({ type: "SET_LOGIN_ERROR", payload: err })
               );
 
             // dataService
@@ -73,7 +82,7 @@ const Pages = () => {
           });
       }
       if (redirect) navigate(redirect);
-      else if (location.pathname == "/login") navigate("/");
+      else if (location.pathname === "/login") navigate("/");
       else {
         navigate(
           `${location.pathname}${location.search ? location.search : ""}`
@@ -89,17 +98,21 @@ const Pages = () => {
     }
   }, [accounts, inProgress]);
 
+  // Determine background image based on the current path
+  const backgroundClass = ["/login", "/request"].includes(location.pathname)
+    ? "bg-login-page"
+    : "bg-default-page";
+
   return (
     <div
-      className="flex flex-col min-h-screen bg-gray-100"
-      style={{ backgroundImage: 'url("../src/assests/images/bg_image.jpg")' }}
+      className={`flex flex-col min-h-screen bg-gray-100 bg-cover ${backgroundClass}`}
     >
-      <div className="fixed top-0 w-full z-50">
-        {!["/login", "/request"].includes(location?.pathname) && (
+      <div className="w-full z-50">
+        {!["/login", "/request"].includes(location.pathname) && (
           <HeaderComponent />
         )}
       </div>
-      <div className="flex flex-col bg-cover p-10">
+      <div className={`flex-grow bg-cover ${backgroundClass} p-1`}>
         <Routes>
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/request" element={<RequestAccessComponent />} />
@@ -121,6 +134,85 @@ export default function App({ msalInstance }) {
           <MantineProvider
             theme={{
               primaryColor: "yellow",
+              components: {
+                Select: {
+                  styles: {
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                    selected: {
+                      color: "#e3af32",
+                      backgroundColor: "#e3af3221",
+                    },
+                    hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                  },
+                },
+                TextInput: {
+                  styles: {
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                    selected: {
+                      color: "#e3af32",
+                      backgroundColor: "#e3af3221",
+                    },
+                    hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                  },
+                },
+              },
+            }}
+            styles={{
+              Calendar: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: {
+                  backgroundColor: "#e3af3221",
+                  color: "#e3af32",
+                },
+              }),
+              DatePicker: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+              }),
+              DateRangePicker: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: {
+                  backgroundColor: "transparent",
+                  color: "unset",
+                },
+              }),
+              Select: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+              }),
+              NativeSelect: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+              }),
+              TextInput: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+              }),
+              Textarea: (theme) => ({
+                input: {
+                  "&:focus": { borderColor: "#e3af32" },
+                },
+                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+              }),
             }}
           >
             <OptionsContextProvider>
