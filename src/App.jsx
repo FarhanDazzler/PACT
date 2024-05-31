@@ -19,6 +19,8 @@ import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
 import PRCreationComponent from "./pages/PRCreation";
 import RequestAccessComponent from "./pages/RequestAccess";
+import { getApi } from "./particles/api";
+import PRDetail from "./pages/PRDetail";
 import { postApi } from "./particles/api";
 
 const Pages = () => {
@@ -51,7 +53,7 @@ const Pages = () => {
             localStorage.setItem("id_token", response?.idToken);
             const token = await postApi({
               routes: "login",
-              data: accounts?.[0]?.idTokenClaims?.oid,
+              data: { oid: accounts?.[0]?.idTokenClaims?.oid },
             })
               .then((res) => {
                 localStorage.setItem("id_token", res?.token);
@@ -116,6 +118,7 @@ const Pages = () => {
           <Route path="/request" element={<RequestAccessComponent />} />
           <Route path="/" element={<DashboardComponent />} />
           <Route path="/pr_request" element={<PRCreationComponent />} />
+          <Route path="/pr_detail" element={<PRDetail />} />
         </Routes>
       </div>
       <FooterComponent />
