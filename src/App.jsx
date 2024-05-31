@@ -51,7 +51,7 @@ const Pages = () => {
             localStorage.setItem("id_token", response?.idToken);
             const token = await postApi({
               routes: "login",
-              data: accounts?.[0]?.idTokenClaims?.oid,
+              data: { oid: accounts?.[0]?.idTokenClaims?.oid },
             })
               .then((res) => {
                 localStorage.setItem("id_token", res?.token);

@@ -102,6 +102,7 @@ export const vendorPurchaseDetailsFields = [
     options: "options",
     condition: "showCapexFields",
   },
+
   {
     name: "gl",
     label: "GL",
