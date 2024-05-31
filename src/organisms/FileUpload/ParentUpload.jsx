@@ -120,7 +120,7 @@ const ParentUpload = ({
   };
 
   return (
-    <div className="flex flex-wrap gap-4 flex-grow">
+    <div className="flex flex-wrap gap-4 flex-grow font-avantt">
       <FileUpload
         customText="Valid invoice received from vendor"
         uploadText="quotation"

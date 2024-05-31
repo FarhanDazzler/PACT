@@ -19,6 +19,7 @@ import LoginComponent from "./pages/Login";
 import PRCreationComponent from "./pages/PRCreation";
 import RequestAccessComponent from "./pages/RequestAccess";
 import { getApi } from "./particles/api";
+import PRDetail from "./pages/PRDetail";
 
 const Pages = () => {
   const location = useLocation();
@@ -104,6 +105,7 @@ const Pages = () => {
           <Route path="/request" element={<RequestAccessComponent />} />
           <Route path="/" element={<DashboardComponent />} />
           <Route path="/pr_request" element={<PRCreationComponent />} />
+          <Route path="/pr_detail" element={<PRDetail />} />
         </Routes>
       </div>
       <FooterComponent />
