@@ -2,7 +2,7 @@
 import { Button } from "@mantine/core";
 import React from "react";
 // import { useNavigate } from "react-router-dom";
-import ABILogo from "../../assests/images/abi_logo_black.png";
+import ABILogo from "../../assests/abi_logo_black.png";
 // import { loginRequest } from "../../config/authConfig";
 import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
@@ -31,7 +31,7 @@ export default function RequestAccessComponent() {
       <CardMolecule
         cardClass="mt-12 p-2 md:p-4 lg:p-8 w-48 md:w-96 border bg-white rounded-lg"
         headerClass="p-5 flex justify-center items-center font-avantt text-4xl text-yellow-600 font-bold"
-        header="PR-PO"
+        header="PACT"
         body={
           <>
             <hr className="h-px w-14 flex justify-center items-center bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />

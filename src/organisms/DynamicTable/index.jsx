@@ -113,16 +113,6 @@ export default function DynamicTableOrganism({
       showGlobalFilter: true,
       density: "xs",
     },
-    enableRowActions: rowActions,
-    renderRowActions: ({ row }) => {
-      return (
-        <Tooltip label="Delete">
-          <ActionIcon color="red" onClick={() => handleDeleteRow(row)}>
-            <IconTrash />
-          </ActionIcon>
-        </Tooltip>
-      );
-    },
     enablePagination: showPagination,
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
@@ -144,7 +134,9 @@ export default function DynamicTableOrganism({
       classNames: "font-avantt rounded-5xl text-black",
       sx: {
         "thead > tr": {
-          fontWeight: "bolder",
+          fontWeight: "bold",
+          fontSize: "xs",
+          // fontFamily: "font-avantt",
         },
         "thead > tr > th": {
           backgroundColor: "inherit",
@@ -264,6 +256,16 @@ export default function DynamicTableOrganism({
             )}
           </Flex>
         </Flex>
+      );
+    },
+    enableRowActions: rowActions,
+    renderRowActions: ({ row }) => {
+      return (
+        <Tooltip label="Delete">
+          <ActionIcon color="red" onClick={() => handleDeleteRow(row)}>
+            <IconTrash />
+          </ActionIcon>
+        </Tooltip>
       );
     },
   });

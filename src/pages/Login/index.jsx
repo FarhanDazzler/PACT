@@ -4,7 +4,7 @@ import { Button } from "@mantine/core";
 import _ from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import ABILogo from "../../assests/images/abi_logo_black.png";
+import ABILogo from "../../assests/abi_logo_black.png";
 import { loginRequest } from "../../config/authConfig";
 import { UserContext } from "../../context/userContext";
 import CardMolecule from "../../molecules/Card";
@@ -42,7 +42,7 @@ export default function LoginComponent() {
         <CardMolecule
           cardClass="px-2 w-48 md:w-72 h-84 border bg-white rounded-lg"
           headerClass="py-6 flex justify-center items-center font-avantt text-4xl text-yellow-600 font-bold"
-          header="PR-PO"
+          header="PACT"
           body={
             <>
               <hr className="h-px w-14 bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />

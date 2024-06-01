@@ -1,3 +1,4 @@
+import { FaFileAlt } from "react-icons/fa";
 import { IoHandRightOutline } from "react-icons/io5";
 import { MdPendingActions } from "react-icons/md";
 import { RiProgress1Line } from "react-icons/ri";
@@ -26,7 +27,7 @@ const getConfig = (zone = "", role = "", { ...rest }) => {
               "justify-center items-center h-1 ml-8 !justify-start !bg-transparent text-xs font-avantt font-semibold max-w-fit whitespace-nowrap",
             cardClass:
               "rounded-lg bg-white border border-slate-300 h-40 w-40 p-1",
-            icon: <IoHandRightOutline size="16" className="mr-2" />,
+            icon: <FaFileAlt size="16" className="mr-2" />,
           },
           {
             header: "",
