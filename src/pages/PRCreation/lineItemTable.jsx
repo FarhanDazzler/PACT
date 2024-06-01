@@ -64,6 +64,7 @@ const getConfig = ({ tableData: data, setTableData, ...rest }) => {
     showCartButton: false,
     showPagination: false,
     editable: true,
+    rowActions: true,
     onTableDataChange: setTableData,
     ...rest,
   };

@@ -1,11 +1,11 @@
-import { Button, Flex } from "@mantine/core";
+import { ActionIcon, Button, Flex, Tooltip } from "@mantine/core";
+import { IconTrash } from "@tabler/icons-react";
 import {
   MRT_GlobalFilterTextInput,
   MantineReactTable,
   useMantineReactTable,
 } from "mantine-react-table";
 import React, { useEffect, useMemo, useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaDownload } from "react-icons/fa";
 import * as XLSX from "xlsx";
@@ -25,6 +25,7 @@ export default function DynamicTableOrganism({
   onTableDataChange,
   setFieldValue = () => {},
   values,
+  rowActions = false,
   ...props
 }) {
   const [tableData, setTableData] = useState(
@@ -59,8 +60,8 @@ export default function DynamicTableOrganism({
     ]);
   };
 
-  const handleDeleteRow = (index) => {
-    setTableData((prevData) => prevData.filter((_, i) => i !== index));
+  const handleDeleteRow = (row) => {
+    setTableData((prevData) => prevData.filter((_, i) => i !== row.index));
   };
 
   const editTableCellProps = ({ cell }) => ({
@@ -84,31 +85,12 @@ export default function DynamicTableOrganism({
 
   const columns = useMemo(
     () =>
-      initialColumns.map((col) => ({
-        ...col,
-        size: getColumnWidth(),
-        Cell: editable
-          ? ({ cell }) => {
-              if (col.accessorKey === "deliveryDate") {
-                return (
-                  <DatePicker
-                    selected={cell.value ? new Date(cell.value) : null}
-                    onChange={(date) => handleDateChange(cell, date)}
-                    dateFormat="yyyy-MM-dd"
-                    style={{ width: "100%" }}
-                  />
-                );
-              }
-              return (
-                <input
-                  {...editTableCellProps({ cell })}
-                  defaultValue={cell.value}
-                  style={{ width: "100%" }}
-                />
-              );
-            }
-          : undefined,
-      })),
+      initialColumns.map((col) => {
+        return {
+          ...col,
+          size: getColumnWidth(),
+        };
+      }),
     [initialColumns, editable, getColumnWidth]
   );
 
@@ -130,6 +112,16 @@ export default function DynamicTableOrganism({
       showColumnFilters: false,
       showGlobalFilter: true,
       density: "xs",
+    },
+    enableRowActions: rowActions,
+    renderRowActions: ({ row }) => {
+      return (
+        <Tooltip label="Delete">
+          <ActionIcon color="red" onClick={() => handleDeleteRow(row)}>
+            <IconTrash />
+          </ActionIcon>
+        </Tooltip>
+      );
     },
     enablePagination: showPagination,
     paginationDisplayMode: "pages",

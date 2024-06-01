@@ -16,9 +16,7 @@ export default function DashboardTableConfig(props) {
             User_id: userId,
           },
         });
-        console.log("🚀 ~ fetchData ~ result:", response);
         setData(response);
-        console.log("🚀 ~ fetchData ~ setData:", data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
