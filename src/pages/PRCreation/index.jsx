@@ -351,13 +351,14 @@ export default function PRRequestForm() {
                     </h2>
                     <hr className="border-yellow-600" />
                     {!isAttachmentsCollapsed && (
-                      <div className="font-avantt">
+                      <div className="font-avantt text-sm">
                         <ParentUpload
                           setFolderName={setFolderName}
                           setFieldValue={(attachments) =>
                             setFieldValue("attachments", attachments)
                           }
                           capop={capop}
+                          retroNonRetro={"retro"}
                           bigFour={true}
                           afr={true}
                           lessThanHundred={true}
