@@ -1,0 +1,13 @@
+export const DB_DATE_FORMAT = "YYYY-MM-DD";
+export const DB_DATETIME_FORMAT = "YYYY-MM-DDTHH:mm:ss";
+export const UI_DATE_FORMAT = "DD/MM/YYYY";
+export const JS_DATE_FORMAT = "dd/MM/yyyy";
+export const JS_DATETIME_FORMAT = "dd/MM/yyyy hh:mm:ss";
+export const UI_DATETIME_FORMAT = "DD/MM/YY h:mm:ss A";
+export const UI_TIME_FORMAT = "hh:mm A";
+export const UI_FILE_DATETIME_FORMAT = "YYYYMMDD_HHmmss";
+export const UI_HUMAN_DATE_FORMAT = "DD MMM YYYY";
+export const UI_HUMAN_TIME_FORMAT = "hh:mm A";
+export const UI_HUMAN_DATETIME_FORMAT = "DD MMM YYYY hh:mm A";
+export const UI_HUMAN_DATE_DAY_FORMAT = "DD MMM YYYY ( dddd )";
+export const UI_HUMAN_DAY_FORMAT = "dddd";

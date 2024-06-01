@@ -31,7 +31,7 @@ export default function CardMolecule({
               )}
               {card?.footer && (
                 <footer
-                  className={`p-2 justify-center flex items-center ${card?.footerClass}`}
+                  className={`p-2 justify-center items-center ${card?.footerClass}`}
                 >
                   {!_.isEmpty(card?.icon) ? card?.icon : ""}
                   {card?.footer}

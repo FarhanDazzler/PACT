@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { IoChevronDownSharp, IoChevronUpSharp } from "react-icons/io5";
@@ -8,17 +9,8 @@ import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
 import ParentUpload from "../../organisms/FileUpload/ParentUpload";
 import { postApi } from "../../particles/api";
-import {
-  basicDetailsFields,
-  countryCodeOptions,
-  currencyOptions,
-  options,
-  purchaseDescriptionFields,
-  requestPriorityOptions,
-  requestTypeOptions,
-  spendTypeOptions,
-  vendorPurchaseDetailsFields,
-} from "./config";
+import { DB_DATETIME_FORMAT } from "../../particles/constants";
+import FormConfig from "./config";
 import LineItemsTableConfig from "./lineItemTable";
 
 export default function PRRequestForm() {
@@ -30,6 +22,12 @@ export default function PRRequestForm() {
   const user_id = localStorage.getItem("user_id");
   const navigate = useNavigate();
   const userName = localStorage.getItem("name");
+
+  const {
+    basicDetailsFields,
+    vendorPurchaseDetailsFields,
+    purchaseDescriptionFields,
+  } = FormConfig();
 
   const validationSchema = Yup.object({
     ...basicDetailsFields.reduce((schema, field) => {
@@ -63,6 +61,11 @@ export default function PRRequestForm() {
     ),
   });
 
+  const staticOptions = [
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+  ];
+
   const handleSpendTypeChange = (option, setFieldValue) => {
     setFieldValue("spend_type", option.value);
     if (option.value === "capex") {
@@ -74,25 +77,6 @@ export default function PRRequestForm() {
       setShowCapexFields(true);
     } else {
       setShowCapexFields(false);
-    }
-  };
-
-  const getOptions = (optionsName) => {
-    switch (optionsName) {
-      case "options":
-        return options;
-      case "spendTypeOptions":
-        return spendTypeOptions;
-      case "currencyOptions":
-        return currencyOptions;
-      case "requestPriorityOptions":
-        return requestPriorityOptions;
-      case "requestTypeOptions":
-        return requestTypeOptions;
-      case "countryCodeOptions":
-        return countryCodeOptions;
-      default:
-        return [];
     }
   };
 
@@ -110,11 +94,11 @@ export default function PRRequestForm() {
             <label className="w-1/2 text-left text-wrap text-xs pr-4 font-semibold">
               {field.label} <span className="text-red-600">*</span>
             </label>
-            <div className="w-60 font-avantt text-sm">
+            <div className="w-60 text-sm">
               <Field
                 name={field.name}
                 type="text"
-                className="w-full p-2 bg-gray-100 cursor-not-allowed"
+                className="w-full p-2 bg-gray-100 cursor-not-allowed "
                 value={values[field.name]}
                 readOnly
               />
@@ -137,7 +121,7 @@ export default function PRRequestForm() {
           <label className="w-1/2 text-left text-wrap text-xs pr-4 font-semibold">
             {field?.label} <span className="text-red-600">*</span>
           </label>
-          <div className="w-60 font-avantt text-sm">
+          <div className="w-60 text-sm">
             {field?.type === "textarea" ? (
               <>
                 <Field
@@ -154,27 +138,19 @@ export default function PRRequestForm() {
             ) : (
               <>
                 <ReactSelectMolecule
-                  className={field.className}
-                  name={field.name}
-                  options={getOptions(field.options)}
+                  className={field?.className}
+                  name={field?.name}
+                  options={field?.options ?? staticOptions}
                   onChange={handleChange}
                   placeholder="Select"
-                  fontFamily="font-avantt"
-                  overrideDropdownClass="font-avantt"
+                  // fontFamily="font-avantt"
+                  // overrideDropdownClass="font-avantt"
                 />
-                {errors[field?.name] &&
-                  touched[field?.name] &&
-                  (console.log(
-                    "touched:",
-                    touched[field?.name],
-                    field,
-                    JSON.stringify(touched)
-                  ),
-                  (
-                    <div className="text-red-600 text-xs mt-1">
-                      {errors[field.name]}
-                    </div>
-                  ))}
+                {errors[field?.name] && touched[field?.name] && (
+                  <div className="text-red-600 text-xs mt-1">
+                    {errors[field.name]}
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -230,26 +206,29 @@ export default function PRRequestForm() {
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          const response = await postApi({
-            routes: `/pr_details_submit`,
-            data: {
-              user_id: user_id,
-              pr_details: {
-                ...values,
+          try {
+            const response = await postApi({
+              routes: `/pr_details_submit`,
+              data: {
+                user_id: user_id,
+                pr_details: {
+                  ...values,
+                },
+                status: "pending",
+                submitted_at: dayjs().format(DB_DATETIME_FORMAT),
               },
-              status: "pending",
-            },
-          })
-            .then((res) => {
-              toast.success("PR Form Submitted Successfully");
-              navigate("/");
-              console.log("res:", res);
-            })
-            .catch((err) => {
-              toast.error(err);
-              console.log("err:", err);
             });
-          setSubmitting(false);
+
+            toast.success("PR Form Submitted Successfully");
+            navigate("/");
+          } catch (error) {
+            // Error occurred during API request
+            const errorMessage = error.message || "An error occurred";
+            toast.error(errorMessage);
+            console.error("Error:", error);
+          } finally {
+            setSubmitting(false);
+          }
         }}
       >
         {({ setFieldValue, values, isSubmitting, errors, touched }) => (
@@ -258,15 +237,18 @@ export default function PRRequestForm() {
               cardClass="min-h-full p-14 border rounded-lg"
               header={
                 <div className="text-md pb-8 font-avantt">
-                  <span className="text-black font-avantt">PR Request</span>
-                  <span className="font-bold"> &gt; New PR Request Form</span>
+                  <span className="text-black">PR Request</span>
+                  <span className="font-semibold">
+                    {" "}
+                    &gt; New PR Request Form
+                  </span>
                 </div>
               }
               styles={{ fontFamily: "font-avantt" }}
               body={
                 <div>
                   <div>
-                    <h2 className="mb-4 text-md font-semibold text-yellow-600 font-avantt">
+                    <h2 className="mb-4 text-md font-semibold text-yellow-600">
                       <span className="flex items-center">
                         <i className="fas fa-clock mr-2"></i> Basic Details
                       </span>
