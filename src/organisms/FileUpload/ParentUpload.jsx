@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { postApi } from "../../particles/api";
 import convertArrayToObjectsForAttachments from "../../utils/config";
@@ -229,7 +229,7 @@ const ParentUpload = ({
   };
 
   return (
-    <div className="flex flex-wrap gap-4 flex-grow font-avantt">
+    <div className="flex flex-wrap gap-4 flex-grow font-avantt font-semibold text-sm">
       {renderFileUploads()}
       {Object.keys(allFiles).length > 0 && (
         <button
