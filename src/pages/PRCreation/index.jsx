@@ -138,8 +138,8 @@ export default function PRRequestForm() {
             ) : (
               <>
                 <ReactSelectMolecule
-                  className={field.className}
-                  name={field.name}
+                  className={field?.className}
+                  name={field?.name}
                   options={field?.options ?? staticOptions}
                   onChange={handleChange}
                   placeholder="Select"
@@ -219,7 +219,6 @@ export default function PRRequestForm() {
               },
             });
 
-            // Assuming response is successful if it reaches here
             toast.success("PR Form Submitted Successfully");
             navigate("/");
           } catch (error) {

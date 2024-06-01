@@ -37,7 +37,7 @@ export default function ReactSelectMolecule({
       <AsyncSelect
         {...props}
         styles={customStyles}
-        className={`w-full rounded border-1 border-black font-medium ${overrideDropdownClass}`}
+        className={`w-full rounded border-1 border-black font-medium text-xs ${overrideDropdownClass}`}
         defaultOptions={options}
         placeholder={placeholder ?? "Select"}
         closeMenuOnSelect
