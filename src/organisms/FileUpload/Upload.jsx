@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-const FileUpload = ({ customText = "", uploadText = "", addFiles, id }) => {
+const FileUpload = ({
+  customText = "",
+  uploadText = "",
+  addFiles,
+  id,
+  mandatory = false,
+}) => {
   const [files, setFiles] = useState([]);
   const [error, setError] = useState("");
 
@@ -29,7 +35,9 @@ const FileUpload = ({ customText = "", uploadText = "", addFiles, id }) => {
   return (
     <div className="flex w-full mx-auto">
       <div className="w-1/2 text-left p-5">
-        <p>{customText}</p>
+        <p>
+          {customText} {mandatory && <span className="text-red-500">*</span>}
+        </p>
       </div>
       <div className="w-1/2 text-center p-5">
         <div

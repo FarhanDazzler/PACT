@@ -18,9 +18,8 @@ import HeaderComponent from "./pages/Header/header";
 import DashboardComponent from "./pages/Home/dashboard";
 import LoginComponent from "./pages/Login";
 import PRCreationComponent from "./pages/PRCreation";
-import RequestAccessComponent from "./pages/RequestAccess";
-import { getApi } from "./particles/api";
 import PRDetail from "./pages/PRDetail";
+import RequestAccessComponent from "./pages/RequestAccess";
 import { postApi } from "./particles/api";
 
 const Pages = () => {
@@ -32,7 +31,6 @@ const Pages = () => {
   const navigate = useNavigate();
 
   const { instance, accounts, inProgress } = useMsal();
-  console.log("🚀 ~ Pages ~ accounts:", accounts);
 
   const isAuthenticated = useIsAuthenticated();
 
@@ -61,6 +59,7 @@ const Pages = () => {
                 const name = `${decodedToken?.first_name} ${decodedToken?.last_name}`;
                 localStorage.setItem("user_id", decodedToken?.user_id);
                 localStorage.setItem("role", decodedToken?.role_name);
+                localStorage.setItem("zone", decodedToken?.zone);
                 localStorage.setItem("name", name);
               })
               .catch((err) =>
@@ -131,12 +130,69 @@ export default function App({ msalInstance }) {
     <div className="App">
       <BrowserRouter>
         <MsalProvider instance={msalInstance}>
-          <MantineProvider
-            theme={{
-              primaryColor: "yellow",
-              components: {
-                Select: {
-                  styles: {
+          <OptionsContextProvider>
+            <UserContextProvider>
+              <MantineProvider
+                theme={{
+                  primaryColor: "yellow",
+                  components: {
+                    Select: {
+                      styles: {
+                        input: {
+                          "&:focus": { borderColor: "#e3af32" },
+                        },
+                        selected: {
+                          color: "#e3af32",
+                          backgroundColor: "#e3af3221",
+                        },
+                        hovered: {
+                          color: "#e3af32",
+                          backgroundColor: "#e3af3221",
+                        },
+                      },
+                    },
+                    TextInput: {
+                      styles: {
+                        input: {
+                          "&:focus": { borderColor: "#e3af32" },
+                        },
+                        selected: {
+                          color: "#e3af32",
+                          backgroundColor: "#e3af3221",
+                        },
+                        hovered: {
+                          color: "#e3af32",
+                          backgroundColor: "#e3af3221",
+                        },
+                      },
+                    },
+                  },
+                }}
+                styles={{
+                  Calendar: (theme) => ({
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                    selected: {
+                      backgroundColor: "#e3af3221",
+                      color: "#e3af32",
+                    },
+                  }),
+                  DatePicker: (theme) => ({
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                  }),
+                  DateRangePicker: (theme) => ({
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                    selected: {
+                      backgroundColor: "transparent",
+                      color: "unset",
+                    },
+                  }),
+                  Select: (theme) => ({
                     input: {
                       "&:focus": { borderColor: "#e3af32" },
                     },
@@ -145,10 +201,8 @@ export default function App({ msalInstance }) {
                       backgroundColor: "#e3af3221",
                     },
                     hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
-                  },
-                },
-                TextInput: {
-                  styles: {
+                  }),
+                  NativeSelect: (theme) => ({
                     input: {
                       "&:focus": { borderColor: "#e3af32" },
                     },
@@ -157,70 +211,33 @@ export default function App({ msalInstance }) {
                       backgroundColor: "#e3af3221",
                     },
                     hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
-                  },
-                },
-              },
-            }}
-            styles={{
-              Calendar: (theme) => ({
-                input: {
-                  "&:focus": { borderColor: "#e3af32" },
-                },
-                selected: {
-                  backgroundColor: "#e3af3221",
-                  color: "#e3af32",
-                },
-              }),
-              DatePicker: (theme) => ({
-                input: {
-                  "&:focus": { borderColor: "#e3af32" },
-                },
-              }),
-              DateRangePicker: (theme) => ({
-                input: {
-                  "&:focus": { borderColor: "#e3af32" },
-                },
-                selected: {
-                  backgroundColor: "transparent",
-                  color: "unset",
-                },
-              }),
-              Select: (theme) => ({
-                input: {
-                  "&:focus": { borderColor: "#e3af32" },
-                },
-                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
-                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
-              }),
-              NativeSelect: (theme) => ({
-                input: {
-                  "&:focus": { borderColor: "#e3af32" },
-                },
-                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
-                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
-              }),
-              TextInput: (theme) => ({
-                input: {
-                  "&:focus": { borderColor: "#e3af32" },
-                },
-                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
-                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
-              }),
-              Textarea: (theme) => ({
-                input: {
-                  "&:focus": { borderColor: "#e3af32" },
-                },
-                selected: { color: "#e3af32", backgroundColor: "#e3af3221" },
-                hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
-              }),
-            }}
-          >
-            <OptionsContextProvider>
-              <UserContextProvider>
+                  }),
+                  TextInput: (theme) => ({
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                    selected: {
+                      color: "#e3af32",
+                      backgroundColor: "#e3af3221",
+                    },
+                    hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                  }),
+                  Textarea: (theme) => ({
+                    input: {
+                      "&:focus": { borderColor: "#e3af32" },
+                    },
+                    selected: {
+                      color: "#e3af32",
+                      backgroundColor: "#e3af3221",
+                    },
+                    hovered: { color: "#e3af32", backgroundColor: "#e3af3221" },
+                  }),
+                }}
+              >
                 <Pages />
-              </UserContextProvider>
-            </OptionsContextProvider>
-          </MantineProvider>
+              </MantineProvider>
+            </UserContextProvider>
+          </OptionsContextProvider>
         </MsalProvider>
       </BrowserRouter>
     </div>

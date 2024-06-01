@@ -40,46 +40,44 @@ export default function HeaderComponent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <div className="flex text-white justify-start">Logo</div>
-            <div className="hidden md:block">
-              <div className="ml-40 flex items-baseline space-x-6">
-                <a
-                  href="/"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
-                >
-                  <MdHome size="16" className="mr-1" />
-                  <span className="text-xs">Home </span>
-                </a>
-                <a
-                  href="pr_request"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
-                >
-                  <FaFileAlt size="16" className="mr-1" />
-                  <span className="text-xs">PR Request</span>
-                </a>
-                <a
-                  href="gr_confirmation"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
-                >
-                  <FaFileAlt size="16" className="mr-1" />
-                  <span className="text-xs">GR Confirmation Request</span>
-                </a>
-                <a
-                  href="po_modify"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
-                >
-                  <FaFileAlt size="16" className="mr-1" />
-                  <span className="text-xs">PO Modification Request</span>
-                </a>
-                <a
-                  href="e-auction"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
-                >
-                  <RiAuctionLine size="16" className="mr-1" />
-                  <span className="text-xs">E-Auction Request</span>
-                </a>
-              </div>
-            </div>
+            <div className="text-white pr-6">Logo</div>
+          </div>
+          <div className="flex items-center space-x-6">
+            <a
+              href="/"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <MdHome size="16" className="mr-1" />
+              <span className="text-xs">Home </span>
+            </a>
+            <a
+              href="pr_request"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <FaFileAlt size="16" className="mr-1" />
+              <span className="text-xs">PR Request</span>
+            </a>
+            <a
+              href="gr_confirmation"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <FaFileAlt size="16" className="mr-1" />
+              <span className="text-xs">GR Confirmation Request</span>
+            </a>
+            <a
+              href="po_modify"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <FaFileAlt size="16" className="mr-1" />
+              <span className="text-xs">PO Modification Request</span>
+            </a>
+            <a
+              href="e-auction"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <RiAuctionLine size="16" className="mr-1" />
+              <span className="text-xs">E-Auction Request</span>
+            </a>
           </div>
           <div className="hidden md:flex justify-end items-center space-x-4">
             <div className="relative profile-section flex items-center h-full">
