@@ -3,8 +3,10 @@ import CardMolecule from "../../molecules/Card";
 import DashboardCardConfig from "./cardConfig";
 import DashboardTableConfig from "./list";
 
-export default function DashboardComponent({ zone = "", role = "", ...props }) {
+export default function DashboardComponent(props) {
   const userName = localStorage.getItem("name");
+  const zone = localStorage.getItem("zone");
+  const role = localStorage.getItem("role_name");
   return (
     <div className="p-3">
       <div className=" md:gap-4 min-h-full border-opacity-60 flex flex-col md:flex-row justify-between items-start">
@@ -37,7 +39,7 @@ export default function DashboardComponent({ zone = "", role = "", ...props }) {
           label="PR Creation"
         />
       </div>
-      <DashboardTableConfig />
+      <DashboardTableConfig zone={zone} role={role} {...props} />
     </div>
   );
 }

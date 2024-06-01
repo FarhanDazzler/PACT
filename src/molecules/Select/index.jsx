@@ -8,7 +8,7 @@ export default function ReactSelectMolecule({
   placeholder = "",
   overrideClass = "",
   overrideDropdownClass = "",
-  fontFamily = "font-avantt",
+  fontFamily = "",
   ...props
 }) {
   const customStyles = {
@@ -28,7 +28,7 @@ export default function ReactSelectMolecule({
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isFocused ? "#d1d5db" : null,
-      fontFamily: fontFamily, // Grey background on hover
+      fontFamily: fontFamily,
     }),
   };
 

@@ -89,7 +89,6 @@ export default function DynamicTableOrganism({
         size: getColumnWidth(),
         Cell: editable
           ? ({ cell }) => {
-              console.log("Rendering cell:", cell); // Log the cell object
               if (col.accessorKey === "deliveryDate") {
                 return (
                   <DatePicker
@@ -162,7 +161,7 @@ export default function DynamicTableOrganism({
           backgroundColor: "inherit",
           fontWeight: "normal",
           fontSize: "xs",
-          fontFamily: "font-avantt",
+          // fontFamily: "font-avantt",
           // whiteSpace: "normal",
           // wordWrap: "break-word",
         },
