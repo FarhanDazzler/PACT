@@ -19,6 +19,7 @@ export default function PRRequestForm() {
   const [capop, setCapop] = useState("");
   const [folderName, setFolderName] = useState("");
   const [isAttachmentsCollapsed, setIsAttachmentsCollapsed] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState("pending");
   const user_id = localStorage.getItem("user_id");
   const navigate = useNavigate();
   const userName = localStorage.getItem("name");
@@ -214,7 +215,7 @@ export default function PRRequestForm() {
                 pr_details: {
                   ...values,
                 },
-                status: "pending",
+                status: submitStatus,
                 submitted_at: dayjs().format(DB_DATETIME_FORMAT),
               },
             });
@@ -231,7 +232,14 @@ export default function PRRequestForm() {
           }
         }}
       >
-        {({ setFieldValue, values, isSubmitting, errors, touched }) => (
+        {({
+          setFieldValue,
+          values,
+          isSubmitting,
+          errors,
+          touched,
+          handleSubmit,
+        }) => (
           <Form className="space-y-6">
             <CardMolecule
               cardClass="min-h-full p-14 border rounded-lg"
@@ -351,23 +359,31 @@ export default function PRRequestForm() {
                 </div>
               }
             />
-            <div className="flex justify-end pb-3">
+            <div className="flex justify-end pb-3 font-avantt">
               <button
                 type="button"
                 className="mt-5 mr-10 border border-black bg-gray-200 hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded text-sm"
+                onClick={() => navigate("/")}
               >
                 Cancel
               </button>
               <button
                 type="button"
                 className="font-avantt mt-5 mr-10 border border-black bg-gray-200 hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded text-sm"
+                onClick={() => {
+                  setSubmitStatus("draft"); // Set status to draft
+                  handleSubmit(); // Submit the form
+                }}
               >
                 Save as Draft
               </button>
               <button
-                type="submit"
-                disabled={isSubmitting}
+                type="button"
                 className="font-avantt mt-5 border border-yellow-600 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold hover:text-white py-1 px-4 rounded text-sm"
+                onClick={() => {
+                  setSubmitStatus("pending"); // Set status to pending
+                  handleSubmit(); // Submit the form
+                }}
               >
                 Submit
               </button>
