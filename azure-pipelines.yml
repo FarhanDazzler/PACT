@@ -74,7 +74,13 @@ stages:
       - task: Bash@3
         inputs:
           targetType: 'inline'
-          script: 'ls -R $(Build.SourcesDirectory)'
+          script: |
+            ls -R $(Build.SourcesDirectory)
+            ls -R /home/vsts/work/1/s/frontend/src
+            ls -R /home/vsts/work/1/s/frontend/src/assets
+            ls -R /home/vsts/work/1/s/frontend/src/assets/images
+             ############################
+            ls -R /(Build.SourcesDirectory)/$(Build.Repository.Name)/src/assets/images
         
       - task: CopyFiles@2
         inputs:
@@ -85,13 +91,13 @@ stages:
       - task: CopyFiles@2
         inputs:
           SourceFolder: '$(Build.SourcesDirectory)/$(Build.Repository.Name)/src/assets/images'
-          # Contents: '**'
-          Contents: |
-            bg_image.jpg
-            abi_logo_black.png
-            footer_image.png
-            footer_wave.svg
-            login_bg.png
+          Contents: '**'
+          # Contents: |
+          #   bg_image.jpg
+          #   abi_logo_black.png
+          #   footer_image.png
+          #   footer_wave.svg
+          #   login_bg.png
           TargetFolder: '$(Build.ArtifactStagingDirectory)/images'
           
         
