@@ -71,6 +71,10 @@ stages:
           AprServiceConnection: 'apiiro'
           AprSkipOnScanFailure: false
     
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: 'ls -R $(Build.SourcesDirectory)'
         
       - task: CopyFiles@2
         inputs:
@@ -80,7 +84,7 @@ stages:
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images'
+          SourceFolder: '$(Build.SourcesDirectory)/src/assets/images'
           Contents: '**'
           TargetFolder: '$(Build.ArtifactStagingDirectory)/images'
         
