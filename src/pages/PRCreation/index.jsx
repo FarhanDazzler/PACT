@@ -385,6 +385,7 @@ export default function PRRequestForm() {
                           retroNonRetro={"retro"}
                           bigFour={true}
                           afr={true}
+                          values={values}
                           lessThanHundred={true}
                         />
                       </div>
