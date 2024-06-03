@@ -1,111 +1,131 @@
 import { useMsal } from "@azure/msal-react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaFileAlt } from "react-icons/fa";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { LuUserCircle2 } from "react-icons/lu";
 import { MdHome } from "react-icons/md";
 import { RiAuctionLine } from "react-icons/ri";
 
 export default function HeaderComponent() {
   const { instance, accounts, inProgress, logger } = useMsal();
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
+  const popoverRef = useRef(null);
+  const userName = localStorage.getItem("name");
+  const role = localStorage.getItem("role");
 
   const handleLogout = () => {
     instance.logout();
   };
+
+  const handleClickOutside = (event) => {
+    if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+      setPopoverOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (popoverOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [popoverOpen]);
+
   return (
     <nav className="bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <div className="flex-shrink-0 text-white">Logo</div>
-            <div className="hidden md:block">
-              <div className="ml-40 flex items-baseline space-x-6">
+            <div className="text-white pr-6">Logo</div>
+          </div>
+          <div className="flex items-center space-x-6">
+            <a
+              href="/"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <MdHome size="16" className="mr-1" />
+              <span className="text-xs">Home </span>
+            </a>
+            <a
+              href="pr_request"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <FaFileAlt size="16" className="mr-1" />
+              <span className="text-xs">PR Request</span>
+            </a>
+            <a
+              href="gr_confirmation"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <FaFileAlt size="16" className="mr-1" />
+              <span className="text-xs">GR Confirmation Request</span>
+            </a>
+            <a
+              href="po_modify"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <FaFileAlt size="16" className="mr-1" />
+              <span className="text-xs">PO Modification Request</span>
+            </a>
+            <a
+              href="e-auction"
+              className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avantt"
+            >
+              <RiAuctionLine size="16" className="mr-1" />
+              <span className="text-xs">E-Auction Request</span>
+            </a>
+          </div>
+          <div className="hidden md:flex justify-end items-center space-x-4">
+            <div className="relative profile-section flex items-center h-full">
+              <LuUserCircle2 className="text-2xl text-white hover:text-yellow-500 mr-6" />
+              <div className="name-role mr-6">
+                <h1 className="font-bold text-sm text-yellow-500">
+                  {userName}
+                </h1>
+                <h3 className="text-xs text-gray-400">{role}</h3>
+              </div>
+              <button
+                onClick={() => setPopoverOpen(!popoverOpen)}
+                className="focus:outline-none text-white hover:text-yellow-500"
+                aria-expanded={popoverOpen}
+                aria-controls="popover-profile-menu"
+              >
+                {popoverOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              </button>
+              <div
+                ref={popoverRef}
+                id="popover-profile-menu"
+                role="menu"
+                className={`absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10 transition-opacity duration-300 ${
+                  popoverOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                }`}
+                data-popover-target="popover-bottom"
+                data-popover-placement="bottom"
+                style={{ top: "100%" }}
+              >
                 <a
-                  href="dashboard"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avant"
+                  href="/myprofile"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-yellow-600"
+                  onClick={() => setPopoverOpen(false)}
                 >
-                  <MdHome size="16" className="mr-1" />
-                  <span className="text-xs">Home </span>
+                  My Profile
                 </a>
                 <a
-                  href="pr_request"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avant"
+                  href="#"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-yellow-600"
+                  onClick={() => {
+                    setPopoverOpen(false);
+                    handleLogout();
+                  }}
                 >
-                  <FaFileAlt size="16" className="mr-1" />
-                  <span className="text-xs">PR Request</span>
-                </a>
-                <a
-                  href="gr_confirmation"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avant"
-                >
-                  <FaFileAlt size="16" className="mr-1" />
-                  <span className="text-xs">GR Confirmation Request</span>
-                </a>
-                <a
-                  href="po_modify"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avant"
-                >
-                  <FaFileAlt size="16" className="mr-1" />
-                  <span className="text-xs">PO Modification Request</span>
-                </a>
-                <a
-                  href="e-auction"
-                  className="text-white hover:text-yellow-500 flex items-center px-3 py-2 rounded-md text-xs font-small font-avant"
-                >
-                  <RiAuctionLine size="16" className="mr-1" />
-                  <span className="text-xs">E-Auction Request</span>
+                  Sign Out
                 </a>
               </div>
             </div>
-          </div>
-          <div className="hidden md:block">
-            <div className="ml-8 flex items-center ">
-              <Button
-                label={"Log out"}
-                onClick={handleLogout}
-                overrideClass={
-                  "text-black bg-gold hover:bg-gold focus:ring-black focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-white dark:hover:bg-white dark:focus:ring-black"
-                }
-              ></Button>
-            </div>
-          </div>
-          <div className="-mr-2 flex md:hidden">
-            {/* Mobile menu button */}
-            <button
-              type="button"
-              className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="block h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-              <svg
-                className="hidden h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
           </div>
         </div>
       </div>

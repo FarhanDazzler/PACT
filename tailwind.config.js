@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
 // This file is for adding custom css class for tailwind properties.
 export const content = ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"];
 export const theme = {
@@ -42,6 +41,10 @@ export const theme = {
         light: "#B03060", // Light Maroon
         dark: "#8B0000", // Dark Maroon
       },
+      customYellow: {
+        dark: "#d1a33c",
+        light: "#f5e003",
+      },
     },
     colors: {
       brown: {
@@ -76,13 +79,39 @@ export const theme = {
         rose: "#B76E79", // Rose Gold
         extralight: "#DAA520",
       },
+      customYellow: {
+        dark: "#d1a33c",
+        light: "#f5e003",
+      },
       maroon: {
         DEFAULT: "#800000", // Maroon
         light: "#B03060", // Light Maroon
         dark: "#8B0000", // Dark Maroon
       },
       fontFamily: {
-        avant: ["Avantt"],
+        avantt: ["Avantt"],
+        "avantt-bold": ["Avantt-Bold"],
+        "avantt-semiBold": ["Avantt-SemiBold"],
+        "avantt-regular": ["Avantt-Regular"],
+      },
+    },
+    backgroundImage: {
+      "svg-footer": "url('./src/assets/images/footer_image.png')",
+      "login-page": "url('./src/assets/images/login_bg.png')",
+      "default-page": "url('./src/assets/images/bg_image.png')",
+    },
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+    },
+    text: {
+      fontFamily: {
+        avantt: ["Avantt"],
+        "avantt-bold": ["Avantt-Bold"],
+        "avantt-semiBold": ["Avantt-SemiBold"],
+        "avantt-regular": ["Avantt-Regular"],
       },
     },
   },
