@@ -75,12 +75,9 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            ls -R $(Build.SourcesDirectory)
-            ls -R /home/vsts/work/1/s/frontend/src
-            ls -R /home/vsts/work/1/s/frontend/src/assets
-            ls -R /home/vsts/work/1/s/frontend/src/assets/images
-             ############################
-            ls -R /(Build.SourcesDirectory)/$(Build.Repository.Name)/src/assets/images
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images
         
       - task: CopyFiles@2
         inputs:
@@ -90,7 +87,7 @@ stages:
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(Build.SourcesDirectory)/$(Build.Repository.Name)/src/assets/images'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images'
           Contents: '**'
           # Contents: |
           #   bg_image.jpg
