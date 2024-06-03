@@ -84,9 +84,16 @@ stages:
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(Build.SourcesDirectory)/src/assets/images'
-          Contents: '**'
+          SourceFolder: '$(Build.SourcesDirectory)/$(Build.Repository.Name)/src/assets/images/'
+          # Contents: '**'
+          Contents: |
+            bg_image.jpg
+            abi_logo_black.png
+            footer_image.png
+            footer_wave.svg
+            login_bg.png
           TargetFolder: '$(Build.ArtifactStagingDirectory)/images'
+          
         
       - task: PublishPipelineArtifact@1
         inputs:
