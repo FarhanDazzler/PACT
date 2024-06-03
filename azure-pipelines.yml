@@ -84,7 +84,7 @@ stages:
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(Build.SourcesDirectory)/$(Build.Repository.Name)/src/assets/images/'
+          SourceFolder: '$(Build.SourcesDirectory)/$(Build.Repository.Name)/src/assets/images'
           # Contents: '**'
           Contents: |
             bg_image.jpg
