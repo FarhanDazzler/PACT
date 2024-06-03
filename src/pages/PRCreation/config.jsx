@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { OptionsContext } from "../../context/optionContext";
 
-export default function FormConfig() {
+export default function FormConfig(capop) {
   const { options } = useContext(OptionsContext);
 
   const basicDetailsFields = [
@@ -103,9 +103,15 @@ export default function FormConfig() {
       label: "Cost Center",
       className: "w-1/2",
       options: options?.cost_center,
-      condition: "showCapexFields",
+      condition: `capop === "opex"`,
     },
-
+    {
+      name: "io_wbs",
+      label: "IO/WBS",
+      className: "w-1/2",
+      options: options?.io_wbs,
+      condition: `capop === "capex"`,
+    },
     {
       name: "gl",
       label: "GL",

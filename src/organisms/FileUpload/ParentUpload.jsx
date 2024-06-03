@@ -10,27 +10,12 @@ const ParentUpload = ({
   bigFour,
   lessThanHundred,
   afr,
+  values,
   setFolderName,
   setFieldValue = () => {},
 }) => {
   const [allFiles, setAllFiles] = useState({});
   const [isUploadAllowed, setIsUploadAllowed] = useState(false);
-
-  const mandatoryUploads = {
-    nonretro: [
-      "non_retro_quotation",
-      "capex_release_form",
-      "single_sourcing_form",
-      "capex_order_form",
-    ],
-    retro: [
-      "retro_invoice",
-      "capex_release_form",
-      "single_sourcing_form",
-      "capex_order_form",
-      "justification_form",
-    ],
-  };
 
   const addFiles = (id, newFiles) => {
     setAllFiles((prevFiles) => ({
@@ -41,22 +26,26 @@ const ParentUpload = ({
 
   const getRenderedMandatoryFields = () => {
     const fields = [];
-    if (retroNonRetro === "nonretro") {
+    if (values?.request_priority !== "retro_active") {
       fields.push("non_retro_quotation");
-      if (capop === "capex" && afr) {
+      if (values?.spend_type === "capex" && afr) {
         fields.push("capex_release_form", "single_sourcing_form");
         if (lessThanHundred) {
           fields.push("capex_order_form");
         }
       }
-    } else if (retroNonRetro === "retro") {
+    } else if (values?.request_priority === "retro") {
       fields.push("retro_invoice");
-      if (capop === "capex" && afr) {
-        fields.push("capex_release_form", "single_sourcing_form");
+      if (values?.spend_type === "capex" && afr) {
+        fields.push(
+          "capex_release_form",
+          "single_sourcing_form",
+          "justification_form"
+        );
         if (lessThanHundred) {
           fields.push("capex_order_form");
         }
-      } else if (capop === "opex" && afr) {
+      } else if (values?.spend_type === "opex" && afr) {
         fields.push("justification_form");
       }
     }
@@ -122,7 +111,7 @@ const ParentUpload = ({
       />,
     ];
 
-    if (retroNonRetro === "nonretro") {
+    if (values?.request_priority !== "retro_active") {
       uploadComponents.push(
         <FileUpload
           key={"non_retro_quotation"}
@@ -133,7 +122,7 @@ const ParentUpload = ({
           mandatory={true}
         />
       );
-      if (capop === "capex" && afr) {
+      if (values?.spend_type === "capex" && afr) {
         uploadComponents.push(
           <FileUpload
             key="capex_release_form"
@@ -167,7 +156,7 @@ const ParentUpload = ({
           );
         }
       }
-    } else if (retroNonRetro === "retro") {
+    } else if (values?.request_priority === "retro_active") {
       uploadComponents.push(
         <FileUpload
           key={"retro_invoice"}
@@ -178,7 +167,17 @@ const ParentUpload = ({
           addFiles={addFiles}
         />
       );
-      if (capop === "capex" && afr) {
+      uploadComponents.push(
+        <FileUpload
+          key="justification_form"
+          id="justification_form"
+          customText="Justification form"
+          uploadText="justification form"
+          mandatory={true}
+          addFiles={addFiles}
+        />
+      );
+      if (values?.spend_type === "capex" && afr) {
         uploadComponents.push(
           <FileUpload
             key="capex_release_form"
@@ -211,17 +210,6 @@ const ParentUpload = ({
             />
           );
         }
-      } else if (capop === "opex" && afr) {
-        uploadComponents.push(
-          <FileUpload
-            key="justification_form"
-            id="justification_form"
-            customText="Justification form"
-            uploadText="justification form"
-            mandatory={true}
-            addFiles={addFiles}
-          />
-        );
       }
     }
 
