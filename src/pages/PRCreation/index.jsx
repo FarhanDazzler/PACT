@@ -28,40 +28,53 @@ export default function PRRequestForm() {
     basicDetailsFields,
     vendorPurchaseDetailsFields,
     purchaseDescriptionFields,
-  } = FormConfig();
+  } = FormConfig(capop);
 
-  const validationSchema = Yup.object({
-    ...basicDetailsFields.reduce((schema, field) => {
-      schema[field.name] = Yup.string().required("Required");
-      return schema;
-    }, {}),
-    ...vendorPurchaseDetailsFields.reduce((schema, field) => {
-      schema[field.name] = Yup.string().required("Required");
-      return schema;
-    }, {}),
-    ...purchaseDescriptionFields.reduce((schema, field) => {
-      schema[field.name] = Yup.string().required("Required");
-      return schema;
-    }, {}),
-    line_items: Yup.array().of(
-      Yup.object().shape({
-        itemNo: Yup.string().required("Required"),
-        description: Yup.string().required("Required"),
-        deliveryDate: Yup.string().required("Required"),
-        plant: Yup.string().required("Required"),
-        materialGroup: Yup.string().required("Required"),
-        materialCode: Yup.string().required("Required"),
-        currency: Yup.string().required("Required"),
-        ccwbs: Yup.string().required("Required"),
-        gl: Yup.string().required("Required"),
-        quantity: Yup.string().required("Required"),
-        uom: Yup.string().required("Required"),
-        pricePerItem: Yup.string().required("Required"),
-        totalValue: Yup.string().required("Required"),
-      })
-    ),
-  });
+  const getValidationSchema = (capop) => {
+    const validationSchema = {
+      ...basicDetailsFields.reduce((schema, field) => {
+        schema[field.name] = Yup.string().required("Required");
+        return schema;
+      }, {}),
+      ...vendorPurchaseDetailsFields.reduce((schema, field) => {
+        if (!field.condition) {
+          schema[field.name] = Yup.string().required("Required");
+        }
+        return schema;
+      }, {}),
+      ...purchaseDescriptionFields.reduce((schema, field) => {
+        schema[field.name] = Yup.string().required("Required");
+        return schema;
+      }, {}),
+      line_items: Yup.array().of(
+        Yup.object().shape({
+          itemNo: Yup.string().required("Required"),
+          description: Yup.string().required("Required"),
+          deliveryDate: Yup.string().required("Required"),
+          plant: Yup.string().required("Required"),
+          materialGroup: Yup.string().required("Required"),
+          materialCode: Yup.string().required("Required"),
+          currency: Yup.string().required("Required"),
+          ccwbs: Yup.string().required("Required"),
+          gl: Yup.string().required("Required"),
+          quantity: Yup.string().required("Required"),
+          uom: Yup.string().required("Required"),
+          pricePerItem: Yup.string().required("Required"),
+          totalValue: Yup.string().required("Required"),
+        })
+      ),
+    };
 
+    if (capop === "opex") {
+      validationSchema.cost_center = Yup.string().required("Required");
+    }
+
+    if (capop === "capex") {
+      validationSchema.io_wbs = Yup.string().required("Required");
+    }
+
+    return Yup.object(validationSchema);
+  };
   const staticOptions = [
     { value: "option1", label: "Option 1" },
     { value: "option2", label: "Option 2" },
@@ -69,15 +82,60 @@ export default function PRRequestForm() {
 
   const handleSpendTypeChange = (option, setFieldValue) => {
     setFieldValue("spend_type", option.value);
-    if (option.value === "capex") {
-      setCapop("capex");
-    } else {
-      setCapop("opex");
-    }
+    setCapop(option.value);
     if (option.value === "capex" || option.value === "opex") {
       setShowCapexFields(true);
     } else {
       setShowCapexFields(false);
+    }
+  };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const requestPayload = {
+        user_id: user_id,
+        pr_details: {
+          ...values,
+        },
+        status: submitStatus,
+        submitted_at: dayjs().format(DB_DATETIME_FORMAT),
+      };
+
+      await postApi({
+        routes: `/pr_details_submit`,
+        data: requestPayload,
+      });
+      setSubmitting(false);
+      toast.success("Purchase Request created successfully.");
+      navigate("/");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+      setSubmitting(false);
+    }
+  };
+
+  const handleSaveAsDraft = async (values) => {
+    try {
+      const requestPayload = {
+        user_id: user_id,
+        pr_details: {
+          ...values,
+        },
+        status: "draft",
+      };
+
+      await postApi({
+        routes: `/pr_details_submit`,
+        data: requestPayload,
+      });
+      toast.success("Purchase Request saved as draft.");
+      navigate("/");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
     }
   };
 
@@ -205,32 +263,8 @@ export default function PRRequestForm() {
             },
           ],
         }}
-        validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          try {
-            const response = await postApi({
-              routes: `/pr_details_submit`,
-              data: {
-                user_id: user_id,
-                pr_details: {
-                  ...values,
-                },
-                status: submitStatus,
-                submitted_at: dayjs().format(DB_DATETIME_FORMAT),
-              },
-            });
-
-            toast.success("PR Form Submitted Successfully");
-            navigate("/");
-          } catch (error) {
-            // Error occurred during API request
-            const errorMessage = error.message || "An error occurred";
-            toast.error(errorMessage);
-            console.error("Error:", error);
-          } finally {
-            setSubmitting(false);
-          }
-        }}
+        validationSchema={getValidationSchema(capop)}
+        onSubmit={handleSubmit}
       >
         {({
           setFieldValue,
@@ -371,8 +405,7 @@ export default function PRRequestForm() {
                 type="button"
                 className="font-avantt mt-5 mr-10 border border-black bg-gray-200 hover:bg-black text-black font-semibold hover:text-white py-1 px-4 rounded text-sm"
                 onClick={() => {
-                  setSubmitStatus("draft"); // Set status to draft
-                  handleSubmit(); // Submit the form
+                  handleSaveAsDraft(values);
                 }}
               >
                 Save as Draft
