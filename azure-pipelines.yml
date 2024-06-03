@@ -1,5 +1,5 @@
 trigger: 
-- main
+# - main
 - dev
 - qa
 
@@ -76,8 +76,8 @@ stages:
           targetType: 'inline'
           script: |
             ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assests
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assests/images
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images
         
       - task: CopyFiles@2
         inputs:
@@ -87,7 +87,7 @@ stages:
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assests/images'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images'
           Contents: '**'
           # Contents: |
           #   bg_image.jpg
