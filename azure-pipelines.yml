@@ -80,9 +80,9 @@ stages:
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets/images'
           Contents: '**'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/assets'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/assets/images'
         
       - task: PublishPipelineArtifact@1
         inputs:
