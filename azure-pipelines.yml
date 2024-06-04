@@ -37,7 +37,6 @@ stages:
           command: 'custom'
           workingDir: '$(Build.Repository.Name)'
           customCommand: 'run build'
-
               
       - template: ${{ variables['scanTemplate'] }}
         parameters:
@@ -75,19 +74,19 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets
             ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images
         
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist'
           Contents: 'index.html'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets/images'
           Contents: '**'
           TargetFolder: '$(Build.ArtifactStagingDirectory)/images'
           
