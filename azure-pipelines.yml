@@ -27,14 +27,14 @@ stages:
       - checkout: self
       - checkout: appsectemplates
     
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script: |
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets/images
+      # - task: Bash@3
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)
+      #       ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist
+      #       ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets
+      #       ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets/images
       
       - task: Npm@1
         inputs:
@@ -53,6 +53,7 @@ stages:
           SCProjectKey: 'Global_P2P_Transformation_frontend'
           SCProjectName: 'Global_P2P_Transformation_frontend'
           SCBaseDirPath: './$(Build.Repository.Name)'
+          SCSourceEncoding: 'UTF-8'
           ${{ if or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'Manual'))}}:
             SCBranchName: '$(Build.SourceBranchName)'
           ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
@@ -79,25 +80,25 @@ stages:
           AprServiceConnection: 'apiiro'
           AprSkipOnScanFailure: false
     
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script: |
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets/images
+      # - task: Bash@3
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist
+      #       ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets
+      #       ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets/images
         
       - task: CopyFiles@2
         inputs:
           SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist'
-          Contents: 'index.html'
+          Contents: '**'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets/images'
-          Contents: '**'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/images'
+      # - task: CopyFiles@2
+      #   inputs:
+      #     SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets/images'
+      #     Contents: '**'
+      #     TargetFolder: '$(Build.ArtifactStagingDirectory)/images'
           
         
       - task: PublishPipelineArtifact@1
