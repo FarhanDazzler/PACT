@@ -26,7 +26,14 @@ stages:
     steps:
       - checkout: self
       - checkout: appsectemplates
-      
+    
+      - script: |
+          echo "Cleaning the dist folder if it exists"
+          if [ -d "$(Build.Repository.Name)/dist" ]; then
+            rm -rf $(Build.Repository.Name)/dist
+          fi
+        displayName: 'Clean dist folder'
+          
       - task: Npm@1
         inputs:
           command: 'install'
@@ -37,7 +44,6 @@ stages:
           command: 'custom'
           workingDir: '$(Build.Repository.Name)'
           customCommand: 'run build'
-
               
       - template: ${{ variables['scanTemplate'] }}
         parameters:
@@ -45,6 +51,7 @@ stages:
           SCProjectKey: 'Global_P2P_Transformation_frontend'
           SCProjectName: 'Global_P2P_Transformation_frontend'
           SCBaseDirPath: './$(Build.Repository.Name)'
+          SCSourceEncoding: 'UTF-8'
           ${{ if or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'Manual'))}}:
             SCBranchName: '$(Build.SourceBranchName)'
           ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
@@ -71,25 +78,31 @@ stages:
           AprServiceConnection: 'apiiro'
           AprSkipOnScanFailure: false
     
+      - script: |
+          if [ ! -d "$(Build.Repository.Name)/dist" ]; then
+            echo "Build failed: dist folder not found"
+            exit 1
+          fi
+        displayName: 'Verify dist folder creation'
+
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets
-            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist
+            ls -R $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets
         
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist'
           Contents: 'index.html'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: CopyFiles@2
         inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/src/assets/images'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/$(Build.Repository.Name)/dist/assets'
           Contents: '**'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/images'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/assets/images'
           
         
       - task: PublishPipelineArtifact@1
