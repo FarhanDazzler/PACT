@@ -114,6 +114,9 @@ export const theme = {
         "avantt-regular": ["Avantt-Regular"],
       },
     },
+    width: {
+      '1/7': '14.2857143%',
+    }
   },
 };
 export const plugins = [];
