@@ -1,208 +1,29 @@
+import React, { useState, useEffect } from "react";
 import DynamicTableOrganism from "../../organisms/DynamicTable";
 
 export default function DashboardTableConfig(props) {
-  return <DynamicTableOrganism {...getConfig(props)} />;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchPrDetails(); // Fetch data when the component mounts
+  }, []);
+
+  const fetchPrDetails = () => {
+    // Fetch data from your backend API
+    fetch("/pr_details")
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data); // Update the state with fetched data
+      })
+      .catch((error) => {
+        console.error("Error fetching PR details:", error);
+      });
+  };
+
+  return <DynamicTableOrganism {...getConfig(props, data)} />;
 }
 
-const getConfig = ({ zone, role, ...rest }) => {
-  const data = [
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Normal",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Normal",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Normal",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-    {
-      requestID: "REQ-1443434004",
-      region: "GHQ",
-      submissionDate: "23-03-2024",
-      approvedDate: "23-03-2024",
-      prType: "Urgent",
-      vendorName: "Accenture NV",
-      vendorNumber: "321456",
-      poTitle: "Acuvate santhosh billing",
-      currency: "INR",
-      poValue: "INR",
-      status: "Pending Approval",
-    },
-  ];
-
+const getConfig = ({ zone, role }, data) => {
   let config = {};
   switch (`${zone}/${role}`) {
     default:

@@ -4,7 +4,7 @@ import { Button } from "@mantine/core";
 import _ from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import ABILogo from "../../assets/images/abi_logo_black.png";
+import ABILogo from "../../assets/abi_logo_black.png";
 import { loginRequest } from "../../config/authConfig";
 import { UserContext } from "../../context/userContext";
 import CardMolecule from "../../molecules/Card";
@@ -41,8 +41,18 @@ export default function LoginComponent() {
       <div className="flex justify-center items-center pt-32">
         <CardMolecule
           cardClass="px-2 w-48 md:w-72 h-84 border bg-white rounded-lg"
-          headerClass="py-6 flex justify-center items-center font-avantt text-4xl text-yellow-600 font-bold"
-          header="PACT"
+          headerClass="py-6 px-4 flex justify-center items-center font-avantt text-4xl text-yellow-600 font-bold"
+          header={
+            <span
+              style={{
+                background: "-webkit-linear-gradient(90deg, #B8860B 0%, #d1a33c 56%, rgba(255,215,0,1) 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent"
+              }}
+            >
+              PACT
+            </span>
+          }
           body={
             <>
               <hr className="h-px w-14 bg-gray-500 border-0 dark:bg-gray-700 mx-auto" />
@@ -54,10 +64,12 @@ export default function LoginComponent() {
               </div>
               <div className="pt-3 pb-3 flex justify-center">
                 <Button
-                  className="h-8 w-24 flex justify-center items-center bg-black text-white rounded-lg font-avantt font-semibold"
+                  className="relative overflow-hidden bg-black text-white rounded-lg font-avantt font-semibold shadow-2xl transition-transform transform hover:scale-105 hover:bg-gradient-to-r hover:from-yellow-400 hover:via-yellow-500 hover:to-gold"
+                  style={{ width: "120px" }}
                   onClick={() => instance.loginRedirect(loginRequest)}
                 >
                   {`Login`}
+                  
                 </Button>
               </div>
               {showError ? "" : null}
