@@ -4,7 +4,7 @@ import { Button } from "@mantine/core";
 import _ from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import ABILogo from "../../assets/abi_logo_black.png";
+import ABILogo from "../../assets/images/abi_logo_black.png";
 import { loginRequest } from "../../config/authConfig";
 import { UserContext } from "../../context/userContext";
 import CardMolecule from "../../molecules/Card";
@@ -45,9 +45,10 @@ export default function LoginComponent() {
           header={
             <span
               style={{
-                background: "-webkit-linear-gradient(90deg, #B8860B 0%, #d1a33c 56%, rgba(255,215,0,1) 100%)",
+                background:
+                  "-webkit-linear-gradient(90deg, #B8860B 0%, #d1a33c 56%, rgba(255,215,0,1) 100%)",
                 WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent"
+                WebkitTextFillColor: "transparent",
               }}
             >
               PACT
@@ -69,7 +70,6 @@ export default function LoginComponent() {
                   onClick={() => instance.loginRedirect(loginRequest)}
                 >
                   {`Login`}
-                  
                 </Button>
               </div>
               {showError ? "" : null}

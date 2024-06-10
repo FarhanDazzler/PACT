@@ -96,9 +96,9 @@ export const theme = {
       },
     },
     backgroundImage: {
-      "svg-footer": "url('./src/assets/footer_image.png')",
-      "login-page": "url('./src/assets/login_bg.png')",
-      "default-page": "url('./src/assets/bg_image.png')",
+      "svg-footer": "url('./src/assets/images/footer_image.png')",
+      "login-page": "url('./src/assets/images/login_bg.png')",
+      "default-page": "url('./src/assets/images/bg_image.png')",
     },
     screens: {
       sm: "640px",
@@ -113,6 +113,9 @@ export const theme = {
         "avantt-semiBold": ["Avantt-SemiBold"],
         "avantt-regular": ["Avantt-Regular"],
       },
+    },
+    width: {
+      "1/7": "14.2857143%",
     },
   },
 };
