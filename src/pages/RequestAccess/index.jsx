@@ -2,7 +2,7 @@
 import { Button } from "@mantine/core";
 import React from "react";
 // import { useNavigate } from "react-router-dom";
-import ABILogo from "../../assets/abi_logo_black.png";
+import ABILogo from "/assets/abi_logo_black.png";
 // import { loginRequest } from "../../config/authConfig";
 import CardMolecule from "../../molecules/Card";
 import ReactSelectMolecule from "../../molecules/Select";
