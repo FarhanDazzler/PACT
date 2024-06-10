@@ -1,12 +1,23 @@
+import { useState } from "react";
 import ButtonAtom from "../../atoms/Button";
 import CardMolecule from "../../molecules/Card";
 import DashboardCardConfig from "./cardConfig";
 import DashboardTableConfig from "./list";
 
 export default function DashboardComponent(props) {
+  const [isStyleOne, setIsStyleOne] = useState(true);
+  const [table, setTable] = useState("pr_creation");
   const userName = localStorage.getItem("name");
   const zone = localStorage.getItem("zone");
   const role = localStorage.getItem("role_name");
+
+  const toggleStyle = (table) => {
+    setIsStyleOne(!isStyleOne);
+    setTable(table);
+
+    console.log(isStyleOne, table);
+  };
+
   return (
     <div className="p-3 font-avantt">
       <div className=" md:gap-4 min-h-full border-opacity-60 flex flex-col md:flex-row justify-between items-start">
@@ -31,13 +42,27 @@ export default function DashboardComponent(props) {
           </div>
         </div>
       </div>
-      <div className="bg-gray mt-16 ">
+      <div className="bg-gray mt-16 flex space-x-4 ">
         <ButtonAtom
-          overrideClass=" bg-black w-32 mb-4 rounded-xl"
+          overrideClass={
+            isStyleOne
+              ? "bg-white text-black gap-0.5 w-fit mb-4 rounded-xl"
+              : "bg-black gap-0.5 w-fit mb-4 rounded-xl text-white"
+          }
           label="PR Creation"
+          onClick={() => toggleStyle("pr_creation")}
+        />
+        <ButtonAtom
+          overrideClass={
+            isStyleOne
+              ? "bg-black gap-0.5 w-fit mb-4 rounded-xl text-white"
+              : "bg-white text-black gap-0.5 w-fit mb-4 rounded-xl"
+          }
+          label="GR Confirmation"
+          onClick={() => toggleStyle("gr_confirmation")}
         />
       </div>
-      <DashboardTableConfig zone={zone} role={role} {...props} />
+      <DashboardTableConfig zone={zone} role={role} table={table} {...props} />
     </div>
   );
 }
