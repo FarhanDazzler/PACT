@@ -1,11 +1,21 @@
 import React from "react";
-// import DynamicTableOrganism from "../../organisms/DynamicTable";
+
+import GRTableConfig from "./list";
+import ButtonAtom from "../../atoms/Button";
 
 export const GRConfirmationRequest = () => {
+  const userName = localStorage.getItem("name");
+  const zone = localStorage.getItem("zone");
+  const role = localStorage.getItem("role");
   return (
-    <div>
-      <h1>Hello,Gr Page</h1>
-    </div>
+    <>
+      <GRTableConfig
+        zone={zone}
+        role={role}
+        table={"gr_confirmation"}
+        // {...props}
+      />
+    </>
   );
 };
 
