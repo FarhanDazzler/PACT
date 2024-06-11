@@ -21,7 +21,6 @@ import PRCreationComponent from "./pages/PRCreation";
 import PRDetail from "./pages/PRDetail";
 import RequestAccessComponent from "./pages/RequestAccess";
 import { postApi } from "./particles/api";
-import { GRConfirmationRequest } from "./pages/GRConfirmationRequest";
 
 const Pages = () => {
   const location = useLocation();
@@ -119,7 +118,7 @@ const Pages = () => {
           <Route path="/" element={<DashboardComponent />} />
           <Route path="/pr_request" element={<PRCreationComponent />} />
           <Route path="/pr_detail" element={<PRDetail />} />
-          <Route path="/gr_confirmation" element={<GRConfirmationRequest />} />
+          {/* <Route path="/gr_confirmation/:id" element={<GRConfirmationForm />} /> */}
         </Routes>
       </div>
       <FooterComponent />

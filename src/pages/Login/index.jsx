@@ -4,10 +4,10 @@ import { Button } from "@mantine/core";
 import _ from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import ABILogo from "../../assets/images/abi_logo_black.png";
 import { loginRequest } from "../../config/authConfig";
 import { UserContext } from "../../context/userContext";
 import CardMolecule from "../../molecules/Card";
+import ABILogo from "/assets/abi_logo_black.png";
 
 export default function LoginComponent() {
   const navigate = useNavigate();

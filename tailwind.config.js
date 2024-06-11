@@ -96,9 +96,9 @@ export const theme = {
       },
     },
     backgroundImage: {
-      "svg-footer": "url('./src/assets/images/footer_image.png')",
-      "login-page": "url('./src/assets/images/login_bg.png')",
-      "default-page": "url('./src/assets/images/bg_image.png')",
+      "svg-footer": "url('/assets/footer_image.png')",
+      "login-page": "url('/assets/login_bg.png')",
+      "default-page": "url('/assets/bg_image.png')",
     },
     screens: {
       sm: "640px",
