@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaDownload } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import useWindowDimensions from "../../utils/hooks";
+import { TbMinusVertical } from "react-icons/tb";
 
 export default function DynamicTableOrganism({
   columnData: initialColumns,
@@ -19,7 +20,10 @@ export default function DynamicTableOrganism({
   showExport = false,
   showCartButton = false,
   showPagination = true,
+  showSearchTable = true,
   editable = false,
+  showButton = false,
+  showLabel = false,
   onSelectedRowsChange = () => {},
   onCellEdit = () => {},
   onTableDataChange,
@@ -199,9 +203,26 @@ export default function DynamicTableOrganism({
 
       return (
         <Flex p="md" justify="space-between">
-          <Flex gap="xs">
-            <MRT_GlobalFilterTextInput table={table} />
-          </Flex>
+          {showSearchTable && (
+            <Flex gap="xs">
+              <MRT_GlobalFilterTextInput table={table} />
+            </Flex>
+          )}
+          {showLabel && (
+            <div className="flex items-center font-bold  font-avantt">
+              <label className="flex items-center">
+                <TbMinusVertical
+                  className="text-yellow-500" // Dark yellow color
+                  style={{
+                    width: "2rem", // Adjust width
+                    height: "2rem", // Adjust height
+                    strokeWidth: "2", // Thicker stroke
+                  }}
+                />
+                GR Confirmation Request
+              </label>
+            </div>
+          )}
 
           <Flex sx={{ gap: "8px" }}>
             {showExport && (
@@ -236,19 +257,29 @@ export default function DynamicTableOrganism({
                 </Button>
               </>
             )}
-            {showCartButton && (
+
+            {showButton && (
+              <>
+                <Button className="bg-gray-200 text-black rounded px-4 py-2">
+                  Cancel
+                </Button>
+                <Button className="bg-black text-white ">Submit</Button>
+              </>
+            )}
+
+            {/* {showCartButton && (
               <Button
                 disabled={
                   !table.getIsSomeRowsSelected() &&
                   !table.getIsAllRowsSelected()
                 }
-                onClick={handleAddToCart}
+                // onClick={handleAddToCart}
                 color="yellow"
                 variant="filled"
               >
                 Add to Cart
               </Button>
-            )}
+            )} */}
             {editable && (
               <Button onClick={handleAddRow} color="yellow" variant="filled">
                 Click here to Add More line items
