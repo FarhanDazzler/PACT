@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import DynamicTableOrganism from "../../organisms/DynamicTable";
 
 export default function DashboardTableConfig(props) {
