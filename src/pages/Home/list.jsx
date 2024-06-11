@@ -341,7 +341,7 @@ const getConfig = ({ zone, role, table, ...rest }) => {
         data: data || [],
       };
       break;
-    case "afr/approver/pr_creation":
+    case "afr/dag approver/pr_creation":
       config = {
         columns: [
           {
