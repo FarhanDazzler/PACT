@@ -341,6 +341,78 @@ const getConfig = ({ zone, role, table, ...rest }) => {
         data: data || [],
       };
       break;
+    case "afr/approver/pr_creation":
+      config = {
+        columns: [
+          {
+            accessorKey: "requestID",
+            header: "Request ID",
+            size: 50,
+          },
+          {
+            accessorKey: "region",
+            header: "Region",
+            size: 10,
+          },
+          {
+            accessorKey: "submissionDate",
+            header: "Submission Date",
+            size: 10,
+          },
+          {
+            accessorKey: "approvedDate",
+            header: "Approved Date",
+            size: 10,
+          },
+          {
+            accessorKey: "prType",
+            header: "PR Type",
+            size: 10,
+          },
+          {
+            accessorKey: "vendorName",
+            header: "Vendor Name",
+            size: 10,
+          },
+          {
+            accessorKey: "vendorNumber",
+            header: "Vendor Number",
+            size: 10,
+          },
+          {
+            accessorKey: "poTitle",
+            header: "PO Title",
+            size: 10,
+          },
+          {
+            accessorKey: "poValue",
+            header: "PO Value",
+            size: 10,
+          },
+          {
+            accessorKey: "currency",
+            header: "Currency",
+            size: 10,
+          },
+          {
+            accessorKey: "assignTo",
+            header: "Reassign/Assign to",
+            size: 10,
+          },
+          {
+            accessorKey: "createdBy",
+            header: "Created By",
+            size: 10,
+          },
+          {
+            accessorKey: "status",
+            header: "Status",
+            size: 10,
+          },
+        ],
+        data: data || [],
+      };
+      break;
     default:
       config = {
         columns: [
