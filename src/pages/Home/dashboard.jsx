@@ -9,7 +9,7 @@ export default function DashboardComponent(props) {
   const [table, setTable] = useState("pr_creation");
   const userName = localStorage.getItem("name");
   const zone = localStorage.getItem("zone");
-  const role = localStorage.getItem("role_name");
+  const role = localStorage.getItem("role");
 
   const toggleStyle = (table) => {
     setIsStyleOne(!isStyleOne);

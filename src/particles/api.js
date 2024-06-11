@@ -1,4 +1,5 @@
 import axios from "axios";
+console.log("import:", import.meta.env.VITE_REACT_APP_API_ROOT_URL);
 
 export async function postApi({ url, routes = "", data = {}, headers = {} }) {
   return await axios
